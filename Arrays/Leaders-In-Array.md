@@ -1,12 +1,9 @@
-# 📝 DSA Problem Note — Leaders in Array
-
+#  Leaders in Array
 ---
-
 ## 1. 💡 Understand the Problem
 - **Read & Identify:** Find all **leaders** in an array.  
 - **Goal:** A leader is an element strictly greater than all elements to its right. The rightmost element is always a leader.  
 - **Paraphrase:** For each element, check if no element to its right is greater or equal.
-
 ---
 
 ## 2. 📋 Input, Output, & Constraints
@@ -32,10 +29,10 @@ Input: `[16, 17, 4, 3, 5, 2]` → Output: `[17, 5, 2]`
 Input: `[5]` → Output: `[5]`  
 
 **Edge Case Checklist:**  
-- [x] Single element → leader  
-- [x] All increasing → last element leader  
-- [x] All decreasing → all elements leaders  
-- [x] Large n → performance check  
+- Single element → leader  
+- All increasing → last element leader  
+- All decreasing → all elements leaders  
+- Large n → performance check  
 
 ---
 
@@ -75,7 +72,7 @@ class LeadersBruteForce {
 }
 ```
 
-Complexity-> Time: O(n²)  Space: O(1)
+#### Complexity:  Time: O(n²)  Space: O(1)
 ---
 ### 5. ✨ Approach 2: Optimized Solution
 - Idea / Optimization: Scan right-to-left, track the maximum element so far (Greedy approach)
@@ -110,18 +107,17 @@ class LeadersOptimized {
     }
 }
 ```
-Complexity: Time O(n) Space O(1)
+#### Complexity: Time O(n) Space O(1)
 ---
 ### 6. ✅ Justification / Proof of Optimality
-*The right-to-left scan guarantees all elements larger than maxRight are leaders.
-*Greedy choice is always correct because once maxRight is updated, no smaller element can be a leader.
+- The right-to-left scan guarantees all elements larger than maxRight are leaders.
+- Greedy choice is always correct because once maxRight is updated, no smaller element can be a leader.
 *Meets O(n) time and O(1) extra space requirement.
 ### 7. 🏷️ Patterns & Tags
-*Data Structures: Array
-*Algorithms / Techniques: Greedy, Reverse Traversal
+- Data Structures: Array
+- Algorithms / Techniques: Greedy, Reverse Traversal
 ---
 ### 8. ⏭️ Variants / Follow-Ups
-Count leaders instead of listing them
-Leaders in a circular array
-
-Leaders in a 2D matrix (row-wise / column-wise)
+- Count leaders instead of listing them
+- Leaders in a circular array
+- Leaders in a 2D matrix (row-wise / column-wise)
