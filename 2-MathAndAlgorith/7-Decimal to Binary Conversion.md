@@ -1,3 +1,4 @@
+<!-- #region 7: Decimal to Binary Conversion -->
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q7: Decimal to Binary Conversion</h1>
 
@@ -77,3 +78,4 @@ function decimalToBinary(n):
 - Decimal → Binary for negative numbers (2’s complement)
 - Fast conversion using recursion or stack
 
+<!-- #endregion -->

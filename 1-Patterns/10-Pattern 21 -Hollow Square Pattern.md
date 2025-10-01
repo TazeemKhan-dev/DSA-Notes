@@ -1,5 +1,8 @@
+<!-- #region 10-Pattern 21 -Hollow Square Pattern -->
 
+<br>
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q10: Pattern 21 -Hollow Square Pattern</h1>
+<br>
 
 ## 1. Input, Output, & Constraints
 
@@ -20,7 +23,10 @@
 **Constraints:**
 - 1 ≤ n ≤ 26 (English alphabets)
 
-## 2. Examples
+
+---
+
+## 2. Examples & Edge Cases
 
 **Example 1 (edge case):**
 Input:
@@ -32,6 +38,9 @@ Output:
 **
 **
 ```
+
+
+---
 
 ## 3. Approaches
 
@@ -81,6 +90,9 @@ function printHollowSquare(n):
 - Time: O(n^2)  → Still iterating over n rows × n columns
 - Space: O(1)→ For storing row strings
 
+
+---
+
 ## 4. Justification / Proof of Optimality
 
 - Optimality: Both approaches are straightforward and efficient for printing a hollow square.
@@ -88,10 +100,14 @@ function printHollowSquare(n):
 - Nested loop → Easy to understand for beginners, prints directly
 - String concatenation → Slightly more efficient if row strings are reused
 
+---
+
 ## 5. Variants / Follow-Ups
 
 - Hollow rectangle (rows ≠ columns)
 - Hollow triangle, hollow diamond
 - Filled border patterns with different characters
 - Hollow square with diagonal * inside
+
+<!-- #endregion -->
 

@@ -1,3 +1,4 @@
+<!-- #region 8: Print Continuous Character Pattern -->
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q8: Print Continuous Character Pattern</h1>
 
@@ -74,3 +75,4 @@ function printPattern(n):
 - Allow lowercase letters or custom alphabet sets
 - Print continuous character diamond pattern
 
+<!-- #endregion -->

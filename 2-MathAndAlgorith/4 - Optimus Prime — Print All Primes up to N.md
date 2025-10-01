@@ -1,3 +1,4 @@
+<!-- #region 4: Optimus Prime — Print All Primes up to N -->
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q4: Optimus Prime — Print All Primes up to N</h1>
 
@@ -90,3 +91,4 @@ function sieve(n):
 - Find the k-th prime ≤ n.
 - Applications in number theory (Goldbach’s conjecture, twin primes).
 
+<!-- #endregion -->

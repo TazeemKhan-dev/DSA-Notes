@@ -1,4 +1,4 @@
-
+<!-- #region 6: Binary To Decimal Conversion -->
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q6: Binary To Decimal Conversion</h1>
 
 ## 1. Input, Output, & Constraints
@@ -73,3 +73,4 @@ function binaryToDecimal(binary):
 - Large binary strings beyond integer limit → Use BigInt or string manipulation
 - Summing multiple binary numbers efficiently
 
+<!-- #endregion -->

@@ -1,4 +1,4 @@
-
+<!-- #region 9: Pattern 18 – Alphabet Pyramid Ending with ‘E’ -->
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q9: Pattern 18 – Alphabet Pyramid Ending with ‘E’</h1>
 
 ## 1. Input, Output, & Constraints
@@ -80,3 +80,4 @@ function printPattern18(n):
 - Diagonal or mirrored pyramid patterns
 - Use lowercase letters or other character sets
 
+<!-- #endregion -->

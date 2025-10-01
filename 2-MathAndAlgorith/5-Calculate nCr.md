@@ -1,3 +1,4 @@
+<!-- #region 5: Calculate nCr -->
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q5: Calculate nCr</h1>
 
@@ -79,4 +80,5 @@ function Calculate_nCr(n, r):
 - Large Constraints (n,r≈10^9): When n and r are very large and the answer must be computed modulo p. This requires number theory techniques like Lucas Theorem or calculating factorials and their modular inverses using Fermat’s Little Theorem.
 - Dynamic Programming (Pascal's Identity): For scenarios where many nCr values are needed, the relation nCr=(n−1)C(r−1)+(n−1)Cr allows filling a table (Pascal's Triangle) in O(n ^2) time.
 - Permutations (nPr): The problem of calculating nPr=n!/(n−r)! involves a similar multiplicative approach, simply stopping before dividing by r!.
+<!-- #endregion -->
 
