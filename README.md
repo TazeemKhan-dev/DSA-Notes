@@ -3,9 +3,10 @@ the structure will be like this
 
 Problem Understanding (Read & Identify, Goal, Paraphrase)
 
-Input Output & Constraints (Input, Output, Constraints)
+Constraints (Input, Output, Constraints)
+Edge Cases
 
-Examples & Edge Cases (Examples, Edge Cases)
+Examples 
 
 Approaches (Approach 1, Approach 2, etc., including Idea, Pseudocode, and Complexity)
 
