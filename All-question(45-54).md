@@ -45,7 +45,7 @@ Output:
   - Try all possibilities recursively by placing each unused element.
 
 **Java Code:**
-```java
+```text
 import java.util.*;
 
 class GeneratePermutations {
@@ -84,7 +84,7 @@ class GeneratePermutations {
   - Start with sorted array. Use next permutation repeatedly until no more.
 
 **Java Code:**
-```java
+```text
 class GeneratePermutationsLexico {
     public static List<List<Integer>> permuteLexico(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
@@ -200,7 +200,7 @@ Output:
   - Reverse i+1 ... end.
 
 **Java Code:**
-```java
+```text
 class NextPermutation {
     public static void nextPermutation(int[] nums) {
         int i = nums.length - 2;
@@ -331,7 +331,7 @@ Output: [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
 - Store unique sets after sorting to avoid duplicates.
 
 **Java Code:**
-```java
+```text
 void kSumBruteForce(int[] nums, int k, int target, List<Integer> temp, List<List<Integer>> res, int start) {
     if (k == 0 && target == 0) {
         res.add(new ArrayList<>(temp));
@@ -377,7 +377,7 @@ kSumBruteForce(nums, k, target, new ArrayList<>(), resK, 0);
 - Avoid duplicates.
 
 **Java Code:**
-```java
+```text
 List<List<Integer>> kSumBetter(int[] nums, int start, int k, int target) {
     List<List<Integer>> res = new ArrayList<>();
     if (k == 2) { // Base case: 2 Sum
@@ -426,7 +426,7 @@ List<List<Integer>> kSumBetter(int[] nums, int start, int k, int target) {
 - Return all valid combinations.
 
 **Java Code:**
-```java
+```text
 List<List<Integer>> kSumOptimal(int[] nums, int k, int target) {
     Arrays.sort(nums);
     return kSumHelper(nums, 0, k, target);
@@ -580,7 +580,7 @@ Row 4:     1 3 3 1
 - Store or return required value/row/all rows.
 
 **Java Code:**
-```java
+```text
 // Brute Force: Build Pascal Triangle iteratively
 class PascalTriangle {
     // Return single value (I), row (II), or all rows (III)
@@ -631,7 +631,7 @@ class PascalTriangle {
 - For row, return last computed row.
 
 **Java Code:**
-```java
+```text
 class PascalTriangleOptimized {
     public int getValue(int r, int c) {
         List<Integer> row = getRow(r);
@@ -677,7 +677,7 @@ class PascalTriangleOptimized {
 - For Pascal III → Generate each row using combination formula iteratively.
 
 **Java Code:**
-```java
+```text
 class PascalTriangleOptimal {
     public int getValue(int r, int c) {
         return combination(r-1, c-1);
@@ -859,7 +859,7 @@ Explanation: n/k = 8/4 = 2, elements appearing >2 times: [1, 2]
 - Return results.
 
 **Java Code:**
-```java
+```text
 class MajorityElementBrute {
     public int majorityElement(int[] nums) { // n/2
         Map<Integer, Integer> count = new HashMap<>();
@@ -907,7 +907,7 @@ class MajorityElementBrute {
 - For n/3 or n/k → count elements while traversing to check frequency.
 
 **Java Code:**
-```java
+```text
 class MajorityElementSort {
     public int majorityElement(int[] nums) { // n/2
         Arrays.sort(nums);
@@ -962,7 +962,7 @@ class MajorityElementSort {
 - Verify candidates against threshold.
 
 **Java Code:**
-```java
+```text
 class MajorityElementOptimal {
     public int majorityElement(int[] nums) { // n/2
         int count=0, candidate=0;
@@ -1114,7 +1114,7 @@ Explanation: 6 repeats, 9 is missing
 - If count = 0 → missing
 
 **Java Code:**
-```java
+```text
 class FindRepeatingMissingBrute {
     public int[] findRepeatingMissing(int[] nums) {
         int n = nums.length;
@@ -1145,7 +1145,7 @@ class FindRepeatingMissingBrute {
 - Solve the two equations to find A and B.
 
 **Java Code:**
-```java
+```text
 class FindRepeatingMissingMath {
     public int[] findRepeatingMissing(int[] nums){
         int n = nums.length;
@@ -1176,7 +1176,7 @@ class FindRepeatingMissingMath {
 - Efficient and avoids extra space
 
 **Java Code:**
-```java
+```text
 class FindRepeatingMissingXOR {
     public int[] findRepeatingMissing(int[] nums){
         int n = nums.length;
@@ -1301,7 +1301,7 @@ Explanation: all possible pairs are inversions
 - If nums[i] > nums[j] → increment count
 
 **Java Code:**
-```java
+```text
 class CountInversionsBrute {
     public long countInversions(int[] nums){
         int n = nums.length;
@@ -1334,7 +1334,7 @@ class CountInversionsBrute {
 - Return total inversions
 
 **Java Code:**
-```java
+```text
 class CountInversionsMergeSort {
     public long countInversions(int[] nums){
         return mergeSort(nums, 0, nums.length - 1);
@@ -1470,7 +1470,7 @@ Explanation: pairs (0, 3) and (0, 4)
 - If nums[i] > 2 * nums[j] → increment count
 
 **Java Code:**
-```java
+```text
 class ReversePairsBrute {
     public int reversePairs(int[] nums){
         int n = nums.length;
@@ -1502,7 +1502,7 @@ class ReversePairsBrute {
 - Return total count
 
 **Java Code:**
-```java
+```text
 class ReversePairsMergeSort {
     public int reversePairs(int[] nums){
         return mergeSort(nums, 0, nums.length - 1);
@@ -1569,3 +1569,368 @@ class ReversePairsMergeSort {
 ---
 
 <!-- #endregion -->
+<!-- #region 53-Maximum Product Subarray -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q53: Maximum Product Subarray</h1>
+
+## 1. Problem Understanding
+
+- Given an integer array nums, find the subarray (contiguous elements) with the maximum product.
+- Return the product of elements of that subarray.
+- A subarray must contain at least one element.
+- Must consider negative numbers and zeros carefully because they can change the sign of the product.
+---
+
+## 2. Constraints
+
+- 1 <= nums.length <= 10^4
+- -10 <= nums[i] <= 10
+- Product of any prefix or suffix is within -10^9 <= product <= 10^9
+---
+
+## 3. Edge Cases
+
+- Array contains zero → product may reset
+- Array contains all negative numbers → even length negative subarray may give max product
+- Single element array → product = element itself
+- All positive numbers → max product = product of whole array
+- Array with mix of negatives, zeros, and positives
+---
+
+## 4. Examples
+
+```text
+Example 1:
+Input: [4, 5, 3, 7, 1, 2]
+Output: 840
+Explanation: Whole array gives maximum product → 45371*2 = 840
+
+Example 2:
+Input: [-5, 0, -2]
+Output: 0
+Explanation: Maximum product subarray is [0] → 0
+
+Example 3:
+Input: [1, -2, 3, 4, -4, -3]
+Output: 288
+Explanation: Maximum product subarray is [3, 4, -4, -3] → 34-4*-3 = 288
+```
+
+---
+
+## 5. Approaches
+
+### Approach 1: Brute Force
+
+**Idea:**
+- Generate all possible subarrays and calculate their product.
+- Keep track of maximum product found.
+
+**Steps:**
+- Initialize maxProduct = Integer.MIN_VALUE
+- Iterate i from 0 to n-1 → start index
+- Iterate j from i to n-1 → end index
+- Multiply elements from i to j → calculate product
+- Update maxProduct if current product is larger
+
+**Java Code:**
+```text
+class MaxProductSubarrayBrute {
+    public int maxProduct(int[] nums){
+        int n = nums.length;
+        int maxProduct = Integer.MIN_VALUE;
+        for(int i=0;i<n;i++){
+            int product = 1;
+            for(int j=i;j<n;j++){
+                product *= nums[j];
+                maxProduct = Math.max(maxProduct, product);
+            }
+        }
+        return maxProduct;
+    }
+}
+```
+
+**Complexity (Time & Space):**
+- Time: O(n²)                         
+-  Space: O(1)
+
+### Approach 2: Dynamic Programming / Prefix and Suffix Scan
+
+**Idea:**
+- Keep track of maximum and minimum product ending at current index
+- Negative numbers may turn minimum into maximum and vice versa
+
+**Steps:**
+- Initialize maxProd = nums[0], minProd = nums[0], result = nums[0]
+- Iterate i = 1 to n-1:
+- If nums[i] is negative → swap maxProd and minProd
+- Update maxProd = max(nums[i], nums[i]*maxProd)
+- Update minProd = min(nums[i], nums[i]*minProd)
+- Update result = max(result, maxProd)
+
+**Java Code:**
+```text
+class MaxProductSubarrayDP {
+    public int maxProduct(int[] nums){
+        int n = nums.length;
+        int maxProd = nums[0], minProd = nums[0], result = nums[0];
+        for(int i=1;i<n;i++){
+            if(nums[i] < 0){
+                int temp = maxProd;
+                maxProd = minProd;
+                minProd = temp;
+            }
+            maxProd = Math.max(nums[i], nums[i]*maxProd);
+            minProd = Math.min(nums[i], nums[i]*minProd);
+            result = Math.max(result, maxProd);
+        }
+        return result;
+    }
+}
+```
+
+**Complexity (Time & Space):**
+- Time: O(n)                               
+- Space: O(1)
+
+### Approach 3: Prefix and Suffix Product Scan
+
+**Idea:**
+- Compute prefix product from left and right
+- Max product = maximum among all prefix and suffix products
+- Reset product to 1 if zero encountered
+
+**Steps:**
+- Initialize maxProduct = Integer.MIN_VALUE, prefix = 1, suffix = 1
+- Iterate from left to right → prefix *= nums[i], update maxProduct, reset prefix if zero
+- Iterate from right to left → suffix *= nums[i], update maxProduct, reset suffix if zero
+
+**Java Code:**
+```text
+class MaxProductSubarrayPrefixSuffix {
+    public int maxProduct(int[] nums){
+        int n = nums.length;
+        int maxProduct = Integer.MIN_VALUE;
+        int prefix = 1, suffix = 1;
+        for(int i=0;i<n;i++){
+            prefix = (prefix==0)? nums[i] : prefix*nums[i];
+            suffix = (suffix==0)? nums[n-1-i] : suffix*nums[n-1-i];
+            maxProduct = Math.max(maxProduct, Math.max(prefix, suffix));
+        }
+        return maxProduct;
+    }
+}
+```
+
+**Complexity (Time & Space):**
+- Time: O(n)                               
+- Space: O(1)
+
+---
+
+## 6. Justification / Proof of Optimality
+
+- Brute Force → simple but inefficient, works only for small arrays
+- Dynamic Programming → optimal, handles negative numbers and zeros
+- Prefix/Suffix Scan → alternative O(n) approach, slightly simpler to code
+---
+
+## 7. Variants / Follow-Ups
+
+- Maximum sum subarray → Kadane’s Algorithm
+- Maximum product of k elements in an array
+- Maximum product subarray with modulo constraints
+---
+
+## 8. Tips & Observations
+
+- Keep track of both max and min products due to negatives
+- Zero splits subarrays → reset product calculation
+- Carefully handle integer overflow if product exceeds limits
+- DP approach is most widely used in interviews
+---
+
+<!-- #endregion -->
+<!-- #region 54-Merge Two Sorted Arrays Without Extra Space -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q54: Merge Two Sorted Arrays Without Extra Space</h1>
+
+## 1. Problem Understanding
+
+- Given two sorted arrays nums1 and nums2.
+- Merge them in-place into a single sorted array.
+- nums1 has enough space to hold all elements (m + n), first m are valid elements, rest are 0s.
+- nums2 has n elements.
+- Goal: nums1 should contain the merged sorted array without using extra space.
+---
+
+## 2. Constraints
+
+- n == nums2.length
+- m + n == nums1.length
+- 0 <= n, m <= 1000
+- -10^4 <= nums1[i], nums2[i] <= 10^4
+- Both arrays are sorted in non-decreasing order
+---
+
+## 3. Edge Cases
+
+- Either array is empty → return the non-empty array
+- Arrays contain duplicates → keep all elements
+- Negative numbers → ensure correct ordering
+- All elements of nums2 are smaller than nums1 → insert at the beginning
+- All elements of nums2 are larger than nums1 → insert at the end
+---
+
+## 4. Examples
+
+```text
+Example 1:
+Input: nums1 = [-5, -2, 4, 5], nums2 = [-3, 1, 8]
+Output: [-5, -3, -2, 1, 4, 5, 8]
+
+Example 2:
+Input: nums1 = [0, 2, 7, 8], nums2 = [-7, -3, -1]
+Output: [-7, -3, -1, 0, 2, 7, 8]
+
+Example 3:
+Input: nums1 = [1, 3, 5], nums2 = [2, 4, 6, 7]
+Output: [1, 2, 3, 4, 5, 6, 7]
+```
+
+---
+
+## 5. Approaches
+
+### Approach 1: Brute Force (Merge and Sort)
+
+**Idea:**
+- Copy elements from nums2 into nums1’s extra space
+- Sort the entire nums1
+
+**Steps:**
+- Copy nums2 elements into the last n positions of nums1
+- Sort nums1 using Arrays.sort()
+
+**Java Code:**
+```text
+import java.util.Arrays;
+
+class MergeSortedBrute {
+    public void merge(int[] nums1, int m, int[] nums2, int n){
+        for(int i=0;i<n;i++) nums1[m+i] = nums2[i];
+        Arrays.sort(nums1);
+    }
+}
+```
+
+**Complexity (Time & Space):**
+- Time: O((m+n) log(m+n))                             
+- Space: O(1) (in-place sorting)
+
+### Approach 2: Two Pointers from End
+
+**Idea:**
+- Use three pointers from the end to avoid overwriting elements
+- Compare largest elements from nums1 and nums2 and fill from the end
+
+**Steps:**
+- Initialize i = m-1 (last valid in nums1), j = n-1 (last in nums2), k = m+n-1 (last in nums1)
+- While i >= 0 && j >= 0:
+    * If nums1[i] > nums2[j] → nums1[k--] = nums1[i--]
+   * Else → nums1[k--] = nums2[j--]
+- Copy remaining elements of nums2 if any
+
+**Java Code:**
+```text
+class MergeSortedTwoPointers {
+    public void merge(int[] nums1, int m, int[] nums2, int n){
+        int i = m-1, j = n-1, k = m+n-1;
+        while(i>=0 && j>=0){
+            if(nums1[i] > nums2[j]) nums1[k--] = nums1[i--];
+            else nums1[k--] = nums2[j--];
+        }
+        while(j>=0) nums1[k--] = nums2[j--];
+    }
+}
+```
+
+**Complexity (Time & Space):**
+- Time: O(m + n)                    
+- Space: O(1)
+
+### Approach 3: : Gap Method (Shell Sort Inspired, for strict no extra space)
+
+**Idea:**
+- Treat nums1 and nums2 as a single array
+- Use gap method to compare and swap elements at distance gap
+- Reduce gap until it becomes 1
+
+**Steps:**
+- Initialize gap = ceil((m+n)/2)
+- Compare elements at distance gap in combined arrays
+- Swap if out of order
+- Reduce gap: gap = ceil(gap/2)
+- Repeat until gap = 0
+
+**Java Code:**
+```text
+class MergeSortedGapMethod {
+    public void merge(int[] nums1, int m, int[] nums2, int n){
+        int total = m+n;
+        int gap = (total+1)/2;
+        while(gap>0){
+            int i=0, j=i+gap;
+            while(j<total){
+                int val1 = (i<m)? nums1[i] : nums2[i-m];
+                int val2 = (j<m)? nums1[j] : nums2[j-m];
+                if(val1 > val2){
+                    if(i<m && j<m){
+                        int temp = nums1[i]; nums1[i]=nums1[j]; nums1[j]=temp;
+                    } else if(i<m && j>=m){
+                        int temp = nums1[i]; nums1[i]=nums2[j-m]; nums2[j-m]=temp;
+                    } else {
+                        int temp = nums2[i-m]; nums2[i-m]=nums2[j-m]; nums2[j-m]=temp;
+                    }
+                }
+                i++; j++;
+            }
+            if(gap==1) gap=0;
+            else gap = (gap+1)/2;
+        }
+        for(int i=0;i<n;i++) nums1[m+i] = nums2[i];
+    }
+}
+```
+
+**Complexity (Time & Space):**
+- Time: O((m+n) log(m+n))                   
+- Space: O(1)
+
+---
+
+## 6. Justification / Proof of Optimality
+
+- Brute Force → simple but slower due to sorting
+- Two Pointers → optimal and widely used in interviews
+- Gap Method → useful for strict in-place merge without extra space
+---
+
+## 7. Variants / Follow-Ups
+
+- Merge k sorted arrays in-place
+- Merge sorted linked lists
+- Merge arrays with different data types or custom comparator
+---
+
+## 8. Tips & Observations
+
+- Always merge from the end to avoid overwriting elements in nums1
+- Gap method is tricky but reduces extra space constraints
+- Two pointer method is most practical for interviews
+---
+
+<!-- #endregion -->
+
+

@@ -1,0 +1,16 @@
+/* All code blocks */
+pre code {
+  color: #000000 !important; /* force black for all text */
+  font-weight: normal;
+}
+
+/* Optional: bold keywords too */
+.hljs-keyword, .hljs-type, .hljs-class .hljs-title {
+  color: #000000 !important;
+  font-weight: bold;
+}
+
+/* Optional: other elements */
+.hljs-string, .hljs-number, .hljs-comment {
+  color: #000000 !important;
+}
