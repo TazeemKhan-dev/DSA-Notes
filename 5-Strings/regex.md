@@ -56,8 +56,8 @@
         * \\S matches non-space characters. replaceAll removes them. Remaining length = spaces count.
 
 - **Quantifiers**
-    - * → 0 or more occurrences
-    - + → 1 or more occurrences
+    - " * " → 0 or more occurrences
+    - " + "  → 1 or more occurrences
     - ? → 0 or 1 occurrence
     - {n} → exactly n occurrences
     - {n,m} → between n and m occurrences
