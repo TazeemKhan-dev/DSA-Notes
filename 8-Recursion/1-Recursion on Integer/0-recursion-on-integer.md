@@ -209,10 +209,17 @@ int countEvenDigits(int n) {
 
 
 d) Check palindrome
-boolean isPalindrome(int n, int rev) {
-    if (n == 0) return true;
-    return isPalindrome(n / 10, rev * 10 + n % 10);
+// Reverse number using recursion
+int rev(int n, int ans) {
+    if (n == 0) return ans;
+    return rev(n / 10, ans * 10 + n % 10);
 }
+
+// Check palindrome
+boolean isPalindrome(int n) {
+    return n == rev(n, 0);
+}
+
 ```
 
 **Complexity (Time & Space):**
