@@ -55,6 +55,31 @@ static String removeX(String s) {
     if (ch == 'x') return smallAns;
     else return ch + smallAns;
 }
+
+removeX("axbxc")
+│
+├── ch = 'a'
+│   └── smallAns = removeX("xbxc")
+│         │
+│         ├── ch = 'x'
+│         │   └── smallAns = removeX("bxc")
+│         │         │
+│         │         ├── ch = 'b'
+│         │         │   └── smallAns = removeX("xc")
+│         │         │         │
+│         │         │         ├── ch = 'x'
+│         │         │         │   └── smallAns = removeX("c")
+│         │         │         │         │
+│         │         │         │         ├── ch = 'c'
+│         │         │         │         │   └── smallAns = removeX("")
+│         │         │         │         │         🟢 Base case → return ""
+│         │         │         │         └── return 'c' + "" → "c"
+│         │         │         └── ch == 'x' → skip 'x' → return "c"
+│         │         └── return 'b' + "c" → "bc"
+│         └── ch == 'x' → skip 'x' → return "bc"
+└── return 'a' + "bc" → "abc"
+✅ Final Answer → "abc"
+
 ```
 
 **Complexity (Time & Space):**

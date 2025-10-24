@@ -96,6 +96,35 @@ public class Main {
         printKPC(str, "");
     }
 }
+printKPC("23", "")
+│
+├── ch = '2' → code = "def"
+│   ├── i=0 → 'd' → printKPC("3", "d")
+│   │          ├── ch = '3' → code = "ghi"
+│   │          ├── 'g' → printKPC("", "dg") → prints "dg"
+│   │          ├── 'h' → printKPC("", "dh") → prints "dh"
+│   │          └── 'i' → printKPC("", "di") → prints "di"
+│   │
+│   ├── i=1 → 'e' → printKPC("3", "e")
+│   │          ├── 'g' → printKPC("", "eg") → prints "eg"
+│   │          ├── 'h' → printKPC("", "eh") → prints "eh"
+│   │          └── 'i' → printKPC("", "ei") → prints "ei"
+│   │
+│   └── i=2 → 'f' → printKPC("3", "f")
+│              ├── 'g' → printKPC("", "fg") → prints "fg"
+│              ├── 'h' → printKPC("", "fh") → prints "fh"
+│              └── 'i' → printKPC("", "fi") → prints "fi"
+Printed Output
+dg
+dh
+di
+eg
+eh
+ei
+fg
+fh
+fi
+
 ```
 
 **Complexity (Time & Space):**

@@ -41,6 +41,18 @@ public int ClimbingStairs(int n) {
     if (n < 0) return 0;
     return ClimbingStairs(n - 1) + ClimbingStairs(n - 2);
 }
+ClimbingStairs(3)
+      /                    \
+ClimbingStairs(2)       ClimbingStairs(1)
+     /       \                 \
+ClimbingStairs(1)  ClimbingStairs(0)   (returns 1)
+     |                 |
+   (returns 1)       (returns 1)
+
+→ From ClimbingStairs(2): 1 + 1 = 2
+→ From ClimbingStairs(3): 2 + 1 = 3
+Output
+3
 ```
 
 **Complexity (Time & Space):**

@@ -62,6 +62,46 @@ int countWays(int n, int curr) {
     // include current number + exclude current number
     return countWays(n - curr, curr + 1) + countWays(n, curr + 1);
 }
+countWays(4,1)
+├── include 1 → countWays(3,2)
+│   ├── include 2 → countWays(1,3)
+│   │   ├── include 3 → countWays(-2,4) → 0
+│   │   └── exclude 3 → countWays(1,4)
+│   │       ├── include 4 → countWays(-3,5) → 0
+│   │       └── exclude 4 → countWays(1,5) → 0
+│   │       → total = 0
+│   │
+│   └── exclude 2 → countWays(3,3)
+│       ├── include 3 → countWays(0,4) → 1 ✅
+│       └── exclude 3 → countWays(3,4)
+│           ├── include 4 → countWays(-1,5) → 0
+│           └── exclude 4 → countWays(3,5) → 0
+│           → total = 0
+│       → total = 1
+│   → total = 1
+│
+└── exclude 1 → countWays(4,2)
+    ├── include 2 → countWays(2,3)
+    │   ├── include 3 → countWays(-1,4) → 0
+    │   └── exclude 3 → countWays(2,4)
+    │       ├── include 4 → countWays(-2,5) → 0
+    │       └── exclude 4 → countWays(2,5) → 0
+    │       → total = 0
+    │   → total = 0
+    │
+    └── exclude 2 → countWays(4,3)
+        ├── include 3 → countWays(1,4)
+        │   ├── include 4 → countWays(-3,5) → 0
+        │   └── exclude 4 → countWays(1,5) → 0
+        │   → total = 0
+        └── exclude 3 → countWays(4,4)
+            ├── include 4 → countWays(0,5) → 1 ✅
+            └── exclude 4 → countWays(4,5) → 0
+            → total = 1
+        → total = 1
+    → total = 1
+→ FINAL TOTAL = 2
+
 ```
 
 **Complexity (Time & Space):**

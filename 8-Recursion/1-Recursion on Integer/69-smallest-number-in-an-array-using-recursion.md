@@ -59,6 +59,19 @@ int minElement(int[] arr, int n) {
     int small = minElement(arr, n - 1);
     return Math.min(arr[n - 1], small);
 }
+minElement([5, 2, 4, 1], 4)
+        |
+        🔁 Recursive call → minElement([5, 2, 4], 3)
+                |
+                🔁 Recursive call → minElement([5, 2], 2)
+                        |
+                        🔁 Recursive call → minElement([5], 1)
+                                🟢 Base case → return 5
+                        🔙 Return → min(2, 5) = 2
+                🔙 Return → min(4, 2) = 2
+        🔙 Return → min(1, 2) = 1
+✅ Final Answer → 1
+
 ```
 
 **Complexity (Time & Space):**

@@ -78,6 +78,24 @@ public static void printStairPaths(int n, String path) {
         printStairPaths(n - 2, path + "2");
         printStairPaths(n - 3, path + "3");
     }
+
+    printStairPaths(3, "")
+├── take 1 step → printStairPaths(2, "1")
+│   ├── take 1 step → printStairPaths(1, "11")
+│   │   ├── take 1 step → printStairPaths(0, "111") → prints "111"
+│   │   ├── take 2 steps → printStairPaths(-1, "112") → invalid
+│   │   └── take 3 steps → printStairPaths(-2, "113") → invalid
+│   │
+│   ├── take 2 steps → printStairPaths(0, "12") → prints "12"
+│   └── take 3 steps → printStairPaths(-1, "13") → invalid
+│
+├── take 2 steps → printStairPaths(1, "2")
+│   ├── take 1 step → printStairPaths(0, "21") → prints "21"
+│   ├── take 2 steps → printStairPaths(-1, "22") → invalid
+│   └── take 3 steps → printStairPaths(-2, "23") → invalid
+│
+└── take 3 steps → printStairPaths(0, "3") → prints "3"
+
 ```
 
 **Complexity (Time & Space):**

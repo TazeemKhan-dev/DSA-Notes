@@ -81,6 +81,27 @@ static void printMazePaths(int i, int j, int n, int m, String psf) {
 
 🟢 Initial call:
 printMazePaths(1, 1, N, M, "");
+
+ex
+printMazePaths(1, 1, 3, 3, "")
+
+(1,1,"")
+           /                  \
+      h→(1,2,"h")          v→(2,1,"v")
+      /        \            /         \
+ h→(1,3,"hh") v→(2,2,"hv") h→(2,2,"vh") v→(3,1,"vv")
+    |          |             |            |
+ v→(2,3,"hhv") v→(2,3,"hvv") h→(2,3,"vhh") v→(3,2,"vvh")
+    |          |             |            |
+ v→(3,3,"hhvv") v→(3,3,"hv v") h→(3,3,"vhhv") v→(3,3,"vvhv")
+
+Output
+hhvv
+hvhv
+hvvh
+vhhv
+vhhv
+vvhh
 ```
 
 **Complexity (Time & Space):**
