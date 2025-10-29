@@ -14,6 +14,9 @@
 
 - **Backtracking**
     - A special type of recursion for exploring all possible solutions.
+    - Backtraking is same as recursion just one line extra,not more than not less than.
+    - Backtraking checks all possible paths till a dead end or we find the answer.
+    - Backtraking is a technique in which we undo the changes made in a  recursive call if we hit a dead end/wrong answer.
     - Follows “try → check → undo” pattern.
     - Steps:
       * Choose a possibility.
