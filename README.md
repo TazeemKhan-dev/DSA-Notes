@@ -67,7 +67,6 @@ Every note is **self-contained** — you can open any `.md` file and directly re
 Currently, this repository is **view-only** —  
 but feel free to **fork it**, explore, and use it to create your own structured notes!  
 
-If you find something interesting or want to discuss DSA patterns, connect with me!
 
 ---
 
