@@ -71,7 +71,3 @@ but feel free to **fork it**, explore, and use it to create your own structured 
 ---
 
 
-> _“Mastering DSA isn’t about memorizing problems — it’s about understanding patterns.”_  
-> — *Tazeem Khan*
-
-
