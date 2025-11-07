@@ -15,10 +15,12 @@
     - The chain starts at the head — the only way to access everyone else.
 
 - **Node Structure**
-    - class Node {
-        * int data;     // stores data
-        * Node next;    // stores address of next node
-    - }
+     ``` 
+    class Node {
+         int data;     // stores data
+         Node next;    // stores address of next node
+     }
+     ```
     - Each node = data + reference to next node.
     - The linked list = collection of connected nodes.
     - Size of linked list = number of nodes.
