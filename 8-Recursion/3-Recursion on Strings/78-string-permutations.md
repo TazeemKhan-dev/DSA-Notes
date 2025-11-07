@@ -79,6 +79,15 @@ printPermutations("abc", "")
      ↓         ↓        ↓        ↓        ↓        ↓
    "abc"     "acb"    "bac"    "bca"    "cab"    "cba"
 ```
+### 💭 Intuition Behind Approach 1 — Simple Recursion (No Duplicates)
+
+The permutation problem is fundamentally about **fixing one character at a time** and recursively finding all possible arrangements of the remaining ones.  
+At each step, we choose a character `ch` from the string, append it to the current result `ans`, and recurse on the remaining substring (`ros`).  
+This creates a branching structure where each branch represents one unique character choice, and by the time the string becomes empty, we’ve built one complete permutation.  
+Since we explore all choices at every level, recursion naturally generates all `n!` possible permutations.  
+It’s a pure “**choice and explore**” problem, making it a classic example of recursion over decision space.
+
+---
 
 **Complexity (Time & Space):**
 - Time: O(n × n!) → Each level makes n choices, total n! permutations
@@ -119,6 +128,16 @@ static void printUniquePermutations(String str, String ans) {
        ↓           ↓            ↓
      "aab"        "aba"        "baa"
 ```
+
+### 💭 Intuition Behind Approach 2 — Handle Duplicates (Unique Permutations)
+
+When a string contains duplicate characters (like `"aab"`), naive recursion generates duplicate permutations because identical choices lead to the same results.  
+To prevent this, we use a **Set** (or boolean array) at each recursion level to **remember which characters have already been chosen** in that position.  
+Before recursing, we check if the character was already used — if yes, we skip it.  
+This pruning ensures that even though recursion still explores all branches, it never revisits identical states.  
+Sorting the string before recursion further guarantees **lexicographic order**, so results appear in sorted sequence.  
+Together, sorting + the Set transform the brute-force recursive search into a **systematic, duplicate-free generation** of all unique permutations.
+
 
 **Complexity (Time & Space):**
 - Time: O(n × n!) worst case

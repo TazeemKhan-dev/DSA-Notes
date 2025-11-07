@@ -104,6 +104,25 @@ countWays(4,1)
 
 ```
 
+### 💭 Intuition Behind the Approach
+
+Think of `countWays(n, curr)` as exploring **all combinations of natural numbers starting from `curr` that sum up to `n`**.  
+At every step, you have **two choices**:  
+
+1. **Include** the current number `curr` in your sum → reduce `n` by `curr`, and move to the next number (`curr + 1`).  
+2. **Exclude** the current number `curr` → keep `n` the same, but move to the next number (`curr + 1`).  
+
+This “include–exclude” pattern ensures that every possible combination of unique natural numbers is considered exactly once.  
+
+The recursion continues until one of the base cases is reached:  
+- If `n == 0`, you’ve found a valid combination that sums exactly to the target → return `1`.  
+- If `n < 0` or `curr > n`, the current path can’t form a valid combination → return `0`.  
+
+Essentially, this function **counts all subsets of `{1, 2, 3, …, n}` that sum up to `n`** without repetition.  
+It’s like exploring a binary recursion tree where each level represents the decision to take or skip a particular number.
+
+
+
 **Complexity (Time & Space):**
 - Time Complexity: O(2^N) — each number has two choices (include/exclude).
 - Space Complexity: O(N) — recursion depth proportional to N.

@@ -113,6 +113,13 @@ take '3'(c)
  ↓
 ("","abc")
 ```
+### 💭 Intuition Behind the Approach
+
+At each step, we either decode **one digit** (`'1' → 'a'`) or **two digits** (`'12' → 'l'`) if valid (`≤ 26`).  
+The recursion explores both choices, building all possible letter combinations.  
+When the string becomes empty (`str.length() == 0`), it means a full decoding is formed, so we print it.  
+We skip `'0'` since it cannot map to any letter.
+
 
 **Complexity (Time & Space):**
 - Time Complexity: O(2ⁿ) — each digit can branch into 1 or 2 calls.
