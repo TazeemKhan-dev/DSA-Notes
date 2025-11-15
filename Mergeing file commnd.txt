@@ -1,0 +1,19 @@
+Get-Content ".\9-Linked List\*.md" | Out-File ".\Merged-Files\LinkedListNotes.md"
+
+# ================================
+#   MERGE MULTIPLE .MD FILES
+# ================================
+
+# Path to the folder containing markdown files
+$sourceFolder = ".\9-Linked List"
+
+# Path to the output combined file
+$destinationFile = ".\MergedLinkedListNotes.md"
+
+# Optional: create destination directory if needed
+# New-Item -ItemType Directory -Path ".\Merged-Files" -Force
+
+# Merge all .md files inside source folder (in alphabetical order)
+Get-Content "$sourceFolder\*.md" | Out-File $destinationFile
+
+Write-Host "Files merged successfully into $destinationFile"
