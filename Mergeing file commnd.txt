@@ -1,5 +1,14 @@
-Get-Content ".\9-Linked List\*.md" | Out-File ".\Merged-Files\LinkedListNotes.md"
 
+Get-Content ".\0-Java\*.md" | Out-File ".\Merged-Files\Java.md"
+Get-Content ".\1-Patterns\*.md" | Out-File ".\Merged-Files\Patterns.md"
+Get-Content ".\2-MathAndAlgorith\*.md" | Out-File ".\Merged-Files\MathAndAlgorithm.md"
+Get-Content ".\3-Arrays\*.md" | Out-File ".\Merged-Files\Arrays.md"
+Get-Content ".\4-2D_Arrays\*.md" | Out-File ".\Merged-Files\2D_Arrays.md"
+Get-Content ".\5-Strings\*.md" | Out-File ".\Merged-Files\Strings.md"
+Get-Content ".\6-Hashing\*.md" | Out-File ".\Merged-Files\Hashing.md"
+Get-Content ".\7-Sorting\*.md" | Out-File ".\Merged-Files\Sorting.md"
+
+Get-Content ".\9-Linked List\*.md" | Out-File ".\Merged-Files\LinkedListNotes.md"
 # ================================
 #   MERGE MULTIPLE .MD FILES
 # ================================
@@ -17,3 +26,132 @@ $destinationFile = ".\MergedLinkedListNotes.md"
 Get-Content "$sourceFolder\*.md" | Out-File $destinationFile
 
 Write-Host "Files merged successfully into $destinationFile"
+
+
+
+
+
+
+✅ 1️⃣ AUTO-MERGE ALL FOLDERS → One file per folder
+
+Save this as:
+
+merge-all-folders.ps1
+
+
+Inside your DSA-Notes folder.
+
+# ===========================================
+# AUTO MERGE ALL FOLDERS → ONE FILE PER FOLDER
+# ===========================================
+
+$sourceRoot = "."
+$destinationRoot = ".\Merged-Files"
+
+# Create destination folder if not exists
+if (!(Test-Path $destinationRoot)) {
+    New-Item -ItemType Directory -Path $destinationRoot | Out-Null
+}
+
+# Get all directories inside DSA-Notes
+$folders = Get-ChildItem -Directory
+
+foreach ($folder in $folders) {
+    $folderPath = $folder.FullName
+    $outputFile = Join-Path $destinationRoot ("$($folder.Name).md")
+
+    Write-Host "Merging files from $($folder.Name)..."
+
+    # Merge all markdown files inside this folder
+    Get-Content "$folderPath\*.md" | Out-File $outputFile
+}
+
+Write-Host "`n➤ Completed! One merged file per folder created in Merged-Files/"
+
+⭐ How it works
+
+Detects every directory:
+0-Java, 1-Patterns, 2-MathAndAlgorith, …
+
+Merges .md inside each
+
+Saves output in:
+
+Merged-Files\0-Java.md
+Merged-Files\1-Patterns.md
+...
+
+🎉 Final Output Structure
+Merged-Files/
+  0-Java.md
+  1-Patterns.md
+  2-MathAndAlgorith.md
+  3-Arrays.md
+  4-2D_Arrays.md
+  5-Strings.md
+  6-Hashing.md
+  7-Sorting.md
+  9-Linked List.md
+
+✅ 2️⃣ MASTER MERGE SCRIPT → All folders into ONE file (with headers)
+
+Save this as:
+
+merge-master-dsa.ps1
+
+# ===========================================
+# MERGE EVERYTHING INTO ONE MASTER FILE
+# ===========================================
+
+$sourceRoot = "."
+$destinationFile = ".\Merged-Files\MASTER-DSA-NOTES.md"
+
+# Create destination folder if not exists
+if (!(Test-Path ".\Merged-Files")) {
+    New-Item -ItemType Directory -Path ".\Merged-Files" | Out-Null
+}
+
+# Create / reset master file
+"" | Out-File $destinationFile
+
+$folders = Get-ChildItem -Directory
+
+foreach ($folder in $folders) {
+    Write-Host "Adding section for $($folder.Name)..."
+
+    # Write folder header
+    "## 📁 $($folder.Name)`n" | Out-File $destinationFile -Append
+
+    # Append all markdown files inside folder
+    Get-Content "$($folder.FullName)\*.md" | Out-File $destinationFile -Append
+
+    # Blank line after each folder
+    "`n`n" | Out-File $destinationFile -Append
+}
+
+Write-Host "`n➤ MASTER DSA FILE CREATED: Merged-Files\MASTER-DSA-NOTES.md"
+
+⭐ How the MASTER FILE looks
+MASTER-DSA-NOTES.md
+## 📁 0-Java
+...all java notes...
+
+## 📁 1-Patterns
+...pattern problems...
+
+## 📁 2-MathAndAlgorith
+...all markdown merged...
+
+## 📁 3-Arrays
+...sorted arrays files...
+
+
+All in one giant file — perfect for revision or printing.
+
+🎁 BONUS: One Script That Does BOTH (if you want)
+
+I can combine both into a single .ps1 file.
+
+Just say:
+
+👉 “Give me combined script”
