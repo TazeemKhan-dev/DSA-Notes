@@ -175,118 +175,196 @@ private Node flattenDFS(Node curr) {
 
 **Java Code:**
 ```java
-🌳 RECURSION TREE (DFS Call Structure)
+🟦 Current Node (curr)
+🟩 Next Node (next)
+🟧 Child Head (childHead)
+🟥 Child Tail (childTail)
+🟪 Flattened portion
+⬜ Normal nodes
 
-We start:
+This will feel like a visual animation.
+
+Your example:
+
+1 → 2 → 3 → 4 → 5
+            |
+            8 → 9 → 10 → 11 → 12
+                  |
+                 50 → 60
+
+
+Let's begin!
+
+🌟 STEP 0 — START
+
+Call:
 
 flattenDFS(1)
 
-🔽 LEVEL 0 — Top-Level List
-flattenDFS(1)
- ├── flattenDFS(2)
- │     ├── flattenDFS(3)
- │     │     ├── flattenDFS(8)     ← CHILD of 3
- │     │     │     ├── flattenDFS(9)
- │     │     │     │     ├── flattenDFS(50)   ← CHILD of 9
- │     │     │     │     │     ├── flattenDFS(60)
- │     │     │     │     │     └── return tail (60)
- │     │     │     │     ├── flattenDFS(10)
- │     │     │     │     ├── flattenDFS(11)
- │     │     │     │     ├── flattenDFS(12)
- │     │     │     │     └── return tail (12)
- │     │     │     └── return tail (12)
- │     │     ├── flattenDFS(4)
- │     │     ├── flattenDFS(5)
- │     │     └── return tail (5)
- │     └── return tail (5)
- └── return tail (5)
+🌟 STEP 1 — curr = 1
+⬜1 → ⬜2 → ⬜3 → ⬜4 → ⬜5
 
-🧩 DETAILED EXPLANATION OF TREE NODES
-1. flattenDFS(1)
 
-No child → go next
+No child.
 
-2. flattenDFS(2)
+Move right.
 
-No child → go next
+🌟 STEP 2 — curr = 2
+⬜1 → ⬜2 → ⬜3 → ⬜4 → ⬜5
 
-3. flattenDFS(3)
 
-HAS CHILD → call flattenDFS on child head (8)
+No child.
 
-🔽 LEVEL 1 — Child list of 3
+Move right.
+
+🌟 STEP 3 — curr = 3 (HAS CHILD)
+⬜1 → ⬜2 → 🟦3 → ⬜4 → ⬜5
+                 |
+               🟧8 → ⬜9 → ⬜10 → ⬜11 → ⬜12
+                         |
+                       ⬜50 → ⬜60
+
+
+Store:
+
+🟩next = 4
+🟧childHead = 8
+
+
+Call:
+
 flattenDFS(8)
 
-No child → go next
 
-flattenDFS(9)
+Descend.
 
-HAS CHILD → call flattenDFS on child head (50)
+🌟 STEP 4 — curr = 8
+⬜1 → ⬜2 → 🟦3 → ⬜4 → ⬜5
+                 |
+               🟦8 → ⬜9 → ⬜10 → ⬜11 → ⬜12
+                         |
+                       ⬜50 → ⬜60
 
-🔽 LEVEL 2 — Child list of 9
+
+No child → move to 9.
+
+🌟 STEP 5 — curr = 9 (HAS CHILD)
+🟦9 → 🟩10 → ⬜11 → ⬜12
+  |
+ 🟧50 → ⬜60
+
+
+Call:
+
 flattenDFS(50)
 
-No child → go next → flattenDFS(60)
 
-flattenDFS(60)
+Descend deeper.
 
-No child
+🌟 STEP 6 — curr = 50, then 60
+🟦50 → ⬜60
 
-End of its chain → returns tail = 60
+50 → 🟦60
 
-Return up:
 
-flattenDFS(50) returns tail 60
+No children.
 
-🔼 Back to LEVEL 1
-flattenDFS(9) continues:
+curr = null.
 
-After child flatten → continue to 10
+Return:
 
-flattenDFS(10)
+🟥childTail = 60
 
-No child → continue
 
-flattenDFS(11)
+Return to node 9.
 
-No child
+🌟 STEP 7 — SPLICING CHILD (50 → 60) AFTER 9
+BEFORE:
+9 → 10
+|
+50 → 60
 
-flattenDFS(12)
+AFTER:
+9 → 50 → 60 → 10 → 11 → 12
 
-No child
 
-End of chain → return tail = 12
+Color diagram:
 
-Return up:
+... → 🟪9 → 🟪50 → 🟪60 → ⬜10 → ⬜11 → ⬜12
 
-flattenDFS(9) returns tail 12
 
-🔼 Back to LEVEL 0
+Set:
 
-After finishing child chain of 3, recursion continues:
+🟥childTail = 60
+🟦curr = 🟩next = 10
 
-flattenDFS(4)
-flattenDFS(5)
+🌟 STEP 8 — Continue Level 1 (10, 11, 12)
 
-Both have no children → return tail = 5
+10:
 
-🌲 Final Recursion Tree (Clean Text Version)
-flattenDFS(1)
-  flattenDFS(2)
-    flattenDFS(3)
-      flattenDFS(8)
-        flattenDFS(9)
-          flattenDFS(50)
-            flattenDFS(60)
-              return 60
-          flattenDFS(10)
-          flattenDFS(11)
-          flattenDFS(12)
-          return 12
-      flattenDFS(4)
-      flattenDFS(5)
-      return 5
-return 5
+🟦10 → ⬜11 → ⬜12
+
+
+11:
+
+⬜10 → 🟦11 → ⬜12
+
+
+12:
+
+⬜10 → ⬜11 → 🟦12
+
+
+End → return:
+
+🟥childTail = 12
+
+🌟 STEP 9 — SPLICING 8→9→50→60→10→11→12 AFTER 3
+BEFORE:
+3 → 4
+|
+8 → 9 → 50 → 60 → 10 → 11 → 12
+
+AFTER:
+3 → 8 → 9 → 50 → 60 → 10 → 11 → 12 → 4 → 5
+
+
+Color version:
+
+⬜1 → ⬜2 → 🟪3 → 🟪8 → 🟪9 → 🟪50 → 🟪60 → 🟪10 → 🟪11 → 🟪12 → ⬜4 → ⬜5
+
+
+Update:
+
+🟥childTail = 12
+🟦curr = 🟩next = 4
+
+🌟 STEP 10 — process 4 then 5
+12 → 🟦4 → 🟦5
+
+
+Both no child.
+
+Finally:
+
+return tail = 5
+
+🎉 FINAL COLORIZED FLATTENED LIST
+⬜1 → ⬜2 → 🟪3 → 🟪8 → 🟪9 → 🟪50 → 🟪60 → 🟪10 → 🟪11 → 🟪12 → ⬜4 → ⬜5
+
+
+Where:
+
+🟪 = nodes inserted during flatten
+
+⬜ = normal top-level nodes
+
+Sequence follows perfect DFS order
+
+Flattened output:
+
+1 2 3 8 9 50 60 10 11 12 4 5
+
 ```
 
 ---
