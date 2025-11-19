@@ -76,71 +76,91 @@ Output:
 
 **Java Code:**
 ```java
-// Partition the list around the end node as pivot
+// Partition the list around the end node (pivot)
+// newHead[0] = head of left part
+// newEnd[0]  = tail of right part
 static Node partition(Node head, Node end, Node[] newHead, Node[] newEnd) {
-    Node pivot = end;
-    Node prev = null, curr = head, tail = pivot;
 
-    // Initially new head and new end will be assigned later
+    Node pivot = end;               // last node as pivot
+    Node prev = null;
+    Node curr = head;
+    Node tail = pivot;              // tail always points to end of the >= pivot list
+
+    // Traverse the list and move nodes >= pivot to the end
     while (curr != pivot) {
         if (curr.data < pivot.data) {
+
+            // First node < pivot becomes newHead
             if (newHead[0] == null)
                 newHead[0] = curr;
-            prev = curr;
+
+            prev = curr;            // advance normal pointers
             curr = curr.next;
+
         } else {
-            // Move nodes >= pivot to end
+            // Remove curr from its current position
             if (prev != null)
                 prev.next = curr.next;
-
+            
+            // Move curr to end (after pivot)
             Node temp = curr.next;
             curr.next = null;
             tail.next = curr;
             tail = curr;
-            curr = temp;
+
+            curr = temp;            // continue loop
         }
     }
 
+    // If all nodes were >= pivot, pivot becomes newHead
     if (newHead[0] == null)
         newHead[0] = pivot;
 
-    newEnd[0] = tail;
-    return pivot;
+    newEnd[0] = tail;               // tail of the partitioned list
+    return pivot;                   // pivot position after partition
 }
 
 
-// Recursively apply quick sort
+
+// Main recursive QuickSort logic
 static Node quickSortRecur(Node head, Node end) {
+
+    // Base case: 0 or 1 element
     if (head == null || head == end)
         return head;
 
-    Node[] newHead = new Node[1];
-    Node[] newEnd = new Node[1];
+    Node[] newHead = new Node[1];   // head after partition
+    Node[] newEnd  = new Node[1];   // end after partition
 
+    // Partition list around pivot
     Node pivot = partition(head, end, newHead, newEnd);
 
-    // If pivot is not the smallest element
+    // Sort the part LEFT of the pivot
     if (newHead[0] != pivot) {
-        Node temp = newHead[0];
 
+        // Disconnect left list from pivot
+        Node temp = newHead[0];
         while (temp.next != pivot)
             temp = temp.next;
-
         temp.next = null;
 
+        // Recursively sort left half
         newHead[0] = quickSortRecur(newHead[0], temp);
 
+        // Connect the sorted left half with pivot
         temp = getTail(newHead[0]);
         temp.next = pivot;
     }
 
+    // Sort the part RIGHT of the pivot
     pivot.next = quickSortRecur(pivot.next, newEnd[0]);
 
-    return newHead[0];
+    return newHead[0];              // new head of fully sorted list
 }
 
 
-// Returns the tail of a linked list
+
+// Returns last node of a list
 static Node getTail(Node head) {
     while (head != null && head.next != null)
         head = head.next;
@@ -148,11 +168,99 @@ static Node getTail(Node head) {
 }
 
 
-// Main QuickSort function
+
+// Entry point for QuickSort
 static Node quickSort(Node head) {
     Node tail = getTail(head);
     return quickSortRecur(head, tail);
 }
+
+🌳 RECURSION TREE (DETAILED)
+
+Let’s take this list as example:
+
+4 → 2 → 8 → 5 → 1
+
+
+Pivot = last = 1
+
+🔶 Level 0 (Initial Call)
+[4,2,8,5,1]     pivot = 1
+
+Partition produces:
+Left  = empty
+Pivot = 1
+Right = [4,2,8,5]
+
+
+Recursive calls:
+
+quickSort(right)
+
+🔷 Level 1
+
+Right list:
+
+[4,2,8,5]     pivot = 5
+
+Partition:
+Left  = [4,2]
+Pivot = 5
+Right = [8]
+
+
+Recursion:
+
+quickSort([4,2])
+quickSort([8])
+
+🔶 Level 2
+
+Left list of level 1:
+
+[4,2]       pivot = 2
+
+Partition:
+Left  = empty
+Pivot = 2
+Right = [4]
+
+
+Recursion:
+
+quickSort(right)
+
+
+Right list:
+
+only 4 → base case
+
+🎄 FULL RECURSION TREE (Visual)
+                                    [4 2 8 5 1]
+                                         |
+                                     pivot=1
+                                   /          \
+                              empty           [4 2 8 5]
+                                                |
+                                            pivot=5
+                                   /                         \
+                              [4 2]                           [8]
+                                 |
+                             pivot=2
+                        /               \
+                     empty              [4]
+
+
+Now recombining upward:
+
+[4] + 2 → 2 → 4
+
+2 → 4 + 5 + 8 → 2 → 4 → 5 → 8
+
+1 + (2→4→5→8) → FINAL SORTED LIST
+
+1 → 2 → 4 → 5 → 8
+
 ```
 
 **💭 Intuition Behind the Approach:**
