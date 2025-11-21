@@ -4,60 +4,43 @@
 
 ## 1. Problem Understanding
 
-- These problems are part of the K-Sum family, where we find unique combinations of numbers in an array that sum to a target.
-- 3 Sum: Find all unique triplets [nums[i], nums[j], nums[k]] such that their sum is 0.
-- 4 Sum: Find all unique quadruplets [a, b, c, d] such that their sum equals a given target.
-- K Sum: Generalized problem: find all unique combinations of k numbers that sum to a given target.
-- Requirements:
-- Use distinct indices.
-- Avoid duplicates.
-- Output combinations in ascending order.
+- 3-Sum: Find all unique triplets a + b + c = 0.
+- 4-Sum: Find all unique quadruplets a + b + c + d = target.
+- K-Sum: Generalized version: find all unique combinations of size k that sum to target.
+- Order of elements inside the tuple does NOT matter (we sort each tuple).
+- No duplicates allowed, meaning two identical sets like [1, -1, 0] must appear only once.
 ---
 
 ## 2. Constraints
 
-- Array length varies by problem:
-- 3 Sum: 1 ≤ n ≤ 3000
-- 4 Sum: 1 ≤ n ≤ 200
-- K Sum: 1 ≤ n ≤ 200
-- Element range: -10^4 ≤ nums[i] ≤ 10^4
-- Target range: -10^5 ≤ target ≤ 10^5
-- Only valid unique combinations should be returned.
+- 1 ≤ n ≤ 10^5
+- Numbers may be positive, negative, or zero.
+- Need efficient deduplication logic.
+- Must sort array for optimal solutions.
 ---
 
 ## 3. Edge Cases
 
-- Arrays smaller than k.
-- Arrays with all identical numbers.
-- Arrays with no valid combination.
-- Arrays with negative and positive numbers.
-- Duplicates causing repeated results.
-- Large positive/negative targets.
+- Array with < k elements → return empty.
+- Large values → possible overflow (use long when summing).
+- Many duplicates → skip duplicates carefully.
+- Target may be large or negative.
 ---
 
 ## 4. Examples
 
-### Example 1:
-
 ```text
+Example 1:
 (3 Sum)
 Input: nums = [2, -2, 0, 3, -3, 5]
 Output: [[-3, 0, 3], [-2, 0, 2], [-3, -2, 5]]
 Explanation: Each triplet sums to 0.
-```
-
-### Example 2:
-
-```text
+Example 2:
 (4 Sum):
 Input: nums = [1, -2, 3, 5, 7, 9], target = 7
 Output: [[-2, 1, 3, 5]]
 Explanation: -2 + 1 + 3 + 5 = 7.
-```
-
-### Example 3:
-
-```text
+Example 3:
 (K Sum):
 Input: nums = [1, 0, -1, 0, -2, 2], k = 4, target = 0
 Output: [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
@@ -70,175 +53,331 @@ Output: [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
 ### Approach 1: Brute Force
 
 **Idea:**
-- Try all possible combinations of elements (3 for 3 Sum, 4 for 4 Sum, k for K Sum) and check if their sum equals the target.
-- This is straightforward but computationally expensive.
-
-**Steps:**
-- Use nested loops (3 for 3 Sum, 4 for 4 Sum, recursive for K Sum).
-- Check if the combination sums to the target.
-- Store unique sets after sorting to avoid duplicates.
+- Try all combinations:
+- 3-Sum: triple loop → i < j < k
+- 4-Sum: 4 nested loops
+- K-Sum: recursion generating all k-combinations
+- Check if sum matches target and store unique sets in a Set.
 
 **Java Code:**
 ```java
-void kSumBruteForce(int[] nums, int k, int target, List<Integer> temp, List<List<Integer>> res, int start) {
-    if (k == 0 && target == 0) {
-        res.add(new ArrayList<>(temp));
+🔹 3-Sum (Brute)
+public static List<List<Integer>> threeSumBrute(int[] nums) {
+    int n = nums.length;
+    Set<List<Integer>> set = new HashSet<>();
+
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            for (int k = j + 1; k < n; k++) {
+                if (nums[i] + nums[j] + nums[k] == 0) {
+                    List<Integer> temp = Arrays.asList(nums[i], nums[j], nums[k]);
+                    Collections.sort(temp);
+                    set.add(temp);
+                }
+            }
+        }
+    }
+    return new ArrayList<>(set);
+}
+
+🔹 4-Sum (Brute)
+public static List<List<Integer>> fourSumBrute(int[] nums, int target) {
+    int n = nums.length;
+    Set<List<Integer>> set = new HashSet<>();
+
+    for (int a = 0; a < n; a++) {
+        for (int b = a + 1; b < n; b++) {
+            for (int c = b + 1; c < n; c++) {
+                for (int d = c + 1; d < n; d++) {
+                    long sum = (long) nums[a] + nums[b] + nums[c] + nums[d];
+                    if (sum == target) {
+                        List<Integer> temp = Arrays.asList(nums[a], nums[b], nums[c], nums[d]);
+                        Collections.sort(temp);
+                        set.add(temp);
+                    }
+                }
+            }
+        }
+    }
+    return new ArrayList<>(set);
+}
+
+🔹 K-Sum (Brute via combinations)
+public static List<List<Integer>> kSumBrute(int[] nums, int k, int target) {
+    List<List<Integer>> ans = new ArrayList<>();
+    backtrack(nums, k, target, 0, new ArrayList<>(), ans);
+    return ans;
+}
+
+static void backtrack(int[] nums, int k, int target, int idx, List<Integer> temp, List<List<Integer>> ans) {
+    if (temp.size() == k) {
+        long sum = 0;
+        for (int x : temp) sum += x;
+        if (sum == target) {
+            List<Integer> t = new ArrayList<>(temp);
+            Collections.sort(t);
+            ans.add(t);
+        }
         return;
     }
-    if (k == 0 || start >= nums.length) return;
-    for (int i = start; i < nums.length; i++) {
+
+    for (int i = idx; i < nums.length; i++) {
         temp.add(nums[i]);
-        kSumBruteForce(nums, k - 1, target - nums[i], temp, res, i + 1);
+        backtrack(nums, k, target, i + 1, temp, ans);
         temp.remove(temp.size() - 1);
     }
 }
-
-// Example usage:
-// 3 Sum
-List<List<Integer>> res3 = new ArrayList<>();
-kSumBruteForce(nums, 3, 0, new ArrayList<>(), res3, 0);
-
-// 4 Sum
-List<List<Integer>> res4 = new ArrayList<>();
-kSumBruteForce(nums, 4, target, new ArrayList<>(), res4, 0);
-
-// K Sum
-List<List<Integer>> resK = new ArrayList<>();
-kSumBruteForce(nums, k, target, new ArrayList<>(), resK, 0);
 ```
 
-**Complexity (Time & Space):**
-- 3 Sum → Time: O(n³), Space: O(3) for recursion stack
-- 4 Sum → Time: O(n⁴), Space: O(4) for recursion stack
-- K Sum → Time: O(nᵏ), Space: O(k) for recursion stack
+**💭 Intuition Behind the Approach:**
+- Test all possible k-element combinations.
+- Sorting each tuple & storing in a Set avoids duplicates.
 
-### Approach 2: Better / Improved (Sorting + Two Pointers)
+**Complexity (Time & Space):**
+- ⏱️ Time Complexity
+  * 3-Sum: O(n^3)
+  * 4-Sum: O(n^4)
+  * K-Sum: O(n^k)
+  * Why: nested loops exploring all combinations.
+- 💾 Space Complexity
+  * O(#results) for storing all tuples.
+
+### Approach 2: Sorting + Hashing (Better but not optimal)
 
 **Idea:**
-- Sort the array and use the two-pointer technique to reduce nested loops by one level.
-- Fix (k−2) elements, then use two pointers to find the remaining two.
-
-**Steps:**
-- Sort input array.
-- Use nested loops to fix first elements.
-- Apply two-pointer technique for remaining two.
-- Avoid duplicates.
+- Fix i
+- For remaining array, we look for pairs nums[j] + nums[k] = -nums[i]
+- Use HashMap to store seen values
+- Store triplets in a Set<List<Integer>> to remove duplicates
 
 **Java Code:**
 ```java
-List<List<Integer>> kSumBetter(int[] nums, int start, int k, int target) {
-    List<List<Integer>> res = new ArrayList<>();
-    if (k == 2) { // Base case: 2 Sum
-        int left = start, right = nums.length - 1;
-        while (left < right) {
-            int sum = nums[left] + nums[right];
-            if (sum == target) {
-                res.add(Arrays.asList(nums[left], nums[right]));
-                while (left < right && nums[left] == nums[left + 1]) left++;
-                while (left < right && nums[right] == nums[right - 1]) right--;
-                left++; right--;
-            } else if (sum < target) left++;
-            else right--;
-        }
-        return res;
-    }
-    for (int i = start; i < nums.length - k + 1; i++) {
-        if (i > start && nums[i] == nums[i - 1]) continue;
-        for (List<Integer> subset : kSumBetter(nums, i + 1, k - 1, target - nums[i])) {
-            List<Integer> temp = new ArrayList<>();
-            temp.add(nums[i]);
-            temp.addAll(subset);
-            res.add(temp);
+Idea:
+Fix one number → reduce to 2-sum using HashMap.
+
+Java Code
+public static List<List<Integer>> threeSumHash(int[] nums) {
+    int n = nums.length;
+    Set<List<Integer>> set = new HashSet<>();
+
+    for (int i = 0; i < n; i++) {
+        int target = -nums[i];
+        HashMap<Integer,Integer> map = new HashMap<>();
+
+        for (int j = i + 1; j < n; j++) {
+            int x = target - nums[j];
+            if (map.containsKey(x)) {
+                List<Integer> temp = Arrays.asList(nums[i], nums[j], x);
+                Collections.sort(temp);
+                set.add(temp);
+            }
+            map.put(nums[j], j);
         }
     }
-    return res;
+    return new ArrayList<>(set);
 }
+
+Complexity
+
+O(n^2) average due to hash lookup
+
+Removes duplicates using set
+
+⭐ 4-Sum Using HashMap (Better)
+
+Idea:
+Fix two numbers → solve 2-Sum using HashMap.
+
+Java Code
+public static List<List<Integer>> fourSumHash(int[] nums, int target) {
+    int n = nums.length;
+    Set<List<Integer>> set = new HashSet<>();
+
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+
+            long req = (long)target - nums[i] - nums[j];
+            HashMap<Integer,Integer> map = new HashMap<>();
+
+            for (int k = j + 1; k < n; k++) {
+                int x = (int)(req - nums[k]);
+                if (map.containsKey(x)) {
+                    List<Integer> t = Arrays.asList(nums[i], nums[j], nums[k], x);
+                    Collections.sort(t);
+                    set.add(t);
+                }
+                map.put(nums[k], k);
+            }
+        }
+    }
+    return new ArrayList<>(set);
+}
+
+Complexity
+
+O(n^3)
+Better than O(n^4) brute
+
+⭐ K-Sum HashMap
+
+Not feasible because combinations explode.
+Better to move directly to Optimal approach based on sorting + recursion.
 ```
 
-**Complexity (Time & Space):**
-- 3 Sum → Time: O(n²), Space: O(1)
-- 4 Sum → Time: O(n³), Space: O(1)
-- K Sum → Time: O(n^(k-1)), Space: O(k) recursion
-
-### Approach 3: Optimal / Recursive Generalized K Sum
+### Approach 3: Sorting + Two-Pointer Pattern (Optimal for 3-Sum and 4-Sum)
 
 **Idea:**
-- Recursively reduce K-Sum into smaller subproblems.
-- Base case → 2 Sum using two-pointer method.
-- Skip duplicates at all levels.
-
-**Steps:**
-- Sort array.
-- Recursively call kSum for k-1 elements.
-- Merge current element with results from recursion.
-- Return all valid combinations.
+- Sort the array.
+- For each fixed index, convert the remaining part into a 2-Sum (two-pointer).
+- Skip duplicates aggressively.
 
 **Java Code:**
 ```java
-List<List<Integer>> kSumOptimal(int[] nums, int k, int target) {
+3-Sum (Optimal O(n²))
+public static List<List<Integer>> threeSum(int[] nums) {
+    Arrays.sort(nums);
+    List<List<Integer>> ans = new ArrayList<>();
+    int n = nums.length;
+
+    for (int i = 0; i < n; i++) {
+        if (i > 0 && nums[i] == nums[i - 1]) continue;
+        int l = i + 1, r = n - 1;
+
+        while (l < r) {
+            int sum = nums[i] + nums[l] + nums[r];
+            if (sum == 0) {
+                ans.add(Arrays.asList(nums[i], nums[l], nums[r]));
+                l++; r--;
+                while (l < r && nums[l] == nums[l - 1]) l++;
+                while (l < r && nums[r] == nums[r + 1]) r--;
+            } else if (sum < 0) l++;
+            else r--;
+        }
+    }
+    return ans;
+}
+
+🔹 4-Sum (Optimal O(n³))
+public static List<List<Integer>> fourSum(int[] nums, int target) {
+    Arrays.sort(nums);
+    List<List<Integer>> ans = new ArrayList<>();
+    int n = nums.length;
+
+    for (int i = 0; i < n; i++) {
+        if (i > 0 && nums[i] == nums[i - 1]) continue;
+        for (int j = i + 1; j < n; j++) {
+            if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+
+            int l = j + 1, r = n - 1;
+
+            while (l < r) {
+                long sum = (long) nums[i] + nums[j] + nums[l] + nums[r];
+
+                if (sum == target) {
+                    ans.add(Arrays.asList(nums[i], nums[j], nums[l], nums[r]));
+                    l++; r--;
+                    while (l < r && nums[l] == nums[l - 1]) l++;
+                    while (l < r && nums[r] == nums[r + 1]) r--;
+                } else if (sum < target) l++;
+                else r--;
+            }
+        }
+    }
+    return ans;
+}
+
+🔹 K-Sum (Optimal O(n^(k-1)))
+
+Recursive reduction to 2-Sum.
+
+public static List<List<Integer>> kSum(int[] nums, int k, int target) {
     Arrays.sort(nums);
     return kSumHelper(nums, 0, k, target);
 }
 
-List<List<Integer>> kSumHelper(int[] nums, int start, int k, int target) {
-    List<List<Integer>> res = new ArrayList<>();
+static List<List<Integer>> kSumHelper(int[] nums, int start, int k, long target) {
+    List<List<Integer>> ans = new ArrayList<>();
+    int n = nums.length;
+
     if (k == 2) {
-        int left = start, right = nums.length - 1;
-        while (left < right) {
-            int sum = nums[left] + nums[right];
+        int l = start, r = n - 1;
+        while (l < r) {
+            long sum = nums[l] + nums[r];
             if (sum == target) {
-                res.add(Arrays.asList(nums[left], nums[right]));
-                while (left < right && nums[left] == nums[left + 1]) left++;
-                while (left < right && nums[right] == nums[right - 1]) right--;
-                left++; right--;
-            } else if (sum < target) left++;
-            else right--;
+                ans.add(Arrays.asList(nums[l], nums[r]));
+                l++; r--;
+                while (l < r && nums[l] == nums[l - 1]) l++;
+                while (l < r && nums[r] == nums[r + 1]) r--;
+            } else if (sum < target) l++;
+            else r--;
         }
-        return res;
+        return ans;
     }
-    for (int i = start; i < nums.length - k + 1; i++) {
+
+    for (int i = start; i < n; i++) {
         if (i > start && nums[i] == nums[i - 1]) continue;
         for (List<Integer> subset : kSumHelper(nums, i + 1, k - 1, target - nums[i])) {
-            List<Integer> temp = new ArrayList<>();
-            temp.add(nums[i]);
-            temp.addAll(subset);
-            res.add(temp);
+            List<Integer> newList = new ArrayList<>();
+            newList.add(nums[i]);
+            newList.addAll(subset);
+            ans.add(newList);
         }
     }
-    return res;
+
+    return ans;
 }
 ```
 
+**💭 Intuition Behind the Approach:**
+- Reduce K-Sum → (K-1)-Sum → … → 2-Sum.
+- Sorted array ensures duplicate skipping works.
+- Two-pointers solve 2-Sum in O(n).
+- Recursion manages higher-order sets.
+
 **Complexity (Time & Space):**
-- 3 Sum → Time: O(n²), Space: O(1)
-- 4 Sum → Time: O(n³), Space: O(k) recursion
-- K Sum → Time: O(n^(k-1)), Space: O(k) recursion
+- ⏱️ Time Complexity
+  * 3-Sum: O(n²)
+  * 4-Sum: O(n³)
+  * K-Sum: O(n^(k-1))
+  * Why: each level of recursion loops through array once.
+- 💾 Space Complexity
+  * Recursion depth = k
+  * O(k) + output space.
 
 ---
 
 ## 6. Justification / Proof of Optimality
 
-- Brute Force: Simple but exponential, impractical for large n.
-- Better / Two Pointer: Reduces nested loops, efficient for 3/4 Sum.
-- Optimal Recursive: Elegant, generalizes for any K, avoids code repetition, scalable.
+- ✔ Brute Force
+  * Generates all combinations → guaranteed correct but too slow.
+  * Good for understanding but useless for constraints > 300.
+- ✔ HashMap-Based Better Approach
+  * Reduces nested loops:
+  * 3-Sum: O(n^2)
+  * 4-Sum: O(n^3)
+  * Works by converting inner loops into 2-Sum.
+  * Still not optimal but much faster than brute.
+- ✔ Optimal K-Sum Approach
+  * Solves the entire family (3-sum, 4-sum, k-sum)
+  * Sorting helps remove duplicates and enable two-pointer
+  * Recursion breaks problem into smaller sums efficiently
+  * Most scalable and accepted on LeetCode
 ---
 
 ## 7. Variants / Follow-Ups
 
-- 2 Sum (sorted/unsorted)
-- 3 Sum Closest / 4 Sum Closest
-- Count K-Sum combinations
-- Return combinations nearest to target
-- Use hash maps for optimized 4 Sum II variant
+- Find any ONE triplet / quadruplet (not unique)
+- Find number of triplets not the combinations
+- Find combinations where product = target
+- k-sum closest
 ---
 
 ## 8. Tips & Observations
 
-- Always sort the array first.
-- Skip duplicates at every recursion/iteration level.
-- Use two-pointer approach efficiently for base 2-Sum.
-- Recursion stack grows with K; prune impossible paths early.
-- Copy lists when adding to results to prevent mutation.
+- Always sort before two-pointers
+- Always skip duplicates
+- Use long for sum to avoid overflow
+- For k ≥ 4, recursion is natural and elegant
 ---
 
 <!-- #endregion -->
