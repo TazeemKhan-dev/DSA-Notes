@@ -1,16 +1,17 @@
 
-Get-Content ".\00-Java\*.md" | Out-File ".\Merged-Files\Java.md"
-Get-Content ".\01-Patterns\*.md" | Out-File ".\Merged-Files\Patterns.md"
-Get-Content ".\02-MathAndAlgorith\*.md" | Out-File ".\Merged-Files\MathAndAlgorithm.md"
-Get-Content ".\03-Arrays\*.md" | Out-File ".\Merged-Files\Arrays.md"
-Get-Content ".\04-2D_Arrays\*.md" | Out-File ".\Merged-Files\2D_Arrays.md"
-Get-Content ".\05-Strings\*.md" | Out-File ".\Merged-Files\Strings.md"
-Get-Content ".\06-Hashing\*.md" | Out-File ".\Merged-Files\Hashing.md"
-Get-Content ".\07-Sorting\*.md" | Out-File ".\Merged-Files\Sorting.md"
+Get-Content ".\00-Java\*.md" | Out-File ".\Merged-Files\00-Java.md"
+Get-Content ".\01-Patterns\*.md" | Out-File ".\Merged-Files\01-Patterns.md"
+Get-Content ".\02-MathAndAlgorith\*.md" | Out-File ".\Merged-Files\02-MathAndAlgorithm.md"
+Get-Content ".\03-Arrays\*.md" | Out-File ".\Merged-Files\03-Arrays.md"
+Get-Content ".\04-2D_Arrays\*.md" | Out-File ".\Merged-Files\04-2D_Arrays.md"
+Get-Content ".\05-Strings\*.md" | Out-File ".\Merged-Files\05-Strings.md"
+Get-Content ".\06-Hashing\*.md" | Out-File ".\Merged-Files\06-Hashing.md"
+Get-Content ".\07-Sorting\*.md" | Out-File ".\Merged-Files\07-Sorting.md"
 
-Get-Content ".\09-Linked List\*.md" | Out-File ".\Merged-Files\LinkedListNotes.md"
-Get-Content ".\10-Two Pointers\*.md" | Out-File ".\Merged-Files\TwoPointers.md"
-Get-Content ".\11-Binary Search\*.md" | Out-File ".\Merged-Files\BinarySearch.md"
+Get-Content ".\09-Linked List\*.md" | Out-File ".\Merged-Files\09-LinkedListNotes.md"
+Get-Content ".\10-Two Pointers\*.md" | Out-File ".\Merged-Files\10-TwoPointers.md"
+Get-Content ".\11-Binary Search\*.md" | Out-File ".\Merged-Files\11-BinarySearch.md" -Encoding UTF8
+
 # ================================
 #   MERGE MULTIPLE .MD FILES
 # ================================
