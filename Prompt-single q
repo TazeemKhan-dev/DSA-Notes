@@ -17,3 +17,28 @@
 💡 Tips & Observations"*
 
 Replace [Problem Name] with your problem description.
+
+Follow my saved DSA notes structure:
+
+🧠 Problem Understanding  
+⚙️ Constraints  
+⚠️ Edge Cases  
+🧪 Examples  
+
+💡 Approaches  
+For each approach include:  
+- Idea  
+- Steps  
+- Java Code  
+- Intuition Behind the Approach  
+- ⏱️ Time Complexity (with explanation why)  
+- 💾 Space Complexity (with explanation why)
+
+✅ Justification  
+🔁 Variants  
+💡 Tips & Observations  
+🕳️ Pitfalls  
+⏱️ Time Complexity (Overall)  
+💾 Space Complexity (Overall)
+
+Also include brute force, and both binary search styles (l < h) and (l <= h) whenever applicable.
