@@ -78,46 +78,7 @@ for (int x = low; x <= high; x++) {
 - 💾 Space Complexity
   * O(1)
 
-### Approach 2: Binary Search on Answer (l < h)
-
-**Idea:**
-- Binary search the answer space, not the array.
-- Mid = candidate answer.
-
-**Steps:**
-- low = min possible answer
-- high = max possible answer
-- mid = (low + high)/2
-- If feasible(mid):
-  * high = mid (to minimize)
-- else:
-  * low = mid + 1
-- return low
-
-**Java Code:**
-```java
-while (low < high) {
-    int mid = low + (high - low) / 2;
-
-    if (isPossible(mid)) {
-        high = mid;
-    } else {
-        low = mid + 1;
-    }
-}
-return low;
-```
-
-**💭 Intuition Behind the Approach:**
-- Works when we look for minimum satisfying value.
-
-**Complexity (Time & Space):**
-- ⏱️ Time Complexity
-- O(log(range) * cost_of_isPossible)
-- 💾 Space Complexity
-- O(1)
-
-### Approach 3: Binary Search on Answer (l <= h)
+### Approach 2: Binary Search on Answer (l <= h)
 
 **Idea:**
 - Same concept, but keep track of best candidate using ans.
