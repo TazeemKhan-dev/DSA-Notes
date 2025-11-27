@@ -4,73 +4,60 @@
 
 ## 1. Problem Understanding
 
-- You are given two sorted arrays, arr1 (size m) and arr2 (size n).
-- Your task:
-  * Find the median of the combined array, without actually merging them.
-- Median definition:
-  * If total length is odd → middle element
-  * If total length is even → average of the two middle elements
-- This is a classic hard problem based on binary search on partitions, NOT BSOA.
+- You are given two sorted arrays arr1 and arr2.
+- You must return the median of the combined sorted array without merging (optimal approach).
+- Median rules:
+  * If total length is odd → return the middle element.
+  * If even → return average of the two middle elements.
 ---
 
 ## 2. Constraints
 
 - 0 ≤ m, n ≤ 1000
 - 1 ≤ m + n ≤ 2000
-- Arrays individually sorted
-- Possible negative numbers
-- brute O(m+n) OK for constraints, but binary search O(log(min(m,n))) is optimal
+- Values can be negative.
 ---
 
 ## 3. Edge Cases
 
-- One array empty: median = median of the other
-- Very small arrays (size 1,2)
-- All elements of arr1 < all elements of arr2
-- All elements of arr1 > all elements of arr2
-- Overlapping ranges
-- Even vs odd total length
+- One array empty.
+- Arrays of very uneven sizes.
+- Duplicate elements.
+- Both arrays length 1.
+- All elements in arr1 ≤ all in arr2 (or vice-versa).
 ---
 
 ## 4. Examples
 
 ```text
-Example 1
-arr1 = [2,4,6]
-arr2 = [1,3,5]
-Merged: [1,2,3,4,5,6]
-Median: (3+4)/2 = 3.5
-
-Example 2
-arr1 = [2,4,6]
-arr2 = [1,3]
-Merged: [1,2,3,4,6]
-Median: 3
+arr1 = [2, 4, 6], arr2 = [1, 3, 5] → median = 3.5
+arr1 = [2, 4, 6], arr2 = [1, 3] → median = 3
+arr1 = [2, 4, 5], arr2 = [1, 6] → median = 4
 ```
 
 ---
 
 ## 5. Approaches
 
-### Approach 1: Brute Force Merge
+### Approach 1: Brute Force (Merge Like MergeSort)
 
 **Idea:**
-- Merge like merge-sort into a new array and pick median.
+- Merge both arrays into one sorted list.
+- Find the median normally.
 
 **Steps:**
-- Use two pointers
-- Build merged array in O(m+n)
-- If total odd → return mid
-- If even → return average(mid1, mid2)
+- Use two pointers.
+- Build a merged array.
+- Pick median based on total length.
 
 **Java Code:**
 ```java
-public double findMedianSortedArrays(int[] a, int[] b) {
+public static double medianBrute(int[] a, int[] b) {
     int m = a.length, n = b.length;
     int[] merged = new int[m+n];
-    int i=0,j=0,k=0;
-
-    while(i<m && j<n) {
+    
+    int i=0, j=0, k=0;
+    while(i<m && j<n){
         if(a[i] < b[j]) merged[k++] = a[i++];
         else merged[k++] = b[j++];
     }
@@ -79,138 +66,228 @@ public double findMedianSortedArrays(int[] a, int[] b) {
 
     int total = m+n;
     if(total % 2 == 1) return merged[total/2];
+    
     return (merged[total/2] + merged[total/2 - 1]) / 2.0;
 }
 ```
 
 **💭 Intuition Behind the Approach:**
-- Simulate sorted merge, simple and intuitive.
+- Classic merge — straightforward but not optimal.
 
 **Complexity (Time & Space):**
-- ⏱️ Time Complexity
-  * O(m+n)
-  * Because merging touches every element.
-- 💾 Space Complexity
-  * O(m+n)
-  * Due to merged array.
+- Time:
+  * O(m+n) because we merge all elements.
+- Space:
+  * O(m+n) because we store merged array.
 
-### Approach 2: Optimal Binary Search on Smaller Array (Partition Method)
+### Approach 2: Two-Pointer Without Full Merge (Better)
 
 **Idea:**
-- We do NOT merge arrays.
-- We binary search a partition in the smaller array so that:
-  * Left side contains the first (m+n+1)/2 elements of the merged array.
-- We enforce:
-  * max(left1, left2) <= min(right1, right2)
-- If valid → we found correct partition.
-- Then median is computed from edges of the partitions.
+- Simulate merge until middle index.
+- Don’t store full merged array.
+- Track only middle elements
 
 **Steps:**
-- Ensure arr1 is always the smaller array
-- Binary search on cut position of arr1
-- Let:
-  * cut1 = mid
-  * cut2 = (total+1)/2 - cut1
-- Compute:
-  * left1  = (cut1 == 0 ? -∞ : arr1[cut1-1])
-  * right1 = (cut1 == m ? +∞ : arr1[cut1])
-  * left2  = (cut2 == 0 ? -∞ : arr2[cut2-1])
-  * right2 = (cut2 == n ? +∞ : arr2[cut2])
-- If:
-  * left1 <= right2 AND left2 <= right1
-- → correct partition
-- → median = average of max(left1,left2) and min(right1,right2)
-- Else adjust binary search range.
+- Use two pointers.
+- Iterate only till (m+n)/2.
 
 **Java Code:**
 ```java
-class Solution {
-    public double findMedianSortedArrays(int[] A, int[] B) {
-        int m = A.length, n = B.length;
+public static double medianBetter(int[] a, int[] b) {
+    int m = a.length, n = b.length;
+    int total = m+n;
+    
+    int i=0, j=0;
+    int prev = -1, curr = -1;
 
-        // Ensure A is the smaller array
-        if (m > n) return findMedianSortedArrays(B, A);
+    for(int k=0; k<=total/2; k++){
+        prev = curr;
 
-        int low = 0, high = m;
-
-        while (low <= high) {
-            int cutA = low + (high - low) / 2;
-            int cutB = (m + n + 1) / 2 - cutA;
-
-            int leftA = (cutA == 0) ? Integer.MIN_VALUE : A[cutA - 1];
-            int rightA = (cutA == m) ? Integer.MAX_VALUE : A[cutA];
-
-            int leftB = (cutB == 0) ? Integer.MIN_VALUE : B[cutB - 1];
-            int rightB = (cutB == n) ? Integer.MAX_VALUE : B[cutB];
-
-            if (leftA <= rightB && leftB <= rightA) {
-                // Correct partition
-                if ((m + n) % 2 == 0)
-                    return (Math.max(leftA, leftB) + Math.min(rightA, rightB)) / 2.0;
-                else
-                    return Math.max(leftA, leftB);
-            }
-            else if (leftA > rightB) {
-                // Need to move cutA left
-                high = cutA - 1;
-            } else {
-                // Need to move cutA right
-                low = cutA + 1;
-            }
+        if(i<m && (j>=n || a[i] <= b[j])){
+            curr = a[i++];
+        } else {
+            curr = b[j++];
         }
-
-        return 0.0; // unreachable
     }
+
+    if(total % 2 == 1) return curr;
+    return (prev + curr) / 2.0;
 }
 ```
 
 **💭 Intuition Behind the Approach:**
-- A valid partition ensures:
-  * all elements in left half are ≤ all in right half
-  * At that point, the median is determined only from the edges of these halves.
-- Binary search guarantees O(log(min(m,n))).
+- We don’t care about the entire merge—only until we hit the median position.
 
 **Complexity (Time & Space):**
-- ⏱️ Time Complexity
-  * O(log(min(m,n)))
-  * Because we binary search on smaller array size.
-- 💾 Space Complexity
-  * O(1)
-  * Only variables, no extra storage.
+- Time:
+  * O((m+n)/2) ≈ O(m+n)
+- Space:
+  * O(1) — no extra array.
+
+### Approach 3: Binary Search on Smaller Array (Partition Method)
+
+**Idea:**
+- Use binary search to partition both arrays so that:
+  * left half has exactly (m+n+1)/2 elements
+  * All left side ≤ all right side
+- We binary search on arr1 partition index.
+
+**Steps:**
+- Ensure arr1 is smaller array.
+- Binary search partition cut1 in arr1.
+- Compute cut2 in arr2 = required left half − cut1.
+- Check if:
+  * maxLeft1 ≤ minRight2
+  * maxLeft2 ≤ minRight1
+- If not balanced → shift binary search.
+
+**Java Code:**
+```java
+public static double findMedianSortedArrays(int[] a, int[] b) {
+    if(a.length > b.length) return findMedianSortedArrays(b, a);
+
+    int m = a.length, n = b.length;
+    int low = 0, high = m;
+
+    while(low <= high){
+        int cut1 = low + (high - low)/2;
+        int cut2 = (m+n+1)/2 - cut1;
+
+        int left1 = (cut1 == 0 ? Integer.MIN_VALUE : a[cut1-1]);
+        int left2 = (cut2 == 0 ? Integer.MIN_VALUE : b[cut2-1]);
+        int right1 = (cut1 == m ? Integer.MAX_VALUE : a[cut1]);
+        int right2 = (cut2 == n ? Integer.MAX_VALUE : b[cut2]);
+
+        if(left1 <= right2 && left2 <= right1){
+            if((m+n) % 2 == 0){
+                return (Math.max(left1,left2) + Math.min(right1,right2)) / 2.0;
+            } else {
+                return Math.max(left1,left2);
+            }
+        }
+        else if(left1 > right2){
+            high = cut1 - 1;
+        } else {
+            low = cut1 + 1;
+        }
+    }
+    
+    return 0.0;
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Instead of merging, we search for the correct partition such that:
+  * All left side elements ≤ all right side elements.
+  * Once partition is valid, median comes from edges.
+- This uses the fact both arrays are sorted → binary search works.
+
+**Complexity (Time & Space):**
+- Time:
+  * O(log(min(m,n))) because we binary search only the smaller array.
+  * It’s optimal because we avoid touching all elements.
+- Space:
+  * O(1) — no extra space.
+
+### Approach 4: K-th Element via Binary Search Recursion
+
+**Idea:**
+- We find the k-th element using recursive shrinking.
+- Median =
+  * odd → kth element
+  * even → avg of k and k+1.
+
+**Java Code:**
+```java
+public static double medianKth(int[] a, int[] b){
+    int m = a.length, n = b.length;
+    int total = m+n;
+
+    if(total % 2 == 1){
+        return kth(a,0,b,0,total/2 + 1);
+    } else {
+        double x = kth(a,0,b,0,total/2);
+        double y = kth(a,0,b,0,total/2 + 1);
+        return (x + y) / 2.0;
+    }
+}
+
+private static int kth(int[] a, int i, int[] b, int j, int k){
+    if(i >= a.length) return b[j + k - 1];
+    if(j >= b.length) return a[i + k - 1];
+    if(k == 1) return Math.min(a[i], b[j]);
+
+    int midA = (i + k/2 - 1 < a.length) ? a[i + k/2 - 1] : Integer.MAX_VALUE;
+    int midB = (j + k/2 - 1 < b.length) ? b[j + k/2 - 1] : Integer.MAX_VALUE;
+
+    if(midA < midB){
+        return kth(a, i + k/2, b, j, k - k/2);
+    } else {
+        return kth(a, i, b, j + k/2, k - k/2);
+    }
+}
+
+
+
+Recursion Tree
+
+Example: total = 10 → find k=5
+
+k=5
+ |
+ |-- compare a[k/2], b[k/2]
+ |
+ k becomes 3
+ |
+ |-- compare next halves
+ |
+ k becomes 1
+ |
+ return min(...)
+```
+
+**💭 Intuition Behind the Approach:**
+- At each step, eliminate k/2 elements from one of the arrays—like searching for the k-th number.
+
+**Complexity (Time & Space):**
+- Time:
+  * O(log(m+n)) because every recursive step halves k.
+- Space:
+  * O(log(m+n)) due to recursion stack.
 
 ---
 
 ## 6. Justification / Proof of Optimality
 
-- A valid median split must satisfy sorted ordering between left and right partitions.
-- The partition approach guarantees that the left side always contains exactly half of the combined sorted array.
-- Because both arrays are sorted, binary searching the cut position ensures monotonic behavior.
-- The median depends only on edges of partitions, not on full merged array.
-- This method is optimal and mathematically proven; used in all major interview solutions (Google, Meta, Amazon).
+- The arrays are sorted → median position depends only on ordering.
+- Instead of merging all, find a partition where left half contains exactly half of total elements.
+- Binary search is possible because:
+  * when left1 > right2 → cut1 is too big
+  * when left2 > right1 → cut1 is too small
+- This monotonic behaviour enables O(log(min(m,n))).
 ---
 
 ## 7. Variants / Follow-Ups
 
-- Find kth element of two sorted arrays
-- Median of k sorted arrays
-- Weighted median
-- Median in data stream (Heaps)
+- Find median of k sorted arrays.
+- Find k-th smallest of two arrays.
+- Find median of infinite sorted streams.
+- Weighted median.
+- Merging intervals using similar partition logic.
 ---
 
 ## 8. Tips & Observations
 
-- Always binary search the smaller array to avoid overflow / OOB.
-- Use sentinels (±∞) at boundaries to simplify logic.
-- Understand partition sizes:
-- (m+n+1)/2 ensures correct handling of odd/even lengths.
-- No merging required → optimal speed.
+- Always binary search on the smaller array.
+- Take care of boundaries using ±∞.
+- For odd length, median is just max(left side).
+- Partition logic is the heart of the problem.
 
-- **🕳️ Pitfalls**
-    - Forgetting to handle empty arrays properly
-    - Using wrong boundary sentinel values
-    - Confusing cut positions with indexes
-    - Returning index instead of value (here we return value)
-    - Overflow if not using +∞ and −∞ sentinels
+- **⚠️ Pitfalls**
+    - Forgetting to pick smaller array for binary search.
+    - Boundary handling when partition is at index 0 or m.
+    - Floating-point return for even length.
+    - Off-by-one errors in partition formula.
 ---
 
 <!-- #endregion -->
