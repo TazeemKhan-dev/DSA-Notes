@@ -11,6 +11,7 @@ Get-Content ".\07-Sorting\*.md" | Out-File ".\Merged-Files\07-Sorting.md"
 Get-Content ".\09-Linked List\*.md" | Out-File ".\Merged-Files\09-LinkedListNotes.md"
 Get-Content ".\10-Two Pointers\*.md" | Out-File ".\Merged-Files\10-TwoPointers.md"
 Get-Content ".\11-Binary Search\*.md" | Out-File ".\Merged-Files\11-BinarySearch.md" -Encoding UTF8
+Get-Content ".\11-Binary Search\*.md" | Out-File ".\Merged-Files\11-BinarySearch.md" 
 
 # ================================
 #   MERGE MULTIPLE .MD FILES

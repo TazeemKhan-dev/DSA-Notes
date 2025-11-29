@@ -1,4 +1,4 @@
-﻿<!-- #region 0-Binary Search -->
+<!-- #region 0-Binary Search -->
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q0: Binary Search</h1>
 
@@ -12,7 +12,7 @@
   * Finding boundaries
   * Solving questions where answer lies in a range
   * Questions where the condition behaves monotonically (true/false pattern)
-- Binary search is NOT just for arrays â€” it's for searching on answers (Binary Search on Answer).
+- Binary search is NOT just for arrays — it's for searching on answers (Binary Search on Answer).
 ---
 
 ## 2. Constraints
@@ -24,19 +24,19 @@
 
 - **What is a Monotonic Array?**
     - An array is monotonic if it satisfies one of the following:
-    - 1ï¸âƒ£ Monotonic Increasing
+    - 1️⃣ Monotonic Increasing
       * Each element is greater than or equal to the previous.
         * Example:
           * 1 2 2 3 4 7 9
         * Here:
           * arr[i] <= arr[i+1]
-    - 2ï¸âƒ£ Monotonic Decreasing
+    - 2️⃣ Monotonic Decreasing
       * Each element is less than or equal to the previous.
       * Example:
         * 9 7 7 4 3 1
       * Here:
         * arr[i] >= arr[i+1]
-    - âœ”ï¸ Why Binary Search Needs a Monotonic Condition?
+    - ✔️ Why Binary Search Needs a Monotonic Condition?
       * Binary search works only if we can discard half of the search space every time.
       * That is possible only if:
         * Values consistently increase OR
@@ -46,33 +46,33 @@
           * 3 5 2 8 1
           * Not sorted
           * Not monotonic
-          * Values go up and down â†’ cannot apply binary search
+          * Values go up and down → cannot apply binary search
 ---
 
 ## 3. Edge Cases
 
 - These are the edge cases that break 80% of beginners' code:
-  * mid = (l + r) / 2 â†’ may overflow; use
+  * mid = (l + r) / 2 → may overflow; use
   * mid = l + (r - l) / 2.
   * Infinite loop due to wrong update (like using l = mid instead of l = mid + 1).
   * Using wrong comparison (< vs <=).
   * Arrays with duplicate elements (must choose left/right boundary carefully).
   * l surpassing r (stop condition).
   * Off-by-one errors in returning the boundary.
-  * When doing binary search on answers â†’ ensure the predicate is monotonic.
+  * When doing binary search on answers → ensure the predicate is monotonic.
 ---
 
 ## 4. Examples
 
 ```text
-ðŸ§ª Examples (Simple)
+🧪 Examples (Simple)
 
 Searching 7 in [1,3,4,7,9]
-Sorted â†’ can apply binary search.
+Sorted → can apply binary search.
 
-Finding floor square root of 40 â†’ answer lies in integer range [0..40].
+Finding floor square root of 40 → answer lies in integer range [0..40].
 
-Finding minimum capacity to ship packages â†’ monotonic condition exists.
+Finding minimum capacity to ship packages → monotonic condition exists.
 ```
 
 ---
@@ -98,16 +98,16 @@ public static int binarySearch(int[] arr, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Each comparison eliminates half the array â†’ logarithmic speed.
+**💭 Intuition Behind the Approach:**
+- Each comparison eliminates half the array → logarithmic speed.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log n) because we cut search space by half every iteration.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1) iterative.
 
-### Approach 2: Lower Bound (first index â‰¥ target)
+### Approach 2: Lower Bound (first index ≥ target)
 
 **Idea:**
 - Find the first position where element is >= target.
@@ -174,18 +174,18 @@ public static int searchInsert(int[] arr, int target) {
 
 **Idea:**
 - Used in many DSA problems:
-  * âœ” Allocate minimum pages
-  * âœ” Aggressive cows
-  * âœ” Koko eating bananas
-  * âœ” Painters partition
-  * âœ” Minimum capacity to ship packages
-  * âœ” Find smallest divisor
-  * âœ” Minimize maximum distance to gas station
-  * âœ” etc.
-- âœ” Idea
-  * Guess an answer â†’ check if it's valid â†’ move left or right.
+  * ✔ Allocate minimum pages
+  * ✔ Aggressive cows
+  * ✔ Koko eating bananas
+  * ✔ Painters partition
+  * ✔ Minimum capacity to ship packages
+  * ✔ Find smallest divisor
+  * ✔ Minimize maximum distance to gas station
+  * ✔ etc.
+- ✔ Idea
+  * Guess an answer → check if it's valid → move left or right.
   * The key is the predicate must be monotonic:
-  * If x works â†’ all values > x might work
+  * If x works → all values > x might work
 - Or vice versa
 
 **Java Code:**
@@ -195,10 +195,10 @@ public static int searchAnswer(int low, int high) {
     while (low <= high) {
         int mid = low + (high - low) / 2;
         if (isPossible(mid)) {
-            ans = mid;      // mid is valid â†’ try left
+            ans = mid;      // mid is valid → try left
             high = mid - 1;
         } else {
-            low = mid + 1;  // mid invalid â†’ go right
+            low = mid + 1;  // mid invalid → go right
         }
     }
     return ans;
@@ -218,10 +218,10 @@ public static int searchAnswer(int low, int high) {
 ### Approach 7: Binary Search on Rotated Sorted Array
 
 **Idea:**
-- âœ” Search in rotated sorted array
-- âœ” Find minimum in rotated sorted array
+- ✔ Search in rotated sorted array
+- ✔ Find minimum in rotated sorted array
 - Concept:
-- Left half or right half is always sorted â€” determine where target lies.
+- Left half or right half is always sorted — determine where target lies.
 
 ### Approach 8: Binary Search with Duplicates
 
@@ -253,17 +253,17 @@ public static int searchAnswer(int low, int high) {
 ## 7. Tips & Observations
 
 - Always check monotonicity before applying binary search.
-- For duplicates â†’ use lower/upper bound logic.
-- For rotated arrays â†’ identify sorted half.
-- For BS on answer â†’ define the range properly.
+- For duplicates → use lower/upper bound logic.
+- For rotated arrays → identify sorted half.
+- For BS on answer → define the range properly.
 - Watch for infinite loops by using mid = l + (r - l) / 2.
 - Always test with edge cases: single element, all equal, target not found, target smaller/larger than all.
 
 - **Complexity**
-    - â±ï¸ Time Complexity (Final)
-      * All array-based BS â†’ O(log n)
-      * BS on answer â†’ O(log(range))
-    - ðŸ’¾ Space Complexity (Final)
+    - ⏱️ Time Complexity (Final)
+      * All array-based BS → O(log n)
+      * BS on answer → O(log(range))
+    - 💾 Space Complexity (Final)
       * O(1) for iterative.
 ---
 
@@ -278,8 +278,8 @@ public static int searchAnswer(int low, int high) {
   * while (low < high)
   * while (low <= high)
 - The real question you had:
-- â€œWhen thereâ€™s only 1 element left, arenâ€™t â€˜elementâ€™ and â€˜candidateâ€™ the same?
-- Why do we sometimes STOP, and sometimes CHECK that single element?â€
+- “When there’s only 1 element left, aren’t ‘element’ and ‘candidate’ the same?
+- Why do we sometimes STOP, and sometimes CHECK that single element?”
 - This is exactly where your confusion was.
 ---
 
@@ -335,7 +335,7 @@ These will prove why (low < high) vs (low <= high) matter.
 - Because at that moment:
 - You have EXACTLY ONE candidate
 - That candidate is guaranteed to be the correct answer
-- You DONâ€™T need to check it manually
+- You DON’T need to check it manually
 
 **Java Code:**
 ```java
@@ -351,9 +351,9 @@ while (low < high) {
 return nums[low];
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- You arenâ€™t searching for equality
-- You donâ€™t need to inspect the final element
+**💭 Intuition Behind the Approach:**
+- You aren’t searching for equality
+- You don’t need to inspect the final element
 - The loop narrows to THE answer
 - The logic itself ensures the final index is correct
 - Where used
@@ -363,8 +363,8 @@ return nums[low];
   * Find first bad version (monotonic boolean)
 
 **Complexity (Time & Space):**
-- Time â†’ O(log N)
-- Space â†’ O(1)
+- Time → O(log N)
+- Space → O(1)
 
 ### Approach 2: (low <= high): Classic Search (Search for a Target or Condition)
 
@@ -395,7 +395,7 @@ while (low <= high) {
 return -1;
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - You might find the answer at ANY position
 - Even the last remaining element must be tested
 - You cannot stop early
@@ -408,8 +408,8 @@ return -1;
   * Segment search problems
 
 **Complexity (Time & Space):**
-- Time â†’ O(log N)
-- Space â†’ O(1)
+- Time → O(log N)
+- Space → O(1)
 
 ---
 
@@ -418,11 +418,11 @@ return -1;
 - Why both loops seem similar (they both test mid)
 - But they are not solving the same TYPE of problem.
 - The two questions clarify this:
-- ðŸŸ¢ Key Question 1: â€œDo I want to STOP when only 1 element is left?â€
+- 🟢 Key Question 1: “Do I want to STOP when only 1 element is left?”
   * Use (low < high)
   * Because that 1 element is guaranteed to be the answer.
   * You stop without checking it.
-- ðŸ”µ Key Question 2: â€œEven when ONE element is left, MUST I CHECK it?â€
+- 🔵 Key Question 2: “Even when ONE element is left, MUST I CHECK it?”
   * Use (low <= high)
   * Because that last element might or might not be the answer.
   * You must verify it.
@@ -445,13 +445,13 @@ return -1;
 - Both loops (low < high and low <= high) DO check the mid.
 - But they are used for COMPLETELY DIFFERENT GOALS.
 - So the question is NOT:
-- â€œAm I traversing mid or not?â€
+- “Am I traversing mid or not?”
 - You ALWAYS traverse mid.
 - The REAL question is:
-- â€œDo I want to STOP when only 1 element is left, or do I want to CHECK that 1 element too?â€
+- “Do I want to STOP when only 1 element is left, or do I want to CHECK that 1 element too?”
 - This changes EVERYTHING.
-- âœ” Case 1: (low < high)
-  * â†’ "I want the loop to end when only ONE candidate is left."
+- ✔ Case 1: (low < high)
+  * → "I want the loop to end when only ONE candidate is left."
   * Purpose: REDUCE the range.
   * You are NOT searching for an exact match.
   * Example
@@ -461,12 +461,12 @@ return -1;
     * maximize or minimize value using BS (BS on answer)
     * Here the algorithm guarantees:
     * There is exactly one answer
-    * When we narrow to that one index â†’ DONE
+    * When we narrow to that one index → DONE
   * That's why we stop when:
   * low == high
 - We DO NOT need to check mid for equality.
-- âœ” Case 2: (low <= high)
-  * â†’ "Even when ONE element is left, I MUST CHECK it."
+- ✔ Case 2: (low <= high)
+  * → "Even when ONE element is left, I MUST CHECK it."
   * Purpose: SEARCH for a target
   * or search for a condition.
   * Examples:
@@ -481,30 +481,30 @@ return -1;
   * Because the last remaining element might be the answer.
 
 - **"When 1 element left, element and candidate are same, so why difference?"**
-    - âœ” â€œOne candidate leftâ€ means
-      * â†’ The algorithm has mathematically proven that this is the answer.
-    - âœ” â€œOne element leftâ€ means
-      * â†’ It is just the last element in the range.
-      * â†’ It may or may not be the answer.
-      * â†’ Equality must be checked.
+    - ✔ “One candidate left” means
+      * → The algorithm has mathematically proven that this is the answer.
+    - ✔ “One element left” means
+      * → It is just the last element in the range.
+      * → It may or may not be the answer.
+      * → Equality must be checked.
     - They only LOOK the same, but the meaning is completely different.
 
-- **When you think â€œcandidate = elementâ€, think this:**
-    - In (low < high) â†’
+- **When you think “candidate = element”, think this:**
+    - In (low < high) →
       * The algorithm GUARANTEES the last index is correct.
-    - In (low <= high) â†’
+    - In (low <= high) →
       * The last index is simply the only one left untested.
 
 - **Stopping and checking are DIFFERENT operations.**
-    - (low < high) â†’ you stop and declare the answer
-    - (low <= high) â†’ you inspect the last element
+    - (low < high) → you stop and declare the answer
+    - (low <= high) → you inspect the last element
 
 - **FINAL SUMMARY YOU MUST MEMORIZE**
-    - ðŸ”¥ Use low < high ONLY IF:
+    - 🔥 Use low < high ONLY IF:
       * The algorithm doesn't check mid for equality
       * You are shrinking the space
       * The last index is automatically the answer
-    - ðŸ”¥ Use low <= high ONLY IF:
+    - 🔥 Use low <= high ONLY IF:
       * You might find your answer ANYWHERE
       * You need to check the last element
       * You rely on ==, >=, <= conditions
@@ -523,9 +523,9 @@ return -1;
   * You can convert the problem into a YES/NO function
   * That YES/NO result behaves monotonically
 - Monotonic means:
-  * All false then all true â†’ 0 0 0 1 1 1
+  * All false then all true → 0 0 0 1 1 1
   * OR
-  * All true then all false â†’ 1 1 1 0 0 0
+  * All true then all false → 1 1 1 0 0 0
 - Examples:
   * Minimum speed to finish bananas
   * Maximum minimum distance (aggressive cows)
@@ -540,8 +540,8 @@ return -1;
 - These fundamentals apply when:
   * The answer lies in a numeric range
   * That numeric range is bounded, e.g.
-    * 1 â†’ max(arr)
-    * max(weights) â†’ sum(weights)
+    * 1 → max(arr)
+    * max(weights) → sum(weights)
   * You can design an isPossible(mid) function
   * isPossible(mid) runs in O(N) or better
   * Answer validity is monotonic
@@ -562,28 +562,28 @@ return -1;
 ## 4. Examples
 
 ```text
-Example 1 â€“ Koko Eats Bananas
+Example 1 – Koko Eats Bananas
 
 Search space = speed
-isPossible(speed) â†’ can Koko finish in H hours?
+isPossible(speed) → can Koko finish in H hours?
 
 Monotonic:
 
 0 0 0 1 1 1
 
-Example 2 â€“ Aggressive Cows
+Example 2 – Aggressive Cows
 
 Search space = minimum distance
-isPossible(d) â†’ can cows be placed with â‰¥ d spacing?
+isPossible(d) → can cows be placed with ≥ d spacing?
 
 Monotonic:
 
 0 0 1 1 1
 
-Example 3 â€“ Minimum Capacity to Ship Packages
+Example 3 – Minimum Capacity to Ship Packages
 
 Search space = capacity
-isPossible(cap) â†’ can ship in â‰¤ D days?
+isPossible(cap) → can ship in ≤ D days?
 
 Monotonic:
 
@@ -600,15 +600,15 @@ Monotonic:
 - Find the smallest value of x such that isPossible(x) == true.
 - Pattern:
 - 0 0 0 1 1 1 1
-      * â†‘
+      * ↑
    * answer
 
 **Steps:**
 - Define low, high search space
 - While low <= high:
   * Compute mid
-  * If possible(mid) â†’ store mid, move left
-  * Else â†’ move right
+  * If possible(mid) → store mid, move left
+  * Else → move right
 
 **Java Code:**
 ```java
@@ -629,7 +629,7 @@ while (low <= high) {
 return ans;
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - You continuously shrink toward the smallest valid number.
 - Once you find a valid candidate, you attempt a better (smaller) one.
 
@@ -639,8 +639,8 @@ return ans;
 - Find the largest value of x such that isPossible(x) == true.
 
 **Steps:**
-- If possible(mid) â†’ keep this value, try for bigger
-- Else â†’ reduce range
+- If possible(mid) → keep this value, try for bigger
+- Else → reduce range
 
 **Java Code:**
 ```java
@@ -661,7 +661,7 @@ while (low <= high) {
 return ans;
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - You try to stretch the answer to its maximum limit while staying valid.
 
 ---
@@ -675,9 +675,9 @@ return ans;
     * Invalid answers
   * This behavior allows binary search to converge to the boundary
   * Time complexity becomes:
-    * Checking mid â†’ O(N)
-    * Binary search iterations â†’ O(log M)
-    * Combined â†’ O(N log M)
+    * Checking mid → O(N)
+    * Binary search iterations → O(log M)
+    * Combined → O(N log M)
 ---
 
 ## 7. Variants / Follow-Ups
@@ -694,47 +694,47 @@ return ans;
 
 ## 8. Tips & Observations
 
-- âœ” 1. The array has NOTHING to do with the binary search
+- ✔ 1. The array has NOTHING to do with the binary search
   * Binary Search is on answer, not array values.
-- âœ” 2. Always ensure monotonicity
+- ✔ 2. Always ensure monotonicity
   * isPossible() must give results like:
     * 0 0 0 1 1 1
     * or
     * 1 1 1 0 0 0
-- âœ” 3. Use (low <= high) ALWAYS in BSOA
+- ✔ 3. Use (low <= high) ALWAYS in BSOA
   * You must evaluate the final candidate.
-- âœ” 4. Boundaries are EVERYTHING
+- ✔ 4. Boundaries are EVERYTHING
   * Correct low and high = 50% of the problem solved.
-- âœ” 5. Minimize â†’ move left
-  * Maximize â†’ move right
-- âœ” 6. isPossible() must be efficient
+- ✔ 5. Minimize → move left
+  * Maximize → move right
+- ✔ 6. isPossible() must be efficient
   * Typically O(N).
-- âœ” 7. Never forget to store answer
+- ✔ 7. Never forget to store answer
   * Every time mid is valid:
   * ans = mid;
-- âœ” 8. Practice problems strengthen monotonic intuition
+- ✔ 8. Practice problems strengthen monotonic intuition
   * Aggressive Cows and Allocate Books are the best starters.
 
 - **Complexity**
-    - â± Time Complexity
+    - ⏱ Time Complexity
       * Each check: O(N)
       * Binary search: O(log M)
       * Final: O(N log M)
       * M = range of possible answers
-    - ðŸ’¾ Space Complexity
+    - 💾 Space Complexity
       * O(1) (no extra structures)
 ---
 
 <!-- #endregion -->
-<!-- #region 3-The answer (target) lies between 0 to âˆž -->
+<!-- #region 3-The answer (target) lies between 0 to ∞ -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q3: The answer (target) lies between 0 to âˆž</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q3: The answer (target) lies between 0 to ∞</h1>
 
 ## 1. Problem Understanding
 
 - Some binary search problems have unbounded search space, meaning:
   * You do NOT know the upper limit (high)
-  * The answer lies somewhere in [0, âˆž) or [1, âˆž)
+  * The answer lies somewhere in [0, ∞) or [1, ∞)
 - Example:
   * Find first value greater than target in an infinite sorted array
   * Find square root (answer grows unbounded w.r.t input)
@@ -749,7 +749,7 @@ return ans;
 - Search space is unbounded
 - Answer is guaranteed to exist
 - isPossible(x) must be monotonic
-  * (true â†’ always true OR false â†’ always false afterward)
+  * (true → always true OR false → always false afterward)
 - Must work in O(log answer) or O(log range) time
 ---
 
@@ -757,7 +757,7 @@ return ans;
 
 - Answer is very small (0 or 1)
 - Extremely large target (like 10^18)
-- Condition can overflow â†’ use long
+- Condition can overflow → use long
 - Monotonicity must hold
 - Infinite loop possible if bounds not chosen properly
 ---
@@ -765,15 +765,15 @@ return ans;
 ## 4. Examples
 
 ```text
-â€œFind first value â‰¥ target in infinite sorted arrayâ€
+“Find first value ≥ target in infinite sorted array”
 
-â€œFind minimum x so that f(x) â‰¥ kâ€
+“Find minimum x so that f(x) ≥ k”
 
-â€œFind max/min using binary search without known upper boundâ€
+“Find max/min using binary search without known upper bound”
 
-â€œRoot findingâ€
+“Root finding”
 
-â€œMinimum speed to finish tasksâ€
+“Minimum speed to finish tasks”
 ```
 
 ---
@@ -783,15 +783,15 @@ return ans;
 ### Approach 1: Exponential Expansion + Binary Search (Universal Template)
 
 **Idea:**
-- âœ” Works when the answer âˆˆ [0, âˆž)
-- âœ” No upper bound known
-- âœ” Perfect for BSOA (Binary Search on Answer)
+- ✔ Works when the answer ∈ [0, ∞)
+- ✔ No upper bound known
+- ✔ Perfect for BSOA (Binary Search on Answer)
 
 **Steps:**
 - Start with a small range
 - Double the high boundary until you exceed the condition
 - Then apply binary search in the bounded region
-- STEP 1 â€” Find upper bound using exponential expansion
+- STEP 1 — Find upper bound using exponential expansion
   * low = 0
   * high = 1
   * while (isPossible(high) == false)
@@ -801,7 +801,7 @@ return ans;
     * low is invalid
     * high is valid
     * This forms the typical monotonic window for binary search.
-- STEP 2 â€” Perform classic binary search
+- STEP 2 — Perform classic binary search
   * Now we know answer lies in [low, high]
     * while (low <= high):
         * mid = (low + high)/2
@@ -849,7 +849,7 @@ boolean isPossible(long x) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - When you don't know the upper bound, start small
 - Keep doubling until you cross the point where the condition becomes true
 - This creates a valid search range
@@ -857,12 +857,12 @@ boolean isPossible(long x) {
 - Used in 100+ real problems (range search)
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * Exponential expansion: O(log answer)
   * Binary search: O(log answer)
   * Overall:
     * O(log answer)
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
 ---
@@ -884,8 +884,8 @@ boolean isPossible(long x) {
 - Use long for mid * mid type operations
 - Exponential expansion ensures O(log answer) complexity
 - Works even for answer up to 10^18
-- For minimizing â†’ move high
-- For maximizing â†’ move low
+- For minimizing → move high
+- For maximizing → move low
 - Always update answer when condition becomes true
 ---
 
@@ -905,7 +905,7 @@ boolean isPossible(long x) {
 
 ## 2. Constraints
 
-- Answer must lie in a range: lower_bound â†’ upper_bound
+- Answer must lie in a range: lower_bound → upper_bound
 - isPossible(mid) must be monotonic (if true at mid, true for all higher or lower mid)
 - Condition must be checkable in polynomial time (often O(n))
 ---
@@ -924,19 +924,19 @@ boolean isPossible(long x) {
 
 ```text
 Minimize k such that sum(ceil(arr[i]/k)) <= limit
-â†’ Smallest Divisor
+→ Smallest Divisor
 
 Minimize days such that we can form m bouquets
-â†’ Minimum Days to Make Bouquets
+→ Minimum Days to Make Bouquets
 
 Find maximum minimum distance such that cows can be placed
-â†’ Aggressive Cows
+→ Aggressive Cows
 
 Minimize eating speed k such that Koko finishes in h hours
-â†’ Koko Eating Bananas
+→ Koko Eating Bananas
 
 Minimize maximum pages student reads
-â†’ Allocate Books
+→ Allocate Books
 ```
 
 ---
@@ -949,7 +949,7 @@ Minimize maximum pages student reads
 - Try all possible answers (k or day or speed) and check if they satisfy condition.
 
 **Steps:**
-- Loop from L â†’ R
+- Loop from L → R
 - For each mid, run feasibility check
 - Return first that works (minimize) or last that works (maximize)
 
@@ -960,14 +960,14 @@ for (int x = low; x <= high; x++) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Works but extremely slow.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O((range of answer) * cost_of_isPossible)
-  * Often â†’ TLE
-- ðŸ’¾ Space Complexity
+  * Often → TLE
+- 💾 Space Complexity
   * O(1)
 
 ### Approach 2: Binary Search on Answer (l <= h)
@@ -982,7 +982,7 @@ for (int x = low; x <= high; x++) {
   * mid = ...
   * if possible(mid):
     * ans = mid
-    * high = mid â€“ 1
+    * high = mid – 1
   * else low = mid + 1
 - return ans
 
@@ -1001,13 +1001,13 @@ while (low <= high) {
 return ans;
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Explicitly stores best possible mid.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log(range) * cost_of_isPossible)
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
 ---
@@ -1019,16 +1019,16 @@ return ans;
 - Feasibility forms a monotonic curve
 - For minimization:
   * F F F F T T T T
-  * â†’ find first T
+  * → find first T
 - For maximization:
   * T T T T F F F F
-  * â†’ find last T
+  * → find last T
 - Binary search excels in finding this boundary.
 ---
 
 ## 7. Variants / Follow-Ups
 
-- âœ” Classic BSOA Problems
+- ✔ Classic BSOA Problems
   * Smallest Divisor
   * Koko Eating Bananas
   * Minimum Days to Make M Bouquets
@@ -1037,7 +1037,7 @@ return ans;
   * Split Array Largest Sum
   * Painter Partition Problem
   * Binary Search on continuous values (sqrt, cbrt)
-- âœ” Variants Where Monotonic Behavior Is Tricky
+- ✔ Variants Where Monotonic Behavior Is Tricky
   * Nth Root
   * Minimize maximum gas station distance
   * Minimize time to repair cars
@@ -1054,36 +1054,36 @@ return ans;
 - For minimizing something, use (l < h)
 - For storing best solution, use (l <= h)
 
-- **ðŸ•³ï¸ Pitfalls**
+- **🕳️ Pitfalls**
     - Misidentifying search space
     - Using wrong monotonic direction
     - Binary searching the array instead of the answer
     - Overflow in (mid * something)
-    - Starting low = 0 where answer must be â‰¥1
+    - Starting low = 0 where answer must be ≥1
     - Forgetting to sort (Aggressive Cows, Allocate Books)
     - Incorrect feasibility logic
     - Returning wrong boundary (low vs low-1)
 
-- **ðŸ§© LEVEL 1 â€” Beginner**
+- **🧩 LEVEL 1 — Beginner**
     - (Recognize simple monotonic functions)
       * Square Root (Binary Search)
       * Nth Root
       * Smallest Divisor
       * Koko Eating Bananas
 
-- **ðŸ§  LEVEL 2 â€” Intermediate**
+- **🧠 LEVEL 2 — Intermediate**
     - (Monotonic with arrays)
       * Minimum Days to Make Bouquets
       * Aggressive Cows
       * Magnetic Force Between Balls
 
-- **ðŸš€ LEVEL 3 â€” Advanced**
+- **🚀 LEVEL 3 — Advanced**
     - (Partition + minimization/maximization)
       * Allocate Books
       * Painter Partition
       * Split Array Largest Sum
 
-- **ðŸ§¨ LEVEL 4 â€” Master**
+- **🧨 LEVEL 4 — Master**
     - (Complex feasibility checks)
       * Minimize maximum distance to gas stations
       * Min time to repair cars
@@ -1103,7 +1103,7 @@ return ans;
 - Rotated: [3,4,5,1,2]
 - Your task:
 - Find the minimum element in the rotated array.
-- Must run in O(log n) â†’ Binary Search.
+- Must run in O(log n) → Binary Search.
 ---
 
 ## 2. Constraints
@@ -1111,12 +1111,12 @@ return ans;
 - 1 <= n <= 5000
 - Numbers can be negative.
 - All elements are unique
-- Must use binary search â†’ no linear scan.
+- Must use binary search → no linear scan.
 ---
 
 ## 3. Edge Cases
 
-- Array not rotated â†’ minimum at index 0.
+- Array not rotated → minimum at index 0.
 - Example: [1,2,3,4]
 - Rotation by n times also gives original array.
 - Minimum might be at the boundaries.
@@ -1161,15 +1161,15 @@ Output:
 - The minimum of any array is simply the smallest element.
 - Directly scan the array.
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - A sorted rotated array still contains a minimum somewhere.
 - You inspect all elements to find it.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(n)
   * Because scanning all elements.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
   * Only one variable used.
 
@@ -1191,31 +1191,31 @@ public static int findMin(int[] nums) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - The array is sorted except one pivot point.
 - Minimum sits right after the point where order breaks.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(n) worst case
   * If array not rotated.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
-### Approach 3: Binary Search â€” O(log n)
+### Approach 3: Binary Search — O(log n)
 
 **Idea:**
 - Use binary search to find the pivot where rotation happened.
 - Observations:
   * If nums[mid] > nums[right], the minimum is to the right.
-  * Else â†’ minimum is to the left or at mid.
+  * Else → minimum is to the left or at mid.
 
 **Steps:**
 - Set l = 0, r = n-1.
 - While l < r:
   * Compute mid.
-  * If nums[mid] > nums[r] â†’ search right half.
-  * Else â†’ search left half (including mid).
+  * If nums[mid] > nums[r] → search right half.
+  * Else → search left half (including mid).
 - At the end l = index of minimum.
 
 **Java Code:**
@@ -1237,17 +1237,17 @@ public static int findMin(int[] nums) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- When nums[mid] > nums[r], right half is unsorted â†’ min lies there.
-- When nums[mid] <= nums[r], right half is sorted â†’ min cannot be in sorted region except possibly mid.
+**💭 Intuition Behind the Approach:**
+- When nums[mid] > nums[r], right half is unsorted → min lies there.
+- When nums[mid] <= nums[r], right half is sorted → min cannot be in sorted region except possibly mid.
 - Binary search narrows search space towards the pivot point.
 - This is a classic Binary Search on answer space, not on presence.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log n)
   * Because each iteration halves the search space.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
   * Only two pointers.
 
@@ -1266,15 +1266,15 @@ public static int findMin(int[] nums) {
 ## 7. Variants / Follow-Ups
 
 - Find index of minimum instead of value.
-- Find number of times rotated â†’ index of min is the rotation count.
-- Rotated array with duplicates â†’ trickier binary search.
+- Find number of times rotated → index of min is the rotation count.
+- Rotated array with duplicates → trickier binary search.
 - Search element in rotated sorted array.
 ---
 
 ## 8. Tips & Observations
 
 - Always compare with the rightmost element for easier logic.
-- If whole array is already sorted â†’ return nums[0].
+- If whole array is already sorted → return nums[0].
 - If duplicates exist:
   * Need to shrink boundaries carefully.
 - Rotated sorted array problems ALWAYS revolve around:
@@ -1291,26 +1291,26 @@ public static int findMin(int[] nums) {
 
 - You are given a number x.
 - You must return:
-- If x is a perfect square â†’ its exact square root
-- Otherwise â†’ floor(âˆšx)
+- If x is a perfect square → its exact square root
+- Otherwise → floor(√x)
 - You must not use the built-in sqrt() function.
 - Time complexity must be O(log N), which hints binary search.
 ---
 
 ## 2. Constraints
 
-- 1 â‰¤ x â‰¤ 10^7
+- 1 ≤ x ≤ 10^7
 - Input is a single integer
 - Output must be an integer (floor value)
 ---
 
 ## 3. Edge Cases
 
-- x = 1 â†’ answer = 1
-- Very small values: x = 2, 3 â†’ answer = 1
+- x = 1 → answer = 1
+- Very small values: x = 2, 3 → answer = 1
 - Large inputs up to 10^7
-- Perfect squares: 4, 9, 16, 25 â†’ return exact root
-- Overflow of mid * mid â†’ use long to prevent overflow
+- Perfect squares: 4, 9, 16, 25 → return exact root
+- Overflow of mid * mid → use long to prevent overflow
 ---
 
 ## 4. Examples
@@ -1336,10 +1336,10 @@ Output: 1
 ### Approach 1: Brute Force Approach (Linear Search)
 
 **Idea:**
-- Try every number from 1 to x and check the last i such that i*i â‰¤ x.
+- Try every number from 1 to x and check the last i such that i*i ≤ x.
 
 **Steps:**
-- Loop from i=1 to i*i â‰¤ x.
+- Loop from i=1 to i*i ≤ x.
 - Track the last valid number.
 - Return it.
 
@@ -1354,15 +1354,15 @@ public static int mySqrt(int x) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Directly simulate what square root means.
 - Simple but slow.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
-  * O(âˆšN)
-  * Because loop runs until i*i â‰¤ x.
-- ðŸ’¾ Space Complexity
+- ⏱️ Time Complexity
+  * O(√N)
+  * Because loop runs until i*i ≤ x.
+- 💾 Space Complexity
   * O(1)
   * Only counters used.
 
@@ -1370,7 +1370,7 @@ public static int mySqrt(int x) {
 
 **Idea:**
 - Instead of checking all numbers from 1 to x, we can optimize by stopping early once i*i crosses x.
-- (Slightly better than brute but still worst-case âˆšN)
+- (Slightly better than brute but still worst-case √N)
 
 **Steps:**
 - Same as brute but break early.
@@ -1384,14 +1384,14 @@ public static int mySqrt(int x) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Stop as soon as you've gone past the root.
-- Still linear in âˆšN but less work than brute.
+- Still linear in √N but less work than brute.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
-  * O(âˆšN)
-- ðŸ’¾ Space Complexity
+- ⏱️ Time Complexity
+  * O(√N)
+- 💾 Space Complexity
   * O(1)
 
 ### Approach 3: Binary Search (Required O(log N))
@@ -1399,12 +1399,12 @@ public static int mySqrt(int x) {
 **Idea:**
 - The real square root lies between 1 and x.
 - Binary search this space for the greatest mid such that:
-- mid * mid â‰¤ x
+- mid * mid ≤ x
 
 **Steps:**
 - Let low = 1, high = x
 - Compute mid
-- If mid*mid â‰¤ x, store it and move right (search for bigger)
+- If mid*mid ≤ x, store it and move right (search for bigger)
 - Else move left
 - Return last stored answer
 
@@ -1431,16 +1431,16 @@ public static int mySqrt(int x) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Square root grows slowly, so binary search reduces the search space by half every step.
-- We want the largest number whose square is â‰¤ x â†’ therefore move right on valid mid.
+- We want the largest number whose square is ≤ x → therefore move right on valid mid.
 - This ensures correctness for both perfect and non-perfect squares.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log N)
   * Because binary search repeatedly halves the range.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
   * Only variables used.
 
@@ -1449,25 +1449,25 @@ public static int mySqrt(int x) {
 ## 6. Justification / Proof of Optimality
 
 - Binary search is optimal because the search range is monotonic (i*i increases as i increases).
-- Unlike brute force (âˆšN steps), binary search does it extremely fast in log N steps.
+- Unlike brute force (√N steps), binary search does it extremely fast in log N steps.
 - Works well for values up to 10^7 easily within constraints.
 ---
 
 ## 7. Variants / Follow-Ups
 
-- Calculate ceil of âˆšx
+- Calculate ceil of √x
 - Return true/false if x is a perfect square
-- Return âˆšx without using multiplication (Newtonâ€™s Method)
-- âˆšx for long or big integers
+- Return √x without using multiplication (Newton’s Method)
+- √x for long or big integers
 ---
 
 ## 8. Tips & Observations
 
 - Always use long for mid * mid to avoid integer overflow.
 - When searching for largest valid, use:
-  * if (mid*mid <= x) â†’ move right
+  * if (mid*mid <= x) → move right
 - For a perfect square, binary search will naturally find it.
-- Classic question in binary search category â€” must be mastered.
+- Classic question in binary search category — must be mastered.
 ---
 
 <!-- #endregion -->
@@ -1478,7 +1478,7 @@ public static int mySqrt(int x) {
 ## 1. Problem Understanding
 
 - You are given a matrix where:
-  * Each row is sorted from left â†’ right.
+  * Each row is sorted from left → right.
   * The first element of each row is greater than the last element of previous row.
   * This means the entire matrix behaves like one sorted array.
 - Goal:
@@ -1489,17 +1489,17 @@ public static int mySqrt(int x) {
 ## 2. Constraints
 
 - 1 <= m, n <= 1000
-- m * n â‰¤ 10^6 â†’ binary search is perfect.
+- m * n ≤ 10^6 → binary search is perfect.
 - Values range from -10^4 to 10^4.
 ---
 
 ## 3. Edge Cases
 
-- x smaller than smallest element â†’ false
-- x larger than largest element â†’ false
-- 1Ã—1 matrix
+- x smaller than smallest element → false
+- x larger than largest element → false
+- 1×1 matrix
 - Single row or single column
-- Large matrix â†’ must use O(log(m*n))
+- Large matrix → must use O(log(m*n))
 ---
 
 ## 4. Examples
@@ -1510,10 +1510,10 @@ Matrix:
 1  3  5  7
 10 11 16 20
 23 30 34 60
-x = 10 â†’ true
+x = 10 → true
 
 Example 2
-x = 12 â†’ false
+x = 12 → false
 ```
 
 ---
@@ -1540,11 +1540,11 @@ public static boolean searchMatrix(int[][] mat, int x) {
 ```
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
-  * O(m*n) â€” checks every cell
+- ⏱️ Time Complexity
+  * O(m*n) — checks every cell
   * Why: No skipping possible.
-- ðŸ’¾ Space Complexity
-  * O(1) â€” no extra space
+- 💾 Space Complexity
+  * O(1) — no extra space
 
 ### Approach 2: Row Selection + Binary Search (Better)
 
@@ -1574,17 +1574,17 @@ public static boolean searchMatrix(int[][] mat, int x) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Each row is sorted, so we can binary search inside the correct row.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * Worst-case: O(m + log n)
-  * Why: Scan rows â†’ then binary search inside one row.
-- ðŸ’¾ Space Complexity
+  * Why: Scan rows → then binary search inside one row.
+- 💾 Space Complexity
   * O(1)
 
-### Approach 3: Treat as Sorted 1D Array (Optimal â€” O(log(m*n)))
+### Approach 3: Treat as Sorted 1D Array (Optimal — O(log(m*n)))
 
 **Idea:**
 - Because:
@@ -1617,16 +1617,16 @@ public static boolean searchMatrix(int[][] mat, int x) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Youâ€™re performing binary search on a flattened version of the matrix.
+**💭 Intuition Behind the Approach:**
+- You’re performing binary search on a flattened version of the matrix.
 - Because matrix is globally sorted, this works flawlessly.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log(m*n))
   * Why: Classic binary search on total number of elements.
-- ðŸ’¾ Space Complexity
-  * O(1) â€” constant space.
+- 💾 Space Complexity
+  * O(1) — constant space.
 
 ---
 
@@ -1634,7 +1634,7 @@ public static boolean searchMatrix(int[][] mat, int x) {
 
 - Brute force is too slow for large m*n.
 - Row-wise selection reduces search but still touches many rows.
-- Flattened binary search guarantees minimal comparisons and utilizes full sorted property â€” best approach.
+- Flattened binary search guarantees minimal comparisons and utilizes full sorted property — best approach.
 ---
 
 ## 7. Variants / Follow-Ups
@@ -1646,7 +1646,7 @@ public static boolean searchMatrix(int[][] mat, int x) {
 
 ## 8. Tips & Observations
 
-- Whenever a matrix has this row-start > previous-row-end pattern â†’ treat like 1D sorted list.
+- Whenever a matrix has this row-start > previous-row-end pattern → treat like 1D sorted list.
 - Binary search remains the strongest pattern if global monotonicity exists.
 ---
 
@@ -1658,7 +1658,7 @@ public static boolean searchMatrix(int[][] mat, int x) {
 ## 1. Problem Understanding
 
 - Given a sorted (non-decreasing) array nums, find the first and last index of a given target.
-- If target doesnâ€™t appear, return [-1, -1].
+- If target doesn’t appear, return [-1, -1].
 - We must do it in O(log n), so binary search is required.
 ---
 
@@ -1672,10 +1672,10 @@ public static boolean searchMatrix(int[][] mat, int x) {
 
 ## 3. Edge Cases
 
-- n = 0 â†’ return [-1, -1]
+- n = 0 → return [-1, -1]
 - Target is smaller than first element
 - Target is greater than last element
-- All elements are the same as target â†’ output [0, n-1]
+- All elements are the same as target → output [0, n-1]
 - Target appears once
 - Target appears multiple times
 ---
@@ -1718,8 +1718,8 @@ Output
 - Iterate whole array once to find first occurrence and last occurrence.
 
 **Steps:**
-- Loop from left to right â†’ find first match
-- Loop from right to left â†’ find last match
+- Loop from left to right → find first match
+- Loop from right to left → find last match
 
 **Java Code:**
 ```java
@@ -1744,13 +1744,13 @@ public int[] searchRange(int[] nums, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- We check the entire array because itâ€™s unspecific where target may occur.
+**💭 Intuition Behind the Approach:**
+- We check the entire array because it’s unspecific where target may occur.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(n) because we scan the array twice.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1) because no extra space.
 
 ### Approach 2: Two Binary Searches (Optimal)
@@ -1815,18 +1815,18 @@ private int findLast(int[] nums, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Binary search normally stops when the target is found, but we modify it:
   * For first occurrence, we force the search to continue left until no earlier index contains the target.
   * For last occurrence, we force search right.
 - This preserves the O(log n) speed but still finds boundaries.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
-  * Two binary searches â†’ O(log n)
+- ⏱️ Time Complexity
+  * Two binary searches → O(log n)
   * Why?
     * Each binary search halves the array repeatedly, so two searches still log n + log n = log n.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
   * Why?
     * Only variables used; no extra data structures.
@@ -1842,7 +1842,7 @@ private int findLast(int[] nums, int target) {
 
 - Find first occurrence only
 - Find last occurrence only
-- Count occurrences â†’ last - first + 1
+- Count occurrences → last - first + 1
 - Works for rotated sorted arrays with modifications
 ---
 
@@ -1851,8 +1851,8 @@ private int findLast(int[] nums, int target) {
 - Always prefer binary search if array is sorted and you need positions.
 - Use the mid calculation trick:
 - mid = low + (high - low) / 2 to avoid overflow.
-- Searching for first â†’ move left
-- Searching for last â†’ move right
+- Searching for first → move left
+- Searching for last → move right
 ---
 
 <!-- #endregion -->
@@ -1865,7 +1865,7 @@ private int findLast(int[] nums, int target) {
 - You are given a binary, sorted in non-increasing order array:
   * 1 1 1 ... 1 0 0 0
 - You must find the count of 1s.
-- Because all 1s come first and all 0s later, the problem becomes finding the boundary between 1 â†’ 0.
+- Because all 1s come first and all 0s later, the problem becomes finding the boundary between 1 → 0.
 - Binary search helps find this boundary in O(log n).
 ---
 
@@ -1879,8 +1879,8 @@ private int findLast(int[] nums, int target) {
 
 ## 3. Edge Cases
 
-- All 1s â†’ count = N
-- All 0s â†’ count = 0
+- All 1s → count = N
+- All 0s → count = 0
 - Only one element
 - Transition happens at index 0
 - Transition happens at index N-1
@@ -1943,12 +1943,12 @@ public int countOnes(int[] arr) {
 ```
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(k) where k = number of initial 1s
-  * Worst case â†’ O(n)
+  * Worst case → O(n)
   * Why?
     * You may traverse the entire array if all values are 1.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
   * Why?
     * No extra memory used.
@@ -1958,11 +1958,11 @@ public int countOnes(int[] arr) {
 **Idea:**
 - Count of 1s = index of the first 0.
 - Example:
-- [1 1 1 0 0] â†’ first 0 at index 3 â†’ count = 3.
+- [1 1 1 0 0] → first 0 at index 3 → count = 3.
 
 **Steps:**
 - Binary search to find the first index where arr[mid] == 0.
-- If no 0 exists â†’ return N.
+- If no 0 exists → return N.
 - Else return that index.
 
 **Java Code:**
@@ -1986,16 +1986,16 @@ public int countOnes(int[] arr) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - The first 0 divides the array into:
 - [1s] [0s]
 - Finding that boundary gives us the count of 1s.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log n)
   * Because each step halves the search space.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
   * Only a few variables used.
 
@@ -2009,7 +2009,7 @@ public int countOnes(int[] arr) {
 - Binary search over array.
 - If arr[mid] == 1, record index and move right to find last 1.
 - If arr[mid] == 0, move left.
-- At end â†’
+- At end →
   * if last1 = -1, return 0
   * else return last1 + 1
 
@@ -2034,16 +2034,16 @@ public int countOnes(int[] arr) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - The array looks like this:
-  * 1 1 1 â€¦ 1 | 0 0 0
+  * 1 1 1 … 1 | 0 0 0
 - Binary search targets the rightmost 1 efficiently.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log n)
   * Boundary search using binary search.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
 ---
@@ -2068,8 +2068,8 @@ public int countOnes(int[] arr) {
 
 - Always look for monotonicity to apply binary search.
 - For non-increasing binary arrays:
-  * First 0 â†’ count of 1s
-  * Last 1 â†’ count of 1s
+  * First 0 → count of 1s
+  * Last 1 → count of 1s
 - Binary search boundary problems always need careful condition handling.
 ---
 
@@ -2082,25 +2082,25 @@ public int countOnes(int[] arr) {
 
 - You are given a sorted array without duplicates and a value x.
 - You must find the floor of x:
-  * Floor of x = largest element â‰¤ x.
+  * Floor of x = largest element ≤ x.
 - Return its index (0-based).
-- If it doesnâ€™t exist â†’ return -1.
+- If it doesn’t exist → return -1.
 ---
 
 ## 2. Constraints
 
-- 1 â‰¤ N â‰¤ 1e5
+- 1 ≤ N ≤ 1e5
 - Array sorted strictly increasing
-- 0 â‰¤ x â‰¤ arr[N-1]
+- 0 ≤ x ≤ arr[N-1]
 ---
 
 ## 3. Edge Cases
 
-- x < smallest element â†’ return -1
-- x > largest element â†’ return index of last element
-- Exact match exists â†’ return index
+- x < smallest element → return -1
+- x > largest element → return index of last element
+- Exact match exists → return index
 - Single-element array
-- Missing element but floor exists (example: x=5, array=[1,2,8â€¦])
+- Missing element but floor exists (example: x=5, array=[1,2,8…])
 ---
 
 ## 4. Examples
@@ -2169,30 +2169,30 @@ public int floorIndex(int[] arr, int x) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Since array is sorted, once you exceed x, you wonâ€™t find a valid floor later.
+**💭 Intuition Behind the Approach:**
+- Since array is sorted, once you exceed x, you won’t find a valid floor later.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(n)
   * Might scan whole array.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
 ### Approach 2: Binary Search (Optimal)
 
 **Idea:**
-- Use binary search to find last element â‰¤ x.
+- Use binary search to find last element ≤ x.
 
 **Steps:**
 - Initialize low=0, high=n-1, ans=-1
-- While low â‰¤ high:
+- While low ≤ high:
   * Compute mid
-  * If arr[mid] â‰¤ x:
+  * If arr[mid] ≤ x:
     * Record ans = mid
-    * Go right â†’ low = mid + 1
+    * Go right → low = mid + 1
   * Else (arr[mid] > x):
-    * Go left â†’ high = mid - 1
+    * Go left → high = mid - 1
 - Return ans
 
 **Java Code:**
@@ -2216,16 +2216,16 @@ public int floorIndex(int[] arr, int x) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - This is a boundary search:
-- We want the rightmost value that is still â‰¤ x.
+- We want the rightmost value that is still ≤ x.
 - Binary search lets us jump over large sections to find this efficiently.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log n)
   * Binary search halves the space each step.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
 - O(1)
 - Constant space.
 
@@ -2239,7 +2239,7 @@ public int floorIndex(int[] arr, int x) {
 
 ## 7. Variants / Follow-Ups
 
-- Find ceil of x (smallest â‰¥ x)
+- Find ceil of x (smallest ≥ x)
 - Find first element greater than x
 - Lower bound / upper bound problems
 - Find last occurrence of a number
@@ -2247,8 +2247,8 @@ public int floorIndex(int[] arr, int x) {
 
 ## 8. Tips & Observations
 
-- Floor â†’ go right when arr[mid] <= x
-- Ceil â†’ go left when arr[mid] >= x
+- Floor → go right when arr[mid] <= x
+- Ceil → go left when arr[mid] >= x
 - Boundary problems always use modified binary search
 - Always store ans before moving
 ---
@@ -2265,15 +2265,15 @@ public int floorIndex(int[] arr, int x) {
   * Rotated : 4 5 6 7 0 1 2
 - Your task:
 - Find the index of target B in this rotated sorted array.
-- If not present â†’ return -1.
+- If not present → return -1.
 - No duplicates exist.
-- Goal: O(log n) â†’ must use binary search.
+- Goal: O(log n) → must use binary search.
 ---
 
 ## 2. Constraints
 
-- 1 â‰¤ N â‰¤ 1e6
-- 1 â‰¤ A[i] â‰¤ 1e9
+- 1 ≤ N ≤ 1e6
+- 1 ≤ A[i] ≤ 1e9
 - Array was sorted then rotated
 - All elements are unique
 - Must achieve O(log n)
@@ -2328,7 +2328,7 @@ Output
 
 **Idea:**
 - Loop from 0 to N-1
-- If element equals target â†’ return index
+- If element equals target → return index
 - Else return -1
 
 ### Approach 2: Find Pivot then Binary Search Both Halves (Better)
@@ -2336,7 +2336,7 @@ Output
 **Idea:**
 - In a rotated sorted array, the smallest element is the pivot.
 - Example:
-  * 4 5 6 7 0 1 2 â†’ pivot is at index 4.
+  * 4 5 6 7 0 1 2 → pivot is at index 4.
 - Steps:
   * Find pivot using binary search
   * Decide whether target is in left side or right side
@@ -2344,7 +2344,7 @@ Output
 
 **Steps:**
 - Binary search to find smallest element index (pivot).
-- If target lies in interval [arr[pivot], arr[n-1]] â†’ search in right half.
+- If target lies in interval [arr[pivot], arr[n-1]] → search in right half.
 - Else search in left half.
 
 **Java Code:**
@@ -2380,16 +2380,16 @@ private int binarySearch(int[] arr, int low, int high, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - A rotated sorted array is two sorted halves.
-- Find pivot â†’ pick correct half â†’ normal binary search.
+- Find pivot → pick correct half → normal binary search.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * Pivot search: O(log n)
   * Binary search in correct half: O(log n)
   * Total: O(log n)
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
 ### Approach 3: Single-Pass Binary Search (Optimal)
@@ -2404,14 +2404,14 @@ private int binarySearch(int[] arr, int low, int high, int target) {
 
 **Steps:**
 - Standard binary search loop
-- If arr[mid] == target â†’ return mid
+- If arr[mid] == target → return mid
 - Check which half is sorted
-  * If left half sorted (arr[low] â‰¤ arr[mid]):
+  * If left half sorted (arr[low] ≤ arr[mid]):
     * Check if target lies in left sorted range
-    * â†’ move right or left accordingly
+    * → move right or left accordingly
   * Else right half sorted:
     * Check if target lies in right sorted range
-    * â†’ move accordingly
+    * → move accordingly
 
 **Java Code:**
 ```java
@@ -2443,19 +2443,19 @@ public int search(int[] arr, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Every mid splits the array into two halves, and one half is guaranteed to be sorted.
 - By checking:
   * whether target lies inside that sorted half
   * or in the unsorted half
-- we discard half of the array each time â†’ classic binary search.
+- we discard half of the array each time → classic binary search.
 - This avoids finding pivot separately.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log n)
   * We halve the search space every iteration.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
 ---
@@ -2478,9 +2478,9 @@ public int search(int[] arr, int target) {
 
 ## 8. Tips & Observations
 
-- At every mid, one half is sorted â†’ the key insight
-- If arr[low] <= arr[mid] â†’ left sorted
-- Else â†’ right sorted
+- At every mid, one half is sorted → the key insight
+- If arr[low] <= arr[mid] → left sorted
+- Else → right sorted
 - Use ranges carefully when comparing target
 - Avoid infinite loops by updating low and high properly
 ---
@@ -2497,7 +2497,7 @@ public int search(int[] arr, int target) {
 - Then strictly decreases
 - Example:
   * 0 2 5 7 6 3 1
-          * â†‘
+          * ↑
          * peak
 - You must find the index of the peak element.
 - Mountain array guarantees:
@@ -2508,8 +2508,8 @@ public int search(int[] arr, int target) {
 
 ## 2. Constraints
 
-- 3 â‰¤ n â‰¤ 1e5
-- Values: 0 â‰¤ arr[i] â‰¤ 1e6
+- 3 ≤ n ≤ 1e5
+- Values: 0 ≤ arr[i] ≤ 1e6
 - Array is guaranteed to be a perfect mountain
 - Must solve in O(log n)
 ---
@@ -2576,8 +2576,8 @@ Output
 **Steps:**
 - Loop from i = 1 to n-1
 - If arr[i] < arr[i-1]
-  * â†’ return i-1
-- Because guaranteed mountain â†’ no other checks needed.
+  * → return i-1
+- Because guaranteed mountain → no other checks needed.
 
 **Java Code:**
 ```java
@@ -2589,33 +2589,33 @@ public int peakIndex(int[] arr) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Peak is exactly where sequence changes from increasing â†’ decreasing.
+**💭 Intuition Behind the Approach:**
+- Peak is exactly where sequence changes from increasing → decreasing.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(n)
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
 ### Approach 2: Binary Search (Optimal)
 
 **Idea:**
 - Binary search for the point where slope changes:
-  * If arr[mid] < arr[mid + 1] â†’ we are on the increasing slope
-  * â†’ peak is on the right
-  * â†’ move low = mid + 1
-  * If arr[mid] > arr[mid + 1] â†’ we are on the decreasing slope
-  * â†’ mid could be the peak
-  * â†’ move high = mid
-- Eventually low == high â†’ peak index.
+  * If arr[mid] < arr[mid + 1] → we are on the increasing slope
+  * → peak is on the right
+  * → move low = mid + 1
+  * If arr[mid] > arr[mid + 1] → we are on the decreasing slope
+  * → mid could be the peak
+  * → move high = mid
+- Eventually low == high → peak index.
 
 **Steps:**
 - Initialize low = 0, high = n-1
 - While low < high:
   * Compute mid
-  * If increasing part â†’ move right
-  * If decreasing part â†’ move left
+  * If increasing part → move right
+  * If decreasing part → move left
 - Return low (same as high)
 
 **Java Code:**
@@ -2656,12 +2656,12 @@ public int findPeak(int arr[], int n) {
             return mid;
         }
 
-        // If increasing â†’ peak lies to the right
+        // If increasing → peak lies to the right
         if (arr[mid] < arr[mid + 1]) {
             low = mid + 1;
         }
         else {
-            // If decreasing â†’ peak lies to the left
+            // If decreasing → peak lies to the left
             high = mid - 1;
         }
     }
@@ -2671,19 +2671,19 @@ public int findPeak(int arr[], int n) {
   
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - The mountain array has a monotonic behavior:
-  * Increasing â†’ Peak â†’ Decreasing
+  * Increasing → Peak → Decreasing
 - At any mid:
-  * If arr[mid] < arr[mid+1], slope is increasing â†’ move right
-  * If arr[mid] > arr[mid+1], slope is decreasing â†’ peak is left or mid
+  * If arr[mid] < arr[mid+1], slope is increasing → move right
+  * If arr[mid] > arr[mid+1], slope is decreasing → peak is left or mid
 - We narrow down the peak using binary search.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log n)
   * We cut the search space in half each step.
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
 ---
@@ -2720,17 +2720,17 @@ public int findPeak(int arr[], int n) {
 
 ## 1. Problem Understanding
 
-- Youâ€™re given a bitonic array â€” strictly increasing then strictly decreasing.
+- You’re given a bitonic array — strictly increasing then strictly decreasing.
 - You need to find the index of a target element.
-- If not present â†’ return -1.
+- If not present → return -1.
 ---
 
 ## 2. Constraints
 
-- 1 â‰¤ N â‰¤ 10^5
-- Array elements: -10^6 â‰¤ arr[i] â‰¤ 10^6
+- 1 ≤ N ≤ 10^5
+- Array elements: -10^6 ≤ arr[i] ≤ 10^6
 - Array is bitonic, not rotated.
-- Must run better than O(N) â†’ aim for O(log N).
+- Must run better than O(N) → aim for O(log N).
 ---
 
 ## 3. Edge Cases
@@ -2772,7 +2772,7 @@ Output: -1
 
 **Steps:**
 - Loop from 0 to N-1
-- If arr[i] == target â†’ return i
+- If arr[i] == target → return i
 - Else return -1
 
 **Java Code:**
@@ -2786,7 +2786,7 @@ public int findInBitonic(int[] arr, int target) {
 ```
 
 **Complexity (Time & Space):**
-- â±ï¸ Complexity
+- ⏱️ Complexity
 - Time: O(N)
   * Because we may scan the entire array.
 - Space: O(1)
@@ -2800,7 +2800,7 @@ public int findInBitonic(int[] arr, int target) {
 - Perform descending binary search on right side.
 
 **Steps:**
-- Step 1 â€” Find Peak
+- Step 1 — Find Peak
   * Binary search to find index peak where:
     * arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1]
 - Step 2
@@ -2857,18 +2857,18 @@ private int descBinary(int[] arr, int low, int high, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - A bitonic array has only one peak. You can find it using binary search in O(log N).
 - Once you know the peak:
   * Left part is sorted ascending.
   * Right part is sorted descending.
-  * Binary search works on both separately â€” guaranteeing logarithmic time.
+  * Binary search works on both separately — guaranteeing logarithmic time.
 
 **Complexity (Time & Space):**
 - Time:
-  * Peak search â†’ O(log N)
-  * Two binary searches â†’ O(log N)
-  * Total â†’ O(log N)
+  * Peak search → O(log N)
+  * Two binary searches → O(log N)
+  * Total → O(log N)
   * Why?
     * All operations are binary searches that divide the search space in half each iteration.
 - Space:
@@ -2881,10 +2881,10 @@ private int descBinary(int[] arr, int low, int high, int target) {
 **Idea:**
 - Perform binary search directly using bitonic property:
 - At each mid:
-- If arr[mid] == target â†’ return mid
+- If arr[mid] == target → return mid
 - Determine whether you're in increasing or decreasing part:
-  * If arr[mid] < arr[mid+1] â†’ you're in increasing part
-  * Else â†’ in decreasing part
+  * If arr[mid] < arr[mid+1] → you're in increasing part
+  * Else → in decreasing part
 - Based on direction + value relation with target, move left or right.
 
 **Steps:**
@@ -2918,11 +2918,11 @@ public int findInBitonicOptimal(int[] arr, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Instead of first finding the peak, you infer the slope at mid:
-  * If slope â†‘ (increasing), you can decide which direction the target lies.
-  * If slope â†“ (decreasing), same logic but reversed.
-- This avoids three separate binary searches â†’ simplifies logic.
+  * If slope ↑ (increasing), you can decide which direction the target lies.
+  * If slope ↓ (decreasing), same logic but reversed.
+- This avoids three separate binary searches → simplifies logic.
 
 **Complexity (Time & Space):**
 - Time: O(log N)
@@ -2937,9 +2937,9 @@ public int findInBitonicOptimal(int[] arr, int target) {
 - Binary search leverages the monotonic nature of subarrays.
 - Bitonic arrays split naturally into two monotonic halves.
 - Using either:
-  * peak â†’ 2 binary searches
+  * peak → 2 binary searches
   * or
-  * slope â†’ 1 unified binary search
+  * slope → 1 unified binary search
   * ensures O(log N) performance.
 ---
 
@@ -2956,7 +2956,7 @@ public int findInBitonicOptimal(int[] arr, int target) {
 
 - Peak in bitonic array is always found via arr[mid] < arr[mid+1]
 - Use < and <= carefully to avoid infinite loops
-- Avoid recursion for bitonic search â€” iterative is cleaner
+- Avoid recursion for bitonic search — iterative is cleaner
 ---
 
 <!-- #endregion -->
@@ -2972,22 +2972,22 @@ public int findInBitonicOptimal(int[] arr, int target) {
   * max(0, bucket[i] - marker)
 - He wants to eat at least M fruits in total.
 - Your task:
-- ðŸ‘‰ Find the maximum value of marker such that total fruits eaten â‰¥ M.
+- 👉 Find the maximum value of marker such that total fruits eaten ≥ M.
 ---
 
 ## 2. Constraints
 
-- 1 â‰¤ N â‰¤ 10^4
-- 1 â‰¤ M â‰¤ 10^6
-- 0 â‰¤ arr[i] â‰¤ 10^4
-- Sum of all fruits â‰¥ M (so answer definitely exists)
+- 1 ≤ N ≤ 10^4
+- 1 ≤ M ≤ 10^6
+- 0 ≤ arr[i] ≤ 10^4
+- Sum of all fruits ≥ M (so answer definitely exists)
 - Output: maximum possible marker
 ---
 
 ## 3. Edge Cases
 
-- All buckets have very small fruits â†’ marker becomes small
-- One huge bucket can alone contribute â‰¥ M
+- All buckets have very small fruits → marker becomes small
+- One huge bucket can alone contribute ≥ M
 - Buckets with zero fruits
 - Marker = 0 or Marker = max(bucket)
 ---
@@ -3028,7 +3028,7 @@ Output: 6
 - Try every marker from 0 to max(arr)
 - For each marker:
   * compute total eaten fruits
-  * check if â‰¥ M
+  * check if ≥ M
 - Pick the maximum valid marker.
 
 **Steps:**
@@ -3036,7 +3036,7 @@ Output: 6
 - Loop marker from 0 to maxVal
 - Calculate:
   * sum += max(0, arr[i] - marker)
-- If sum â‰¥ M â†’ store this marker
+- If sum ≥ M → store this marker
 - Return the maximum marker
 
 **Java Code:**
@@ -3058,7 +3058,7 @@ public int maxMarkerBrute(int[] arr, int M) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - We test each possible marker and check what happens.
 - Very slow but conceptually simple.
 
@@ -3073,19 +3073,19 @@ public int maxMarkerBrute(int[] arr, int M) {
 - As marker increases:
 - Eatable fruits decrease.
 - This forms a monotonic decreasing function, meaning:
-  * marker â†‘ â†’ total_eaten â†“
-- Thus, we can binary search for the largest marker that still gives eaten â‰¥ M.
+  * marker ↑ → total_eaten ↓
+- Thus, we can binary search for the largest marker that still gives eaten ≥ M.
 
 **Steps:**
 - Set search space:
   * low = 0
   * high = max(arr)
 - For a mid = marker:
-  * compute total = Î£ max(0, arr[i] - mid)
-- If total â‰¥ M:
-  * marker is valid â†’ move right (try bigger marker)
+  * compute total = Σ max(0, arr[i] - mid)
+- If total ≥ M:
+  * marker is valid → move right (try bigger marker)
 - Else:
-  * marker too big â†’ move left
+  * marker too big → move left
 - Return the maximum valid marker
 
 **Java Code:**
@@ -3116,7 +3116,7 @@ public int maxMarker(int[] arr, int M) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - When the marker is small:
   * Kevin eats many fruits because most buckets have arr[i] - marker > 0.
 - When the marker is medium:
@@ -3126,13 +3126,13 @@ public int maxMarker(int[] arr, int M) {
 - As the marker increases:
   * Total eaten fruits keep decreasing.
   * This forms a monotonically decreasing pattern.
-- Since the function (marker â†’ total eaten fruits) is monotonic:
-  * We can apply binary search to find the largest marker for which the total eaten fruits is still â‰¥ M.
+- Since the function (marker → total eaten fruits) is monotonic:
+  * We can apply binary search to find the largest marker for which the total eaten fruits is still ≥ M.
 
 **Complexity (Time & Space):**
 - Time: O(N * log(max(arr)))
   * Each mid requires scanning all N buckets
-  * log(max(arr)) â‰¤ log(10000) â‰ˆ 14
+  * log(max(arr)) ≤ log(10000) ≈ 14
 - Space: O(1)
   * Why time is O(N log(max))?
     * Because binary search checks ~14 possible markers, each requiring an O(N) scan.
@@ -3146,7 +3146,7 @@ public int maxMarker(int[] arr, int M) {
 - Collecting wood
 - Minimizing/maximizing a threshold
 - Allocation tasks
-- The function is monotonic â†’ binary search is the optimal tool.
+- The function is monotonic → binary search is the optimal tool.
 ---
 
 ## 7. Variants / Follow-Ups
@@ -3160,7 +3160,7 @@ public int maxMarker(int[] arr, int M) {
 
 ## 8. Tips & Observations
 
-- When target is â€œmaximize marker,â€ we use:
+- When target is “maximize marker,” we use:
   * if (valid) low = mid + 1
 - Think monotonic: if mid works, everything smaller also works.
 - Use long for sums to avoid overflow.
@@ -3176,7 +3176,7 @@ public int maxMarker(int[] arr, int M) {
 - Given a sorted array nums and an integer x, find:
   * Floor(x) = largest element <= x
   * Ceil(x) = smallest element >= x
-- If no valid floor/ceil exists â†’ return -1.
+- If no valid floor/ceil exists → return -1.
 - This is a classic binary search variation.
 ---
 
@@ -3189,9 +3189,9 @@ public int maxMarker(int[] arr, int M) {
 
 ## 3. Edge Cases
 
-- x is smaller than all elements â†’ floor = -1
-- x is greater than all elements â†’ ceil = -1
-- x exactly matches an element â†’ floor = ceil = x
+- x is smaller than all elements → floor = -1
+- x is greater than all elements → ceil = -1
+- x exactly matches an element → floor = ceil = x
 - Duplicate values present
 - Array of size 1
 ---
@@ -3200,13 +3200,13 @@ public int maxMarker(int[] arr, int M) {
 
 ```text
 nums = [3,4,4,7,8,10], x=5
-ðŸ‘‰ floor = 4, ceil = 7
+👉 floor = 4, ceil = 7
 
 nums = [3,4,4,7,8,10], x=8
-ðŸ‘‰ floor = 8, ceil = 8
+👉 floor = 8, ceil = 8
 
 nums = [2,4,6,8,10,12,14], x=1
-ðŸ‘‰ floor = -1, ceil = 2
+👉 floor = -1, ceil = 2
 ```
 
 ---
@@ -3239,15 +3239,15 @@ public static int[] floorCeilBrute(int[] nums, int x) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - We simply check every element.
-- If itâ€™s â‰¤ x, it can be a floor.
-- If itâ€™s â‰¥ x and no ceil yet, it's the smallest so far.
+- If it’s ≤ x, it can be a floor.
+- If it’s ≥ x and no ceil yet, it's the smallest so far.
 
 **Complexity (Time & Space):**
-- Time: O(N) â†’ we traverse all elements
+- Time: O(N) → we traverse all elements
   * Reason: Every element is checked once.
-- Space: O(1) â†’ no extra storage
+- Space: O(1) → no extra storage
 
 ### Approach 2: Binary Search (Optimal)
 
@@ -3305,7 +3305,7 @@ class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Binary search helps reduce search space by half each step.
   * For floor, we move right whenever nums[mid] <= x because a better (bigger) floor may exist.
   * For ceil, we move left whenever nums[mid] >= x because a smaller (closer) ceil may exist.
@@ -3322,7 +3322,7 @@ class Solution {
 ## 6. Justification / Proof of Optimality
 
 - The optimal binary-search approach is correct because:
-  * The array is sorted â†’ allows monotonic decisions.
+  * The array is sorted → allows monotonic decisions.
   * Floor/ceil conditions (<= x, >= x) allow pruning half of the search space.
   * By storing candidate answers, we guarantee closest values.
 ---
@@ -3339,11 +3339,11 @@ class Solution {
 
 ## 8. Tips & Observations
 
-- Floor â‡¢ look for â‰¤ x
-- Ceil â‡¢ look for â‰¥ x
+- Floor ⇢ look for ≤ x
+- Ceil ⇢ look for ≥ x
 - Floor always moves right on match
 - Ceil always moves left on match
-- If no candidate found â†’ answer = -1
+- If no candidate found → answer = -1
 - <= and >= are the key comparisons for these problems.
 ---
 
@@ -3360,8 +3360,8 @@ class Solution {
 - You need to check if target k exists in the array.
 - Duplicates make this problem trickier because the usual binary-search logic may fail when nums[mid] == nums[low] == nums[high].
 - Return:
-  * True â†’ if target exists
-  * False â†’ if target does not exist
+  * True → if target exists
+  * False → if target does not exist
 ---
 
 ## 2. Constraints
@@ -3375,7 +3375,7 @@ class Solution {
 
 ## 3. Edge Cases
 
-- Entire array consists of duplicates â†’ [2,2,2,2,2]
+- Entire array consists of duplicates → [2,2,2,2,2]
 - Target equals pivot element
 - Target is in left sorted part
 - Target is in right sorted part
@@ -3387,13 +3387,13 @@ class Solution {
 
 ```text
 nums = [7,8,1,2,3,3,3,4,5,6], k=3
-ðŸ‘‰ Output: True
+👉 Output: True
 
 nums = [7,8,1,2,3,3,3,4,5,6], k=10
-ðŸ‘‰ Output: False
+👉 Output: False
 
 nums = [7,8,1,2,3,3,3,4,5,6], k=7
-ðŸ‘‰ Output: True
+👉 Output: True
 ```
 
 ---
@@ -3404,7 +3404,7 @@ nums = [7,8,1,2,3,3,3,4,5,6], k=7
 
 **Steps:**
 - Iterate from start to end.
-- If num == k â†’ return true.
+- If num == k → return true.
 
 **Java Code:**
 ```java
@@ -3417,8 +3417,8 @@ public boolean searchBrute(int[] nums, int k) {
 ```
 
 **Complexity (Time & Space):**
-- Time: O(N) â†’ scans all elements
-- Space: O(1) â†’ no extra data structures
+- Time: O(N) → scans all elements
+- Space: O(1) → no extra data structures
 
 ### Approach 2: Modified Binary Search for Rotated Array with Duplicates
 
@@ -3428,16 +3428,16 @@ public boolean searchBrute(int[] nums, int k) {
 **Steps:**
 - While l <= r:
   * Compute mid.
-  * If nums[mid] == k â†’ return true.
+  * If nums[mid] == k → return true.
   * Problem: duplicates like 2,2,2,2,2
-  * solution â†’ move l++ and r--
+  * solution → move l++ and r--
 - Otherwise determine which part is sorted:
   * If left part sorted:
-    * If nums[l] <= k < nums[mid] â†’ search left
-    * else â†’ search right
+    * If nums[l] <= k < nums[mid] → search left
+    * else → search right
   * Else right part sorted:
-    * If nums[mid] < k <= nums[r] â†’ search right
-    * else â†’ search left
+    * If nums[mid] < k <= nums[r] → search right
+    * else → search left
 
 **Java Code:**
 ```java
@@ -3480,7 +3480,7 @@ class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Rotated array has one sorted half.
 - We identify the sorted half.
 - Check if the target falls inside that sorted range.
@@ -3516,7 +3516,7 @@ class Solution {
 
 ## 8. Tips & Observations
 
-- If nums[mid] == nums[l] == nums[r] â†’ shrink both ends
+- If nums[mid] == nums[l] == nums[r] → shrink both ends
 - Always check which half is sorted
 - Target range check decides which direction to move
 - Worst case O(N) only when many duplicates exist
@@ -3535,7 +3535,7 @@ class Solution {
   * The array is sorted in non-decreasing order
   * You must return that single element
 - Example:
-  * [1,1,2,2,3,3,4,5,5] â†’ answer is 4
+  * [1,1,2,2,3,3,4,5,5] → answer is 4
 - The challenge: do it in O(log N) time and O(1) space.
 ---
 
@@ -3550,7 +3550,7 @@ class Solution {
 
 ## 3. Edge Cases
 
-- Single-element array â†’ answer is nums[0]
+- Single-element array → answer is nums[0]
 - Single element at beginning
 - Single element at end
 - Single element in the middle
@@ -3597,8 +3597,8 @@ Output:
 
 **Steps:**
 - Loop through array in steps of 2
-- If nums[i] != nums[i+1] â†’ return nums[i]
-- If no mismatch found â†’ last element is the answer
+- If nums[i] != nums[i+1] → return nums[i]
+- If no mismatch found → last element is the answer
 
 **Java Code:**
 ```java
@@ -3610,15 +3610,15 @@ public int singleNonDuplicate(int[] nums) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Pairs must always start at even indices until the single element appears.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(N) because you scan sequentially
-  * Why â†’ checking pairs one-by-one
-- ðŸ’¾ Space Complexity
-  * O(1) â†’ no extra memory
+  * Why → checking pairs one-by-one
+- 💾 Space Complexity
+  * O(1) → no extra memory
 
 ### Approach 2: Optimal Binary Search (Even-Index Trick)
 
@@ -3635,8 +3635,8 @@ public int singleNonDuplicate(int[] nums) {
 - Use binary search on the index
 - Ensure mid is even
 - Compare nums[mid] with nums[mid + 1]
-- If they match â†’ move right
-- If not â†’ move left (single is at mid or before)
+- If they match → move right
+- If not → move left (single is at mid or before)
 
 **Java Code:**
 ```java
@@ -3661,15 +3661,15 @@ class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Pairs MUST be aligned as (even, odd) until they are broken by the single element.
 - The first index where this alignment breaks is the answer.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log N)
-  * Why â†’ range halves every iteration
-- ðŸ’¾ Space Complexity
+  * Why → range halves every iteration
+- 💾 Space Complexity
   * O(1)
 
 ### Approach 3: Optimal (Mid-Neighbor Check Pattern)
@@ -3677,7 +3677,7 @@ class Solution {
 **Idea:**
 - First check edge-case positions
 - Then use binary search in the range [1, n-2]
-- The single element must be â‰  both neighbors
+- The single element must be ≠ both neighbors
 - Otherwise, use parity logic to decide direction
 
 **Java Code:**
@@ -3719,15 +3719,15 @@ class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - A valid pair always consumes two elements
 - If the pairing around mid matches the parity pattern, the single element is on the right
 - If the pairing is broken early, the single element is on the left
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(log N)
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
 
 ---
@@ -3739,7 +3739,7 @@ class Solution {
 - The single element disrupts the pairing pattern
 - Binary search efficiently locates this disruption
 - No extra space required
-- Sorted array â†’ monotonic behavior exists in pair alignment
+- Sorted array → monotonic behavior exists in pair alignment
 ---
 
 ## 7. Variants / Follow-Ups
@@ -3753,7 +3753,7 @@ class Solution {
 
 - Pairs ALWAYS start at even index until the unique element
 - After the unique element, pairing shifts
-- If youâ€™re confused, print index parities during dry run
+- If you’re confused, print index parities during dry run
 - The even-index trick is the cleanest and most common solution
 - Your neighbor-check solution is also valid but more verbose
 ---
@@ -3768,22 +3768,22 @@ class Solution {
 - You are given a non-negative integer n.
 - You must return its square root, but if the number is not a perfect square, return the floor value of sqrt(n).
 - Example:
-  * 36 â†’ 6
-  * 28 â†’ floor(5.29â€¦) = 5
+  * 36 → 6
+  * 28 → floor(5.29…) = 5
   * This is a classic Binary Search on Answer problem.
 ---
 
 ## 2. Constraints
 
 - 0 <= n <= 2^31 - 1
-- Large input â†’ cannot use floating operations directly
-- Answer fits in int (floor of sqrt always â‰¤ 46340 for 32-bit)
+- Large input → cannot use floating operations directly
+- Answer fits in int (floor of sqrt always ≤ 46340 for 32-bit)
 ---
 
 ## 3. Edge Cases
 
-- n = 0 â†’ output 0
-- n = 1 â†’ output 1
+- n = 0 → output 0
+- n = 1 → output 1
 - Very large value like 2^31 - 1
 - Perfect squares like 49, 121
 - Non-perfect squares like 50, 90
@@ -3792,7 +3792,7 @@ class Solution {
 ## 4. Examples
 
 ```text
-ðŸ§ª Examples
+🧪 Examples
 Example 1
 
 Input: 36
@@ -3834,11 +3834,11 @@ public int mySqrt(int n) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - You keep guessing increasing numbers until you cross n.
 
 **Complexity (Time & Space):**
-- Time: O(âˆšn) (because loop runs âˆšn times)
+- Time: O(√n) (because loop runs √n times)
 - Space: O(1)
 
 ### Approach 2: Binary Search Binary Search (l <= h Classic Search Style)
@@ -3849,9 +3849,9 @@ public int mySqrt(int n) {
 
 **Steps:**
 - Use l <= h
-- If mid*mid == n â†’ return mid
-- If mid*mid < n â†’ answer may be mid, go right
-- Else â†’ go left
+- If mid*mid == n → return mid
+- If mid*mid < n → answer may be mid, go right
+- Else → go left
 
 **Java Code:**
 ```java
@@ -3879,9 +3879,9 @@ public int mySqrt(int n) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - We do a classic target search:
-  * If midÂ² equals n â†’ perfect square
+  * If mid² equals n → perfect square
   * Else keep the last valid mid as candidate (floor sqrt)
 
 **Complexity (Time & Space):**
@@ -3913,9 +3913,9 @@ public int mySqrt(int n) {
 ## 8. Tips & Observations
 
 - ALWAYS cast to long when checking mid*mid to avoid overflow
-- l < h = shrink range â†’ stop at first mid*mid > n
-- l <= h = classic search â†’ check equality
-- Floor sqrt is always â‰¤ 46340 for 32-bit integers
+- l < h = shrink range → stop at first mid*mid > n
+- l <= h = classic search → check equality
+- Floor sqrt is always ≤ 46340 for 32-bit integers
 - In competitive coding, (l < h) version is preferred
 - In interviews, (l <= h) is easier to explain
 ---
@@ -3928,15 +3928,15 @@ public int mySqrt(int n) {
 ## 1. Problem Understanding
 
 - You're given two integers:
-  * N â†’ the root to find
-  * M â†’ the number
+  * N → the root to find
+  * M → the number
   * You must find an integer X such that:
   * X^N == M
-- If such integer X exists â†’ return it.
-- If no such integer exists â†’ return -1.
+- If such integer X exists → return it.
+- If no such integer exists → return -1.
 - Example:
   * 3rd root of 27 = 3
-  * 4th root of 69 â‰  integer â†’ return -1
+  * 4th root of 69 ≠ integer → return -1
   * 4th root of 81 = 3
 - This is a classic Binary Search on Answer problem.
 ---
@@ -3946,13 +3946,13 @@ public int mySqrt(int n) {
 - 1 <= N <= 30
 - 1 <= M <= 10^9
 - Answer always lies in [1, M]
-- Power X^N can overflow â†’ must use long or safe multiplication
+- Power X^N can overflow → must use long or safe multiplication
 ---
 
 ## 3. Edge Cases
 
-- N = 1 â†’ answer is always M
-- M = 1 â†’ answer is always 1
+- N = 1 → answer is always M
+- M = 1 → answer is always 1
 - Huge values like M = 10^9 and N = 30
 - Non-perfect roots (must return -1)
 - Overflow while doing mid^N
@@ -3985,7 +3985,7 @@ Output: 3
 
 **Idea:**
 - Try all numbers from 1 to M and compute i^N.
-- If match â†’ return i.
+- If match → return i.
 
 **Steps:**
 - Loop i from 1 to M
@@ -4005,11 +4005,11 @@ public int nthRoot(int N, int M) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Sequential check â†’ guaranteed correct but slow.
+**💭 Intuition Behind the Approach:**
+- Sequential check → guaranteed correct but slow.
 
 **Complexity (Time & Space):**
-- O(M * N) â†’ too slow
+- O(M * N) → too slow
 - Space: O(1)
 
 ### Approach 2: Binary Search (l <= h)
@@ -4019,10 +4019,10 @@ public int nthRoot(int N, int M) {
 
 **Steps:**
 - Use l <= h
-- If mid^N == M â†’ return mid
-- If mid^N < M â†’ go right
-- Else â†’ go left
-- If no equality found â†’ return -1
+- If mid^N == M → return mid
+- If mid^N < M → go right
+- Else → go left
+- If no equality found → return -1
 
 **Java Code:**
 ```java
@@ -4053,7 +4053,7 @@ private long power(long x, int n, int limit) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - We perform a direct equality search for mid^N = M.
 - Binary Search ensures we check the correct mid values only.
 
@@ -4068,7 +4068,7 @@ private long power(long x, int n, int limit) {
 - Binary search is valid because:
 - The function f(x) = x^N is strictly increasing
 - This means:
-  * If x1 < x2 â†’ x1^N < x2^N
+  * If x1 < x2 → x1^N < x2^N
 - So the search space is monotonic, allowing binary search.
 ---
 
@@ -4078,7 +4078,7 @@ private long power(long x, int n, int limit) {
 - Find square root
 - Check if number is a perfect power
 - Find nth root with precision
-- Floating-point nth root using Newtonâ€™s Method
+- Floating-point nth root using Newton’s Method
 ---
 
 ## 8. Tips & Observations
@@ -4113,17 +4113,17 @@ private long power(long x, int n, int limit) {
 
 ## 2. Constraints
 
-- 1 â‰¤ nums.length â‰¤ 5 * 10^4
-- 1 â‰¤ nums[i] â‰¤ 10^6
-- nums.length â‰¤ limit â‰¤ 10^6
+- 1 ≤ nums.length ≤ 5 * 10^4
+- 1 ≤ nums[i] ≤ 10^6
+- nums.length ≤ limit ≤ 10^6
 - Divisor is a positive integer
-- Divisor range: 1 â†’ max(nums[])
+- Divisor range: 1 → max(nums[])
 ---
 
 ## 3. Edge Cases
 
-- limit very large â†’ smallest divisor = 1
-- limit smaller than n â†’ impossible unless divisor very large
+- limit very large → smallest divisor = 1
+- limit smaller than n → impossible unless divisor very large
 - nums containing large values (up to 10^6)
 - Single-element array
 - All elements equal
@@ -4155,13 +4155,13 @@ Output: 2
 ### Approach 1: Brute Force
 
 **Idea:**
-- Try all divisors from 1 to max(nums) and check when the sum becomes â‰¤ limit.
+- Try all divisors from 1 to max(nums) and check when the sum becomes ≤ limit.
 
 **Steps:**
 - Compute maximum element (maxD)
 - For divisor d from 1 to maxD:
   * compute sum of ceil(nums[i]/d)
-  * if sum â‰¤ limit â†’ return d
+  * if sum ≤ limit → return d
 
 **Java Code:**
 ```java
@@ -4185,25 +4185,25 @@ private boolean isPossible(int[] nums, int d, int limit) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Check every possible divisor. Very slow for large max element.
 
 **Complexity (Time & Space):**
-- O(max(nums) * n) â†’ Too slow
+- O(max(nums) * n) → Too slow
 - Space: O(1)
 
 ### Approach 2: Binary Search (l <= h) (Classic Search Style)
 
 **Idea:**
-- âœ” Explicitly finds smallest valid mid
-- âœ” Checks all possibilities in binary-search manner
+- ✔ Explicitly finds smallest valid mid
+- ✔ Checks all possibilities in binary-search manner
 - Use classic binary search and store candidate answer when valid.
 
 **Steps:**
 - Initialize low=1, high=max element
 - mid = (low + high)/2
-- If mid works â†’ store as candidate, search left
-- If mid doesn't work â†’ search right
+- If mid works → store as candidate, search left
+- If mid doesn't work → search right
 
 **Java Code:**
 ```java
@@ -4237,7 +4237,7 @@ private boolean isPossible(int[] nums, int d, int limit) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Binary search tries divisors and narrows down the smallest valid.
 
 **Complexity (Time & Space):**
@@ -4251,8 +4251,8 @@ private boolean isPossible(int[] nums, int d, int limit) {
 - Binary Search works because:
   * sum(ceil(nums[i]/d)) is a monotonic decreasing function of divisor d.
 - Meaning:
-  * If divisor increases â†’ sum decreases
-  * If divisor decreases â†’ sum increases
+  * If divisor increases → sum decreases
+  * If divisor decreases → sum increases
 - So the valid/invalid pattern looks like:
   * invalid invalid invalid valid valid valid
 - Binary search perfectly finds the first valid divisor.
@@ -4274,8 +4274,8 @@ private boolean isPossible(int[] nums, int d, int limit) {
 - Divisor range always begins from 1, not 0
 - Upper bound = max element
 - isPossible() must stop early when sum exceeds limit
-- (l < h) â†’ shrinking to minimal valid
-- (l <= h) â†’ storing candidate while searching
+- (l < h) → shrinking to minimal valid
+- (l <= h) → storing candidate while searching
 - Classic BSOA pattern: minimize value satisfying condition
 ---
 
@@ -4286,32 +4286,32 @@ private boolean isPossible(int[] nums, int d, int limit) {
 
 ## 1. Problem Understanding
 
-- Youâ€™re given:
+- You’re given:
   * n piles of bananas
   * nums[i] bananas in the i-th pile
   * h hours to finish all piles
   * Each hour, Koko chooses one pile and eats k bananas
-  * If the pile has fewer than k bananas â†’ she eats the entire pile and does not continue eating more that hour
+  * If the pile has fewer than k bananas → she eats the entire pile and does not continue eating more that hour
 - Goal:
-  * Find the minimum integer k such that Koko can finish all bananas in â‰¤ h hours.
+  * Find the minimum integer k such that Koko can finish all bananas in ≤ h hours.
   * This is a classic Binary Search on Answer problem.
 ---
 
 ## 2. Constraints
 
-- 1 â‰¤ n â‰¤ 10^4
-- 1 â‰¤ nums[i] â‰¤ 10^9
-- n â‰¤ h â‰¤ 10^9
+- 1 ≤ n ≤ 10^4
+- 1 ≤ nums[i] ≤ 10^9
+- n ≤ h ≤ 10^9
 - k must be an integer
-- Answer range = 1 â†’ max(nums[])
+- Answer range = 1 → max(nums[])
 ---
 
 ## 3. Edge Cases
 
-- If h = n â†’ Koko must finish each pile in 1 hour â†’ k = max(nums)
-- If all piles are size 1 â†’ answer is 1
+- If h = n → Koko must finish each pile in 1 hour → k = max(nums)
+- If all piles are size 1 → answer is 1
 - Very large values (up to 10^9)
-- h extremely large â†’ k can be very small
+- h extremely large → k can be very small
 - Single pile case
 ---
 
@@ -4346,9 +4346,9 @@ Output: 3
 
 **Steps:**
 - Compute max element = maxK
-- For k = 1 â†’ maxK:
+- For k = 1 → maxK:
   * Compute hours = sum(ceil(nums[i] / k))
-  * If hours â‰¤ h â†’ return k
+  * If hours ≤ h → return k
 
 **Java Code:**
 ```java
@@ -4367,24 +4367,24 @@ public int minEatingSpeed(int[] nums, int h) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Check every possible eating speed. Very inefficient.
 
 **Complexity (Time & Space):**
-- O(max(nums) * n) â†’ Too slow
+- O(max(nums) * n) → Too slow
 - Space: O(1)
 
 ### Approach 2: Binary Search  (l <= h) (Classic Search Style)
 
 **Idea:**
-- Binary search to find the smallest k such that hours â‰¤ h.
+- Binary search to find the smallest k such that hours ≤ h.
 
 **Steps:**
 - low = 1
 - high = max(nums)
 - mid = guess speed
-- If mid works â†’ store mid, go left
-- Else â†’ go right
+- If mid works → store mid, go left
+- Else → go right
 
 **Java Code:**
 ```java
@@ -4418,7 +4418,7 @@ private boolean canEat(int[] nums, int k, int h) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Keep reducing possible speed while tracking smallest valid speed.
 
 **Complexity (Time & Space):**
@@ -4433,7 +4433,7 @@ private boolean canEat(int[] nums, int k, int h) {
 - hours(k) = sum(ceil(nums[i]/k))
 - is a monotonically decreasing function of k.
 - Meaning:
-  * If k1 < k2  â†’ hours(k1) >= hours(k2)
+  * If k1 < k2  → hours(k1) >= hours(k2)
 - So valid/invalid speeds form:
   * invalid invalid invalid valid valid valid
 - Binary search can find the first valid speed.
@@ -4454,8 +4454,8 @@ private boolean canEat(int[] nums, int k, int h) {
 - Upper bound is max(nums[])
 - Use ceil division: (x + k - 1) / k
 - Stop early when hours exceed h
-- (l < h) â†’ final candidate found via shrinking
-- (l <= h) â†’ explicitly track best candidate
+- (l < h) → final candidate found via shrinking
+- (l <= h) → explicitly track best candidate
 ---
 
 <!-- #endregion -->
@@ -4470,7 +4470,7 @@ private boolean canEat(int[] nums, int k, int h) {
   * Each bouquet needs k adjacent bloomed roses
   * We need m bouquets
 - We must find the minimum number of days after which we can form at least m bouquets.
-- If impossible â†’ return -1.
+- If impossible → return -1.
 ---
 
 ## 2. Constraints
@@ -4483,8 +4483,8 @@ private boolean canEat(int[] nums, int k, int h) {
 
 ## 3. Edge Cases
 
-- If m * k > n â†’ impossible â†’ return -1
-- If k = 1 â†’ we just need m flowers
+- If m * k > n → impossible → return -1
+- If k = 1 → we just need m flowers
 - Large bloom days (up to 10^9)
 - All flowers bloom at same time
 - Very large m (up to 1e6)
@@ -4522,7 +4522,7 @@ Output: 3
 - For each day d:
   * Count adjacent bloomed roses
   * Form bouquets
-  * If bouquets â‰¥ m â†’ return d
+  * If bouquets ≥ m → return d
 
 **Java Code:**
 ```java
@@ -4556,11 +4556,11 @@ boolean canMake(int[] nums, int day, int m, int k) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Check all possible days â†’ too slow.
+**💭 Intuition Behind the Approach:**
+- Check all possible days → too slow.
 
 **Complexity (Time & Space):**
-- O((max-min) * n) â†’ TLE
+- O((max-min) * n) → TLE
 - Space: O(1)
 
 ### Approach 2: Binary Search  (l <= h)
@@ -4621,7 +4621,7 @@ boolean canMake(int[] nums, int day, int m, int k) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - We track the earliest possible day mid that works, then refine by searching smaller days.
 
 **Complexity (Time & Space):**
@@ -4654,12 +4654,12 @@ boolean canMake(int[] nums, int day, int m, int k) {
 
 ## 8. Tips & Observations
 
-- MUST check feasibility: if m*k > n â†’ -1
+- MUST check feasibility: if m*k > n → -1
 - "Adjacent" means contiguous segment
 - Use integer division for blooming check
-- For each mid, count consecutive flowers â‰¤ mid
-- (l < h) â†’ shrink to final day
-- (l <= h) â†’ track earliest day
+- For each mid, count consecutive flowers ≤ mid
+- (l < h) → shrink to final day
+- (l <= h) → track earliest day
 - Bloom days up to 10^9 require binary search
 ---
 
@@ -4674,23 +4674,23 @@ boolean canMake(int[] nums, int day, int m, int k) {
   * nums[]: positions of stalls
   * k: number of cows
 - You must place k cows in these stalls such that:
-- ðŸ‘‰ The minimum distance between any two cows is maximized.
+- 👉 The minimum distance between any two cows is maximized.
 ---
 
 ## 2. Constraints
 
-- 2 â‰¤ n â‰¤ 10^5
-- 2 â‰¤ k â‰¤ n
+- 2 ≤ n ≤ 10^5
+- 2 ≤ k ≤ n
 - Stall positions up to 10^9
-- Order is NOT guaranteed â†’ must sort
+- Order is NOT guaranteed → must sort
 ---
 
 ## 3. Edge Cases
 
-- All stalls at the same position â†’ answer = 0
-- If k = 2 â†’ answer = max distance between farthest stalls
-- Large values â†’ must use long safe math
-- Positions not sorted â†’ sorting is required
+- All stalls at the same position → answer = 0
+- If k = 2 → answer = max distance between farthest stalls
+- Large values → must use long safe math
+- Positions not sorted → sorting is required
 ---
 
 ## 4. Examples
@@ -4724,10 +4724,10 @@ Output: 3
 
 **Steps:**
 - Sort stalls
-- Range of answer = 1 â†’ max(nums)-min(nums)
+- Range of answer = 1 → max(nums)-min(nums)
 - For each distance d:
   * Try placing cows greedily
-  * If â‰¥ k cows placed, answer could be d
+  * If ≥ k cows placed, answer could be d
 
 **Java Code:**
 ```java
@@ -4756,15 +4756,15 @@ private boolean canPlace(int[] nums, int d, int k) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Try all distances â†’ slow.
+**💭 Intuition Behind the Approach:**
+- Try all distances → slow.
 
 **Complexity (Time & Space):**
-- â± Time Complexity:
+- ⏱ Time Complexity:
   * O(n * maxDistance)
-  * maxDistance = max(nums) â€“ min(nums)
+  * maxDistance = max(nums) – min(nums)
   * For each possible distance d, we scan the full array to try placing cows.
-- ðŸ’¾ Space Complexity:
+- 💾 Space Complexity:
   * O(1)
   * No extra data structures used.
 
@@ -4772,16 +4772,16 @@ private boolean canPlace(int[] nums, int d, int k) {
 
 **Idea:**
 - Check mid as candidate distance:
-  * If valid â†’ store mid, search right
-  * If not valid â†’ search left
+  * If valid → store mid, search right
+  * If not valid → search left
 
 **Steps:**
 - low = 1
 - high = maxDist
-- While low â‰¤ high:
+- While low ≤ high:
   * mid = (low+high)/2
-  * If canPlace(mid) â†’ ans = mid, low = mid + 1
-  * Else â†’ high = mid - 1
+  * If canPlace(mid) → ans = mid, low = mid + 1
+  * Else → high = mid - 1
 - Answer = ans
 
 **Java Code:**
@@ -4822,17 +4822,17 @@ private boolean canPlace(int[] nums, int d, int k) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - We try to maximize the minimum distance.
 - Binary search selects distances and checks validity.
 
 **Complexity (Time & Space):**
-- â± Time Complexity:
+- ⏱ Time Complexity:
   * O(n * log(maxDistance))
   * Same reasoning as above:
   * Binary search over distances
-  * For each mid â†’ linear greedy check.
-- ðŸ’¾ Space Complexity:
+  * For each mid → linear greedy check.
+- 💾 Space Complexity:
   * O(1)
   * Again just constant variables, no additional memory.
 
@@ -4861,10 +4861,10 @@ private boolean canPlace(int[] nums, int d, int k) {
 ## 8. Tips & Observations
 
 - Always SORT the array
-- Max distance = maxâˆ’min
+- Max distance = max−min
 - Searching for maximum of a minimum means:
-- mid valid â†’ move RIGHT
-- mid invalid â†’ move LEFT
+- mid valid → move RIGHT
+- mid invalid → move LEFT
 - Use greedy placement for cow assignment
 - Stop early when cows placed = k
 ---
@@ -4882,7 +4882,7 @@ private boolean canPlace(int[] nums, int d, int k) {
 - You must allocate contiguous books
 - Every student must receive at least 1 book
 - A book cannot be split
-- Goal â†’ Minimize the maximum pages assigned to any student
+- Goal → Minimize the maximum pages assigned to any student
 - This is a classic Binary Search on Answer (BSOA) minimization problem.
 - We want to find the minimum possible maximum pages a student reads.
 ---
@@ -4891,18 +4891,18 @@ private boolean canPlace(int[] nums, int d, int k) {
 
 - 1 <= n, m <= 10^4
 - 1 <= nums[i] <= 10^5
-- Large values â†’ greedy O(n) + binary search O(log(sum)) required
+- Large values → greedy O(n) + binary search O(log(sum)) required
 - Contiguous allocation required
-- m > n â†’ impossible (not enough books to give 1 per student)
+- m > n → impossible (not enough books to give 1 per student)
 ---
 
 ## 3. Edge Cases
 
-- If m > n â†’ return -1
-- Single book â†’ answer is that book
-- Single student â†’ answer = sum of array
+- If m > n → return -1
+- Single book → answer is that book
+- Single student → answer = sum of array
 - All books same pages
-- Very large pages â†’ use long for sum
+- Very large pages → use long for sum
 ---
 
 ## 4. Examples
@@ -4929,13 +4929,13 @@ Output: -1 (when m > n)
 
 **Idea:**
 - Try every possible maximum pages value from:
-  * max(nums) â†’ sum(nums)
+  * max(nums) → sum(nums)
 - and check feasibility.
 
 **Steps:**
 - For each X in the range
 - Try to allocate books greedily
-- If at any point allocations â‰¤ m, return X
+- If at any point allocations ≤ m, return X
 
 **Java Code:**
 ```java
@@ -4965,7 +4965,7 @@ class Solution {
         return students;
     }
     
-    /* Function to allocate the book to â€˜mâ€™ 
+    /* Function to allocate the book to ‘m’ 
     students such that the maximum number 
     of pages assigned to a student is minimum*/
     public int findPages(int[] nums, int m) {
@@ -5006,20 +5006,20 @@ class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Check all potential answers manually until a feasible one is found.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
-  * O((sum(nums) - max(nums)) * n) â†’ impossible for large constraints
-- ðŸ’¾ Space Complexity
+- ⏱️ Time Complexity
+  * O((sum(nums) - max(nums)) * n) → impossible for large constraints
+- 💾 Space Complexity
   * O(1)
 
 ### Approach 2: Binary Search on Answer (Correct Minimization using <=)
 
 **Idea:**
 - The answer lies in:
-  * low = max(nums) (minimum max pages must be â‰¥ largest book)
+  * low = max(nums) (minimum max pages must be ≥ largest book)
   * high = sum(nums) (one student reads everything)
 - Binary search for the smallest mid such that allocation is possible.
 
@@ -5030,10 +5030,10 @@ class Solution {
 - For each mid, check feasibility:
   * Allocate books to student until sum > mid
   * Then start new student
-- If number of students needed â‰¤ m â†’ feasible
+- If number of students needed ≤ m → feasible
 - For minimization:
-  * if feasible â†’ ans = mid, high = mid - 1
-  * else        â†’ low = mid + 1
+  * if feasible → ans = mid, high = mid - 1
+  * else        → low = mid + 1
 
 **Java Code:**
 ```java
@@ -5084,18 +5084,18 @@ class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- We simulate â€œif each student can read at most mid pagesâ€.
-- If it's possible with â‰¤ m students â†’ we try to reduce mid.
-- If not â†’ we increase mid.
+**💭 Intuition Behind the Approach:**
+- We simulate “if each student can read at most mid pages”.
+- If it's possible with ≤ m students → we try to reduce mid.
+- If not → we increase mid.
 - The monotonic property of feasibility makes binary search valid.
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
   * O(n * log(sum(nums)))
   * Why:
   * Each binary search step checks feasibility in O(n)
-- ðŸ’¾ Space Complexity
+- 💾 Space Complexity
   * O(1)
   * Just counters and variables.
 
@@ -5104,27 +5104,27 @@ class Solution {
 ## 6. Justification / Proof of Optimality
 
 - The solution is justified because:
-- âœ” 1. The problem has a monotonic feasibility behavior
+- ✔ 1. The problem has a monotonic feasibility behavior
   * If we can allocate books such that no student reads more than X pages,
   * then we can also allocate for any value > X.
   * This monotonic pattern:
   * F F F F T T T T
   * is required for binary search.
-- âœ” 2. The minimum possible maximum pages is always between:
+- ✔ 2. The minimum possible maximum pages is always between:
 - max(nums)  and  sum(nums)
-  * You cannot assign less than the largest single book â†’ lower bound
-  * You cannot assign more than total pages â†’ upper bound
+  * You cannot assign less than the largest single book → lower bound
+  * You cannot assign more than total pages → upper bound
   * This forms a valid search space.
-- âœ” 3. Greedy feasibility check is optimal
-  * Assigning books left â†’ right ensures:
+- ✔ 3. Greedy feasibility check is optimal
+  * Assigning books left → right ensures:
   * Each student gets contiguous books
   * We minimize splitting
   * We count how many students are needed for limit = mid
-  * If students needed â‰¤ m â†’ allocation is possible.
+  * If students needed ≤ m → allocation is possible.
   * The greedy stays valid because:
   * Adding a new student only when needed is always optimal
   * Reordering books is not allowed
-- âœ” 4. Binary Search narrows down the exact threshold
+- ✔ 4. Binary Search narrows down the exact threshold
   * We search for the smallest mid for which allocation is possible.
   * This is a classic minimization BSOA, so:
   * if possible(mid):
@@ -5153,13 +5153,13 @@ class Solution {
 - Use long for sum in bigger constraints
 - The key idea: minimizing the maximum load across partitions
 
-- **ðŸ•³ï¸ Pitfalls**
-    - âŒ Starting low = 0 â†’ WRONG
-    - âŒ Ignoring m > n â†’ WRONG
-    - âŒ Not resetting pages correctly when switching students
-    - âŒ Using < instead of <= in binary search (breaks edge cases)
-    - âŒ Handling feasibility incorrectly when pages == limit
-    - âŒ Using sorted array (NOT required â€” order must be preserved)
+- **🕳️ Pitfalls**
+    - ❌ Starting low = 0 → WRONG
+    - ❌ Ignoring m > n → WRONG
+    - ❌ Not resetting pages correctly when switching students
+    - ❌ Using < instead of <= in binary search (breaks edge cases)
+    - ❌ Handling feasibility incorrectly when pages == limit
+    - ❌ Using sorted array (NOT required — order must be preserved)
 ---
 
 <!-- #endregion -->
@@ -5172,14 +5172,14 @@ class Solution {
 - You are given two sorted arrays arr1 and arr2.
 - You must return the median of the combined sorted array without merging (optimal approach).
 - Median rules:
-  * If total length is odd â†’ return the middle element.
-  * If even â†’ return average of the two middle elements.
+  * If total length is odd → return the middle element.
+  * If even → return average of the two middle elements.
 ---
 
 ## 2. Constraints
 
-- 0 â‰¤ m, n â‰¤ 1000
-- 1 â‰¤ m + n â‰¤ 2000
+- 0 ≤ m, n ≤ 1000
+- 1 ≤ m + n ≤ 2000
 - Values can be negative.
 ---
 
@@ -5189,15 +5189,15 @@ class Solution {
 - Arrays of very uneven sizes.
 - Duplicate elements.
 - Both arrays length 1.
-- All elements in arr1 â‰¤ all in arr2 (or vice-versa).
+- All elements in arr1 ≤ all in arr2 (or vice-versa).
 ---
 
 ## 4. Examples
 
 ```text
-arr1 = [2, 4, 6], arr2 = [1, 3, 5] â†’ median = 3.5
-arr1 = [2, 4, 6], arr2 = [1, 3] â†’ median = 3
-arr1 = [2, 4, 5], arr2 = [1, 6] â†’ median = 4
+arr1 = [2, 4, 6], arr2 = [1, 3, 5] → median = 3.5
+arr1 = [2, 4, 6], arr2 = [1, 3] → median = 3
+arr1 = [2, 4, 5], arr2 = [1, 6] → median = 4
 ```
 
 ---
@@ -5236,8 +5236,8 @@ public static double medianBrute(int[] a, int[] b) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Classic merge â€” straightforward but not optimal.
+**💭 Intuition Behind the Approach:**
+- Classic merge — straightforward but not optimal.
 
 **Complexity (Time & Space):**
 - Time:
@@ -5249,7 +5249,7 @@ public static double medianBrute(int[] a, int[] b) {
 
 **Idea:**
 - Simulate merge until middle index.
-- Donâ€™t store full merged array.
+- Don’t store full merged array.
 - Track only middle elements
 
 **Steps:**
@@ -5280,31 +5280,31 @@ public static double medianBetter(int[] a, int[] b) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- We donâ€™t care about the entire mergeâ€”only until we hit the median position.
+**💭 Intuition Behind the Approach:**
+- We don’t care about the entire merge—only until we hit the median position.
 
 **Complexity (Time & Space):**
 - Time:
-  * O((m+n)/2) â‰ˆ O(m+n)
+  * O((m+n)/2) ≈ O(m+n)
 - Space:
-  * O(1) â€” no extra array.
+  * O(1) — no extra array.
 
 ### Approach 3: Binary Search on Smaller Array (Partition Method)
 
 **Idea:**
 - Use binary search to partition both arrays so that:
   * left half has exactly (m+n+1)/2 elements
-  * All left side â‰¤ all right side
+  * All left side ≤ all right side
 - We binary search on arr1 partition index.
 
 **Steps:**
 - Ensure arr1 is smaller array.
 - Binary search partition cut1 in arr1.
-- Compute cut2 in arr2 = required left half âˆ’ cut1.
+- Compute cut2 in arr2 = required left half − cut1.
 - Check if:
-  * maxLeft1 â‰¤ minRight2
-  * maxLeft2 â‰¤ minRight1
-- If not balanced â†’ shift binary search.
+  * maxLeft1 ≤ minRight2
+  * maxLeft2 ≤ minRight1
+- If not balanced → shift binary search.
 
 **Java Code:**
 ```java
@@ -5341,26 +5341,26 @@ public static double findMedianSortedArrays(int[] a, int[] b) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Instead of merging, we search for the correct partition such that:
-  * All left side elements â‰¤ all right side elements.
+  * All left side elements ≤ all right side elements.
   * Once partition is valid, median comes from edges.
-- This uses the fact both arrays are sorted â†’ binary search works.
+- This uses the fact both arrays are sorted → binary search works.
 
 **Complexity (Time & Space):**
 - Time:
   * O(log(min(m,n))) because we binary search only the smaller array.
-  * Itâ€™s optimal because we avoid touching all elements.
+  * It’s optimal because we avoid touching all elements.
 - Space:
-  * O(1) â€” no extra space.
+  * O(1) — no extra space.
 
 ### Approach 4: K-th Element via Binary Search Recursion
 
 **Idea:**
 - We find the k-th element using recursive shrinking.
 - Median =
-  * odd â†’ kth element
-  * even â†’ avg of k and k+1.
+  * odd → kth element
+  * even → avg of k and k+1.
 
 **Java Code:**
 ```java
@@ -5396,7 +5396,7 @@ private static int kth(int[] a, int i, int[] b, int j, int k){
 
 Recursion Tree
 
-Example: total = 10 â†’ find k=5
+Example: total = 10 → find k=5
 
 k=5
  |
@@ -5411,8 +5411,8 @@ k=5
  return min(...)
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- At each step, eliminate k/2 elements from one of the arraysâ€”like searching for the k-th number.
+**💭 Intuition Behind the Approach:**
+- At each step, eliminate k/2 elements from one of the arrays—like searching for the k-th number.
 
 **Complexity (Time & Space):**
 - Time:
@@ -5424,11 +5424,11 @@ k=5
 
 ## 6. Justification / Proof of Optimality
 
-- The arrays are sorted â†’ median position depends only on ordering.
+- The arrays are sorted → median position depends only on ordering.
 - Instead of merging all, find a partition where left half contains exactly half of total elements.
 - Binary search is possible because:
-  * when left1 > right2 â†’ cut1 is too big
-  * when left2 > right1 â†’ cut1 is too small
+  * when left1 > right2 → cut1 is too big
+  * when left2 > right1 → cut1 is too small
 - This monotonic behaviour enables O(log(min(m,n))).
 ---
 
@@ -5444,11 +5444,11 @@ k=5
 ## 8. Tips & Observations
 
 - Always binary search on the smaller array.
-- Take care of boundaries using Â±âˆž.
+- Take care of boundaries using ±∞.
 - For odd length, median is just max(left side).
 - Partition logic is the heart of the problem.
 
-- **âš ï¸ Pitfalls**
+- **⚠️ Pitfalls**
     - Forgetting to pick smaller array for binary search.
     - Boundary handling when partition is at index 0 or m.
     - Floating-point return for even length.
@@ -5468,10 +5468,10 @@ k=5
 
 ## 2. Constraints
 
-- 1 â‰¤ m, n â‰¤ 10^4
+- 1 ≤ m, n ≤ 10^4
 - Values up to 10^9
 - Arrays already sorted
-- 1 â‰¤ k â‰¤ m + n
+- 1 ≤ k ≤ m + n
 ---
 
 ## 3. Edge Cases
@@ -5540,7 +5540,7 @@ public static int kthBrute(int[] a, int[] b, int k) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Straight merging until we reach the k-th element.
 
 **Complexity (Time & Space):**
@@ -5595,7 +5595,7 @@ public static int kthOptimal(int[] a, int[] b, int k){
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - We find a partition where exactly k elements are on the left.
 - The maximum on the left is the k-th smallest.
 - This avoids merging and uses binary search on cut index.
@@ -5644,8 +5644,8 @@ k=7
  return answer
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- You eliminate half of k on each call â†’ like binary search on rank.
+**💭 Intuition Behind the Approach:**
+- You eliminate half of k on each call → like binary search on rank.
 
 **Complexity (Time & Space):**
 - Time: O(log(k))
@@ -5655,9 +5655,9 @@ k=7
 
 ## 6. Justification / Proof of Optimality
 
-- Arrays are sorted â†’ k-th element depends only on ordering around index k.
+- Arrays are sorted → k-th element depends only on ordering around index k.
 - Binary-search partition uses monotonic behavior of partitions.
-- Recursive elimination removes half the candidates each step â†’ optimal.
+- Recursive elimination removes half the candidates each step → optimal.
 ---
 
 ## 7. Variants / Follow-Ups
@@ -5671,11 +5671,11 @@ k=7
 ## 8. Tips & Observations
 
 - Always binary search on the smaller array.
-- Use Â±âˆž when cut goes out of bounds.
+- Use ±∞ when cut goes out of bounds.
 - For k very small (1,2) handle separately to avoid mistakes.
 - Partition logic is same as median problem.
 
-- **âš ï¸ Pitfalls**
+- **⚠️ Pitfalls**
     - Wrong bounds for binary search (low = max(0, k-m) and high = min(k,n) are mandatory)
     - Missing base cases for recursion
     - Off-by-one in returning a[i + k - 1] or b[j + k - 1]
@@ -5694,35 +5694,35 @@ k=7
 - Define:
   * dist = maximum distance between any two adjacent gas stations.
 - We must place the k new stations such that dist becomes as small as possible.
-- This is a Minimize Maximum optimization problem â†’ solved via Binary Search on Answer (in optimal approach).
+- This is a Minimize Maximum optimization problem → solved via Binary Search on Answer (in optimal approach).
 ---
 
 ## 2. Constraints
 
-- 10 â‰¤ n â‰¤ 5000
-- 0 â‰¤ arr[i] â‰¤ 1e9
+- 10 ≤ n ≤ 5000
+- 0 ≤ arr[i] ≤ 1e9
 - Strictly increasing array
-- 0 â‰¤ k â‰¤ 1e5
+- 0 ≤ k ≤ 1e5
 - Precision needed: 1e-6
 ---
 
 ## 3. Edge Cases
 
-- k = 0 â†’ answer = max(arr[i+1] - arr[i])
+- k = 0 → answer = max(arr[i+1] - arr[i])
 - One huge gap dominates answer
 - All stations equally spaced
 - High precision on doubles
-- Very large values â†’ require careful floating-point operations
+- Very large values → require careful floating-point operations
 ---
 
 ## 4. Examples
 
 ```text
-arr = [1..10], k = 9 â†’ 0.5
+arr = [1..10], k = 9 → 0.5
 
-arr = [1..10], k = 1 â†’ 1.0
+arr = [1..10], k = 1 → 1.0
 
-arr = [3,6,12,19,33,44,67,72,89,95], k=2 â†’ â‰ˆ 13â€“14
+arr = [3,6,12,19,33,44,67,72,89,95], k=2 → ≈ 13–14
 ```
 
 ---
@@ -5778,13 +5778,13 @@ public static double bruteForce(int[] arr, int k) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Split the largest gap each time.
 - Matching the human intuition: reduce the largest interval.
 
 **Complexity (Time & Space):**
 - Time:
-  * O(k * n) â† too slow for k = 1e5
+  * O(k * n) ← too slow for k = 1e5
 - Space:
   * O(n)
 
@@ -5838,7 +5838,7 @@ public double betterPQ(int[] arr, int k) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - The brute approach scanned all segments,
 - PQ keeps track of only the largest segment efficiently.
 
@@ -5861,16 +5861,16 @@ public double betterPQ(int[] arr, int k) {
   * needed = floor(gap / mid)
   * if (gap % mid == 0) needed -= 1
 - If:
-  * totalNeeded <= k â†’ dist is possible â†’ try smaller
-  * else â†’ too small â†’ increase dist
+  * totalNeeded <= k → dist is possible → try smaller
+  * else → too small → increase dist
 
 **Steps:**
 - Set low = 0, high = max gap.
 - While (high - low > 1e-6):
   * mid = (low + high)/2
   * calculate required stations
-  * if <= k â†’ move high = mid
-  * else â†’ move low = mid
+  * if <= k → move high = mid
+  * else → move low = mid
 - return high
 
 **Java Code:**
@@ -5906,14 +5906,14 @@ public double optimalBSOA(int[] arr, int k) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Larger dist â†’ fewer stations needed â†’ always possible
-- Smaller dist â†’ more stations needed â†’ may exceed k
-- This monotonic behavior â†’ perfect for binary search.
+**💭 Intuition Behind the Approach:**
+- Larger dist → fewer stations needed → always possible
+- Smaller dist → more stations needed → may exceed k
+- This monotonic behavior → perfect for binary search.
 
 **Complexity (Time & Space):**
 - Time:
-  * O(n log(1e6)) â†’ â‰ˆ O(n * 60)
+  * O(n log(1e6)) → ≈ O(n * 60)
 - Space:
   * O(1)
 
@@ -5923,8 +5923,8 @@ public double optimalBSOA(int[] arr, int k) {
 
 - Minimize Maximum = find the smallest X such that it is possible.
 - Binary search on answer applies because:
-  * If dist = X is possible â†’ any dist > X is also possible
-  * If dist = X is not possible â†’ any dist < X is not possible
+  * If dist = X is possible → any dist > X is also possible
+  * If dist = X is not possible → any dist < X is not possible
 - This monotonic property makes BSOA valid.
 ---
 
@@ -5933,20 +5933,20 @@ public double optimalBSOA(int[] arr, int k) {
 - Aggressive Cows (maximize minimum distance)
 - Split array into K subarrays minimizing maximum sum
 - Minimize max packet size
-- Painterâ€™s partition problem
+- Painter’s partition problem
 - Minimize max sweetness
 ---
 
 ## 8. Tips & Observations
 
-- Always recognize â€œminimize maximumâ€ â†’ binary search over answer.
+- Always recognize “minimize maximum” → binary search over answer.
 - For double precision, use:
   * while (high - low > 1e-6)
 - PQ approach is still too slow for large k.
 - Use accurate floating-point comparisons.
 - No merging or simulation can beat BSOA.
 
-- **âš ï¸ Pitfalls**
+- **⚠️ Pitfalls**
     - Incorrect formula for stations needed
     - Forgetting the precision threshold
     - Using integer binary search instead of double
@@ -5972,23 +5972,23 @@ public double optimalBSOA(int[] arr, int k) {
 - Your goal:
   * Split array such that the maximum subarray sum is as small as possible.
   * Return this minimized maximum sum.
-- This is Minimize Maximum â†’ a perfect Binary Search on Answer (BSOA) problem.
+- This is Minimize Maximum → a perfect Binary Search on Answer (BSOA) problem.
 ---
 
 ## 2. Constraints
 
-- 1 â‰¤ n â‰¤ 10^4
-- 1 â‰¤ k â‰¤ n
-- 1 â‰¤ a[i] â‰¤ 10^4
+- 1 ≤ n ≤ 10^4
+- 1 ≤ k ≤ n
+- 1 ≤ a[i] ≤ 10^4
 ---
 
 ## 3. Edge Cases
 
-- k = 1 â†’ answer = sum of whole array
-- k = n â†’ answer = max element
-- Very large numbers â†’ use long for sums
-- Array in strictly increasing order â†’ largest splits affect
-- All elements equal â†’ simple equal distribution
+- k = 1 → answer = sum of whole array
+- k = n → answer = max element
+- Very large numbers → use long for sums
+- Array in strictly increasing order → largest splits affect
+- All elements equal → simple equal distribution
 ---
 
 ## 4. Examples
@@ -6018,10 +6018,10 @@ Largest sum = 5
 - Try all ways to split array into k subarrays, calculate maximum subarray sum each time, return minimum of all.
 - Why it's impossible
   * Number of ways to place k-1 dividers between n-1 gaps:
-  * C(n-1, k-1) â†’ exponential for n=10^4
+  * C(n-1, k-1) → exponential for n=10^4
   * Not feasible.
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Brute = check all partitions, but search space too huge.
 
 **Complexity (Time & Space):**
@@ -6033,17 +6033,17 @@ Largest sum = 5
 **Idea:**
 - Try a candidate largest sum S, simulate partition:
   * Keep adding numbers until sum > S
-  * When greater â†’ make a cut
+  * When greater → make a cut
   * Count number of cuts (subarrays)
 - But instead of binary search, you linearly test S from max(a[i]) to sum(a).
 - Why this is bad
-  * Worst case sum ~ 10^8 leads to O(sum) checks â†’ impossible.
+  * Worst case sum ~ 10^8 leads to O(sum) checks → impossible.
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Correct checking logic, but wrong outer loop.
 
 **Complexity (Time & Space):**
-- Time: O(sum * n) â†’ too slow
+- Time: O(sum * n) → too slow
 
 ### Approach 3: Optimal): Binary Search on Answer
 
@@ -6054,8 +6054,8 @@ Largest sum = 5
   * high = sum(a)     (max possible max sum)
 - For each mid:
   * Check how many subarrays we need if no subarray sum exceeds mid.
-  * If we need more than k subarrays â†’ mid too small â†’ increase low
-  * Else â†’ mid possible â†’ try smaller mid
+  * If we need more than k subarrays → mid too small → increase low
+  * Else → mid possible → try smaller mid
 
 **Steps:**
 - Compute:
@@ -6063,7 +6063,7 @@ Largest sum = 5
   * high = sum(a[i])
 - Binary search:
   * mid = (low + high) / 2
-- Use greedy to count how many subarrays required with max sum â‰¤ mid.
+- Use greedy to count how many subarrays required with max sum ≤ mid.
 - Adjust search space.
 
 **Java Code:**
@@ -6086,7 +6086,7 @@ public class Solution {
             if(canSplit(a, k, mid)){
                 high = mid - 1;  // try smaller largest sum
             } else {
-                low = mid + 1;   // mid too small â†’ increase
+                low = mid + 1;   // mid too small → increase
             }
         }
 
@@ -6111,7 +6111,7 @@ public class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Why binary search works?
 - Because:
   * If a max subarray sum S is possible,
@@ -6130,7 +6130,7 @@ public class Solution {
 - O(n log(sum(a))) because:
   * Each mid-check = O(n)
   * Binary search range log(sum)
-  * You get ~30â€“40 iterations for integers â†’ very fast.
+  * You get ~30–40 iterations for integers → very fast.
 - Space
   * O(1) because only counters and current sum are stored.
 
@@ -6150,23 +6150,23 @@ public class Solution {
 - Painters Partition
 - Allocate minimum number of pages
 - Split array to minimize max OR maximize min
-- Minimize largest bag size (LeetCode â€œMinimum Limit of Ballsâ€)
+- Minimize largest bag size (LeetCode “Minimum Limit of Balls”)
 ---
 
 ## 8. Tips & Observations
 
-- Always identify the pattern â€œMinimize the Maximumâ€
+- Always identify the pattern “Minimize the Maximum”
 - low = max(a[i]) ensures subarray exists
 - high = sum(a[i]) ensures all numbers in one subarray possible
 - Greedy split logic must never exceed mid
 - Use integer binary search (no double)
 
-- **âš ï¸ Pitfalls**
+- **⚠️ Pitfalls**
     - Using mid incorrectly
     - Forgetting low = max(a)
     - Splitting incorrectly (splits must be consecutive)
     - Mistaking this for DP (DP is too slow: O(n*k))
-    - Missing edge case: k = n â†’ answer = max element
+    - Missing edge case: k = n → answer = max element
     - Off-by-one in low/high answer return
 ---
 
@@ -6178,26 +6178,26 @@ public class Solution {
 ## 1. Problem Understanding
 
 - You are given a binary matrix where:
-  * Each row is sorted in non-decreasing order â†’ pattern 0 0 0 ... 1 1 1
+  * Each row is sorted in non-decreasing order → pattern 0 0 0 ... 1 1 1
 - You must return the index of the row that has the maximum number of 1s.
-- If multiple rows have same count â†’ return the smallest index.
-- If no 1 exists in the grid â†’ return -1.
+- If multiple rows have same count → return the smallest index.
+- If no 1 exists in the grid → return -1.
 - Goal:
   * Find the row with the maximum number of ones (using sorted row property efficiently).
 ---
 
 ## 2. Constraints
 
-- 1 â‰¤ n, m â‰¤ 100
+- 1 ≤ n, m ≤ 100
 - Values are 0 or 1
-- All rows sorted (0â€™s â†’ 1â€™s)
+- All rows sorted (0’s → 1’s)
 ---
 
 ## 3. Edge Cases
 
-- Entire matrix is all 0â€™s â†’ return -1
-- Multiple rows with same number of 1â€™s
-- First row has max 1â€™s
+- Entire matrix is all 0’s → return -1
+- Multiple rows with same number of 1’s
+- First row has max 1’s
 - Only one row
 - Rows like [1,1,1] or [0,0,0]
 ---
@@ -6274,7 +6274,7 @@ public int rowWithMax1sBrute(int[][] mat) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Straightforward counting, but ignores sorted property.
 
 **Complexity (Time & Space):**
@@ -6332,7 +6332,7 @@ private int firstOneIndex(int[] row){
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Binary search uses the sorted nature of each row.
 
 **Complexity (Time & Space):**
@@ -6345,9 +6345,9 @@ private int firstOneIndex(int[] row){
 
 **Idea:**
 - Use the property:
-  * Rows sorted â†’ if you see a 1, go left
+  * Rows sorted → if you see a 1, go left
   * If you see a 0, go down
-- This visits each row at most once and each column at most once â†’ O(n + m).
+- This visits each row at most once and each column at most once → O(n + m).
 
 **Steps:**
 - Start at (0, m-1) top-right corner
@@ -6380,11 +6380,11 @@ public int rowWithMax1s(int[][] mat) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- Moving left reduces 1s count â†’ valid updates
+**💭 Intuition Behind the Approach:**
+- Moving left reduces 1s count → valid updates
 - Moving down checks next rows
 - Top-right traversal ensures minimal operations
-- This is a classic matrix trick (â€œstaircase searchâ€)
+- This is a classic matrix trick (“staircase search”)
 
 **Complexity (Time & Space):**
 - Time:
@@ -6396,8 +6396,8 @@ public int rowWithMax1s(int[][] mat) {
 
 ## 6. Justification / Proof of Optimality
 
-- Brute force checks all cells â†’ correct but slow.
-- Binary search uses sorted row property â†’ faster.
+- Brute force checks all cells → correct but slow.
+- Binary search uses sorted row property → faster.
 - Top-right corner method leverages global movement pattern:
   * From top-right, every left move means more 1s
   * Every down move eliminates current row
@@ -6419,7 +6419,7 @@ public int rowWithMax1s(int[][] mat) {
 - If all rows are sorted same way, global navigation is optimal.
 - Keep track of row index only when moving left on a 1.
 
-- **âš ï¸ Pitfalls**
+- **⚠️ Pitfalls**
     - Return -1 if no 1 exists (corner case)
     - Returning maxCount row instead of first such row
     - Forgetting sorted property and using unnecessary loops
@@ -6434,22 +6434,22 @@ public int rowWithMax1s(int[][] mat) {
 ## 1. Problem Understanding
 
 - You are given a 2D matrix where:
-- Every row is sorted left â†’ right
-- Every column is sorted top â†’ bottom
+- Every row is sorted left → right
+- Every column is sorted top → bottom
 - You must determine if a given target exists in this matrix.
 ---
 
 ## 2. Constraints
 
-- 1 â‰¤ n, m â‰¤ 300
-- -10^9 â‰¤ matrix[i][j] â‰¤ 10^9
+- 1 ≤ n, m ≤ 300
+- -10^9 ≤ matrix[i][j] ≤ 10^9
 - Matrix sorted row-wise & column-wise
 ---
 
 ## 3. Edge Cases
 
-- Target smaller than top-left element â†’ false
-- Target larger than bottom-right element â†’ false
+- Target smaller than top-left element → false
+- Target larger than bottom-right element → false
 - Single row or single column
 - Target equals first/last element
 - Duplicate numbers DO NOT exist (but algorithm works even if they did)
@@ -6465,17 +6465,17 @@ public int rowWithMax1s(int[][] mat) {
 18 21  23  26  30
 Example 1
 
-target = 5 â†’ true
+target = 5 → true
 
 
 Example 2
 
-target = 20 â†’ false
+target = 20 → false
 
 
 Example 3
 
-target = 1 â†’ true
+target = 1 → true
 ```
 
 ---
@@ -6502,7 +6502,7 @@ public boolean searchBrute(int[][] mat, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Straightforward but ignores matrix sorted structure.
 
 **Complexity (Time & Space):**
@@ -6513,7 +6513,7 @@ public boolean searchBrute(int[][] mat, int target) {
 
 **Idea:**
 - Since each row is sorted:
-  * For each row â†’ do binary search.
+  * For each row → do binary search.
 
 **Steps:**
 - For each row:
@@ -6532,7 +6532,7 @@ public boolean searchEachRow(int[][] mat, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Uses row sorting but ignores column sorting.
 
 **Complexity (Time & Space):**
@@ -6543,24 +6543,24 @@ public boolean searchEachRow(int[][] mat, int target) {
 
 **Idea:**
 - Start at top-right corner:
-  * If target < current â†’ move left
-  * If target > current â†’ move down
-  * If equal â†’ return true
+  * If target < current → move left
+  * If target > current → move down
+  * If equal → return true
 - Why this works
   * From (i, j):
   * All values left of (i, j) are smaller
   * All values below (i, j) are larger
-- So you eliminate one row OR one column in each step â†’ O(n+m).
+- So you eliminate one row OR one column in each step → O(n+m).
 
 **Steps:**
 - Set:
   * i = 0
   * j = m - 1
 - While in bounds:
-  * if mat[i][j] == target â†’ true
-  * if target < mat[i][j] â†’ j-- (move left)
-  * else â†’ i++ (move down)
-- If loop ends â†’ false
+  * if mat[i][j] == target → true
+  * if target < mat[i][j] → j-- (move left)
+  * else → i++ (move down)
+- If loop ends → false
 
 **Java Code:**
 ```java
@@ -6586,12 +6586,12 @@ public boolean searchMatrix(int[][] matrix, int target) {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - You eliminate a FULL row or FULL column depending on comparison.
 - This is like searching in a BST:
   * Left side smaller
   * Down side greater
-- Traversal path looks like a staircase â†’ hence the name.
+- Traversal path looks like a staircase → hence the name.
 
 **Complexity (Time & Space):**
 - Time: O(n + m)
@@ -6602,9 +6602,9 @@ public boolean searchMatrix(int[][] matrix, int target) {
 ## 6. Justification / Proof of Optimality
 
 - Starting from top-right is optimal because:
-  * From here, moving left â†’ values strictly decrease
-  * Moving down â†’ values strictly increase
-- Sorted rows + sorted columns â†’ monotonic movement
+  * From here, moving left → values strictly decrease
+  * Moving down → values strictly increase
+- Sorted rows + sorted columns → monotonic movement
 - Guarantees minimal comparisons
 ---
 
@@ -6623,10 +6623,10 @@ public boolean searchMatrix(int[][] matrix, int target) {
 - Staircase search = monotonic elimination.
 - The moment you move left or down, you eliminate full row/column instantly.
 
-- **âš ï¸ Pitfalls**
-    - Donâ€™t start from top-left â†’ both right & down move increases
-    - Donâ€™t use BFS/DFS â†’ waste of time
-    - Donâ€™t treat as binary matrix or DP
+- **⚠️ Pitfalls**
+    - Don’t start from top-left → both right & down move increases
+    - Don’t use BFS/DFS → waste of time
+    - Don’t treat as binary matrix or DP
     - Carefully check boundaries
 ---
 
@@ -6651,8 +6651,8 @@ public boolean searchMatrix(int[][] matrix, int target) {
 
 ## 2. Constraints
 
-- 1 â‰¤ n, m â‰¤ 500
-- 1 â‰¤ mat[i][j] â‰¤ 1e5
+- 1 ≤ n, m ≤ 500
+- 1 ≤ mat[i][j] ≤ 1e5
 - Adjacent cells have different values
 - Multiple peaks possible
 ---
@@ -6662,8 +6662,8 @@ public boolean searchMatrix(int[][] matrix, int target) {
 - Peak at a corner
 - Peak in the first or last row
 - Peak in the first or last column
-- Entire matrix strictly increasing â†’ bottom-right is peak
-- Entire matrix strictly decreasing â†’ top-left is peak
+- Entire matrix strictly increasing → bottom-right is peak
+- Entire matrix strictly decreasing → top-left is peak
 ---
 
 ## 4. Examples
@@ -6676,7 +6676,7 @@ mat = [
  [21, 30, 14],
  [7, 16, 32]
 ]
-Output: [1, 1]  â†’ 30 is a peak
+Output: [1, 1]  → 30 is a peak
 
 
 Example 2
@@ -6700,7 +6700,7 @@ Output: [1, 1]
 **Steps:**
 - For each (i, j):
   * Check left, right, top, bottom safely.
-  * If all are smaller â†’ return [i, j].
+  * If all are smaller → return [i, j].
 
 **Java Code:**
 ```java
@@ -6725,8 +6725,8 @@ public int[] findPeakBrute(int[][] mat){
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
-- We check all cells â€” guaranteed to find a peak, but slow.
+**💭 Intuition Behind the Approach:**
+- We check all cells — guaranteed to find a peak, but slow.
 
 **Complexity (Time & Space):**
 - Time: O(n*m)
@@ -6744,7 +6744,7 @@ public int[] findPeakBrute(int[][] mat){
   * Compare with neighbors.
 - Move search space accordingly.
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - : peak in 2D can be found by treating each row like a 1D peak problem.
 
 **Complexity (Time & Space):**
@@ -6758,22 +6758,22 @@ public int[] findPeakBrute(int[][] mat){
 - For a chosen column mid:
   * Find the row where the column value is maximum.
   * Check if that cell is a peak.
-  * If right neighbor is bigger â†’ move right (peak must be on right).
-  * Else â†’ move left.
+  * If right neighbor is bigger → move right (peak must be on right).
+  * Else → move left.
 - This works because the matrix adjacency and monotonic constraints create a directional slope.
 
 **Steps:**
 - Set:
   * low = 0
   * high = m - 1
-- While low â‰¤ high:
+- While low ≤ high:
   * mid = (low + high) / 2
   * Find maxRow = row with maximum value in column mid
   * Let val = mat[maxRow][mid]
 - Compare neighbors:
-  * if left > val â†’ peak is on left half â†’ high = mid - 1
-  * else if right > val â†’ peak is on right half â†’ low = mid + 1
-  * else â†’ this cell is a peak, return [maxRow, mid]
+  * if left > val → peak is on left half → high = mid - 1
+  * else if right > val → peak is on right half → low = mid + 1
+  * else → this cell is a peak, return [maxRow, mid]
 - This guarantees peak because:
   * If neighbor is larger, moving in that direction must lead to a peak.
 
@@ -6818,18 +6818,18 @@ public class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Why choose the max element in the column?
   * Because the best chance to find a peak is at a local maximum in that column.
 - Why move left/right?
-  * If right neighbor is greater, the slope leads upward â†’ peak must exist there.
+  * If right neighbor is greater, the slope leads upward → peak must exist there.
   * Same logic for left.
 - This works like mountain climbing:
   * If the slope goes up, move toward the higher direction until peak is found.
 
 **Complexity (Time & Space):**
 - Time: O(n log m)
-  * Each binary search iteration â†’ O(n) to find column max
+  * Each binary search iteration → O(n) to find column max
   * log m iterations of binary search
 - Space: O(1)
 
@@ -6853,18 +6853,18 @@ public class Solution {
 
 ## 8. Tips & Observations
 
-- Start binary search on columns, not rows â†’ fewer columns than elements.
+- Start binary search on columns, not rows → fewer columns than elements.
 - Always pick the max element of the mid column to compare.
 - No need to check top/bottom because you're already checking max.
-- Outer boundary assumed -1 â†’ natural peak on edges possible.
+- Outer boundary assumed -1 → natural peak on edges possible.
 
-- **âš ï¸ Pitfalls**
+- **⚠️ Pitfalls**
     - Forgetting to check matrix boundaries
     - Picking ANY element instead of column max
     - Checking only one neighbor
     - Using DFS/BFS (not needed)
     - Assuming sorted matrix (it is NOT sorted)
-    - Confusing with "Search in 2D matrix" problem â€” totally different
+    - Confusing with "Search in 2D matrix" problem — totally different
 ---
 
 <!-- #endregion -->
@@ -6883,17 +6883,17 @@ public class Solution {
 
 ## 2. Constraints
 
-- 1 â‰¤ N, M â‰¤ 10^5
-- 1 â‰¤ N*M â‰¤ 10^6 (so total elements up to 1 million)
+- 1 ≤ N, M ≤ 10^5
+- 1 ≤ N*M ≤ 10^6 (so total elements up to 1 million)
 - Each row sorted
-- 1 â‰¤ matrix[i][j] â‰¤ 10^9
-- N*M is always odd â†’ median is a single element
-- You CANNOT flatten â†’ too slow/memory heavy
+- 1 ≤ matrix[i][j] ≤ 10^9
+- N*M is always odd → median is a single element
+- You CANNOT flatten → too slow/memory heavy
 ---
 
 ## 3. Edge Cases
 
-- N = 1 â†’ median is median of single array
+- N = 1 → median is median of single array
 - Rows of different sizes (not here; all have M columns)
 - All small or all large values
 - Duplicate numbers
@@ -6919,7 +6919,7 @@ Example 2
 [2 3 4]
 [1 2 5]
 
-Flatten: 1 1 2 2 3 3 4 5 8 â†’ median = 3
+Flatten: 1 1 2 2 3 3 4 5 8 → median = 3
 ```
 
 ---
@@ -6934,7 +6934,7 @@ Flatten: 1 1 2 2 3 3 4 5 8 â†’ median = 3
 - Sort it
 - Return middle element
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Works but wasteful.
 
 **Complexity (Time & Space):**
@@ -6957,14 +6957,14 @@ Flatten: 1 1 2 2 3 3 4 5 8 â†’ median = 3
 
 **Idea:**
 - Since each row is sorted, we can count:
-  * How many elements in matrix are â‰¤ mid?
+  * How many elements in matrix are ≤ mid?
 - If we can count that efficiently, we can binary search the value of the median, not position.
 - Median position (0-indexed):
   * k = (N*M)/2
 - We need the smallest value x such that:
   * countLessOrEqual(x) > k
 - Key Insight
-- Every row sorted â†’ count elements â‰¤ mid in a row using binary search.
+- Every row sorted → count elements ≤ mid in a row using binary search.
 
 **Steps:**
 - Compute:
@@ -6972,9 +6972,9 @@ Flatten: 1 1 2 2 3 3 4 5 8 â†’ median = 3
   * high = max element (last elements of each row)
 - While low <= high:
   * mid = low + (high - low) / 2
-  * count = total elements â‰¤ mid across all rows
-  * If count > k â†’ median might be mid â†’ move left
-  * Else â†’ move right
+  * count = total elements ≤ mid across all rows
+  * If count > k → median might be mid → move left
+  * Else → move right
 - Return low (the smallest element satisfying count > k)
 
 **Java Code:**
@@ -7033,20 +7033,20 @@ public class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Median value is the K-th smallest element.
 - Instead of merging arrays, we binary search over the value range.
 - Each mid represents a candidate value for median.
 - Using binary search in each row (sorted), counting is efficient.
-- Because the matrix isnâ€™t globally sorted, but each row is, you can treat each row independently during count.
+- Because the matrix isn’t globally sorted, but each row is, you can treat each row independently during count.
 - This is a classic BSOA pattern.
 
 **Complexity (Time & Space):**
 - Time:
   * Counting each mid: O(N * log M)
-  * Binary search over value range â†’ about 32 iterations (log of 1e9)
+  * Binary search over value range → about 32 iterations (log of 1e9)
   * Total: O(N * log M * log(1e9))
-  * For constraints (N*M â‰¤ 10^6), this is optimal.
+  * For constraints (N*M ≤ 10^6), this is optimal.
 - Space:
   * O(1)
 
@@ -7054,8 +7054,8 @@ public class Solution {
 
 ## 6. Justification / Proof of Optimality
 
-- Each row sorted â†’ count elements â‰¤ x using binary search.
-- Counting is monotonic â†’ if mid is large, count increases.
+- Each row sorted → count elements ≤ x using binary search.
+- Counting is monotonic → if mid is large, count increases.
 - Because global sorted structure is not present, you cannot do one binary search on a flattened index.
 - BSOA is the only scalable method.
 ---
@@ -7072,14 +7072,14 @@ public class Solution {
 ## 8. Tips & Observations
 
 - Always binary search on value, not index, when multi-row sorted only row-wise.
-- Use upperBound to count â‰¤ mid.
-- Lowest possible matrix element â†’ low
-- Highest possible â†’ high
+- Use upperBound to count ≤ mid.
+- Lowest possible matrix element → low
+- Highest possible → high
 - Final answer = low
-- Total length is odd â†’ no need to average two middle values.
+- Total length is odd → no need to average two middle values.
 
-- **âš ï¸ Pitfalls**
-    - Using flatten or heap â†’ TLE
+- **⚠️ Pitfalls**
+    - Using flatten or heap → TLE
     - Using full matrix min & max incorrectly
     - Mistaking for 2D sorted full matrix (it's not)
     - Confusing median index condition
@@ -7100,16 +7100,16 @@ public class Solution {
   * K = each cake requires K consecutive flavours
   * Each flavour can be used in only 1 cake
   * You must find the minimum day D such that it is possible to form M cakes using K consecutive available flavours.
-- If not possible â†’ print -1.
+- If not possible → print -1.
 ---
 
 ## 2. Constraints
 
-  * 1 â‰¤ T â‰¤ 10
-  * 3 â‰¤ N â‰¤ 1000
-  * 3 â‰¤ M â‰¤ 10000
-  * 1 â‰¤ K â‰¤ N
-  * 0 â‰¤ A[i] â‰¤ 10000
+  * 1 ≤ T ≤ 10
+  * 3 ≤ N ≤ 1000
+  * 3 ≤ M ≤ 10000
+  * 1 ≤ K ≤ N
+  * 0 ≤ A[i] ≤ 10000
 - Total flavours = N
 - Total cakes = M
 - Cake requires K consecutive flavours.
@@ -7117,11 +7117,11 @@ public class Solution {
 
 ## 3. Edge Cases
 
-- M * K > N â†’ impossible â†’ return -1
-- All A[i] = 0 â†’ you can make all cakes immediately if count allows
+- M * K > N → impossible → return -1
+- All A[i] = 0 → you can make all cakes immediately if count allows
 - One giant unavailable segment makes arrangement impossible
-- K = 1 reduces to counting how many elements â‰¤ D
-- Flavours become available very late â†’ return max(A[i])
+- K = 1 reduces to counting how many elements ≤ D
+- Flavours become available very late → return max(A[i])
 ---
 
 ## 4. Examples
@@ -7131,9 +7131,9 @@ Example 1
 N=5, M=3, K=1
 A = [1,10,3,10,2]
 
-Day 1: only A[0] available â†’ 1 cake  
-Day 2: A[0], A[4] â†’ 2 cakes  
-Day 3: A[0], A[2], A[4] â†’ 3 cakes
+Day 1: only A[0] available → 1 cake  
+Day 2: A[0], A[4] → 2 cakes  
+Day 3: A[0], A[2], A[4] → 3 cakes
 Answer = 3
 
 Example 2
@@ -7142,7 +7142,7 @@ A = [1,10,3,10,2]
 
 Need 1 cake = 2 consecutive available flavours.
 
-Day 10: all flavours available â†’ can form 1 cake.
+Day 10: all flavours available → can form 1 cake.
 Answer = 10
 ```
 
@@ -7153,17 +7153,17 @@ Answer = 10
 ### Approach 1: Brute Force
 
 **Idea:**
-- Try each day from 0 â†’ max(A):
+- Try each day from 0 → max(A):
   * For each day D, check if at least M cakes possible.
   * For each D:
-    * Create boolean array available[i] = (A[i] â‰¤ D)
+    * Create boolean array available[i] = (A[i] ≤ D)
     * Count consecutive sequences of length K
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Simulate everything day by day.
 
 **Complexity (Time & Space):**
-- Time: O(max(A) * N) â†’ too big (10k * 1000 = 1e7 per test)
+- Time: O(max(A) * N) → too big (10k * 1000 = 1e7 per test)
 - Space: O(N)
 
 ### Approach 2: Binary Search on Answer
@@ -7171,10 +7171,10 @@ Answer = 10
 **Idea:**
 - Binary search on minimum day D such that it is possible to make M cakes.
 - For a given D:
-  * Mark flavour i as available if A[i] â‰¤ D
+  * Mark flavour i as available if A[i] ≤ D
   * Traverse array to count how many consecutive blocks of size K can be formed.
-- If cakes â‰¥ M â†’ day D is possible â†’ try smaller
-- Else â†’ increase day
+- If cakes ≥ M → day D is possible → try smaller
+- Else → increase day
 - This is same pattern as:
   * Minimum days to make bouquets
   * Minimum time to make m bananas
@@ -7196,7 +7196,7 @@ class Solution {
     public int solve(int[] A, int M, int K) {
         int n = A.length;
 
-        // If total flavours < required flavours â†’ impossible
+        // If total flavours < required flavours → impossible
         if ((long)M * K > n) return -1;
 
         int low = Integer.MAX_VALUE, high = Integer.MIN_VALUE;
@@ -7231,7 +7231,7 @@ class Solution {
                 consecutive++;
                 if (consecutive == K) {
                     cakes++;
-                    consecutive = 0;  // K consecutive used â†’ reset
+                    consecutive = 0;  // K consecutive used → reset
                     if (cakes >= M) return true;
                 }
             } else {
@@ -7244,12 +7244,12 @@ class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - If by day D we can form M cakes:
-  * Any day â‰¥ D is also possible.
+  * Any day ≥ D is also possible.
 - If day D is not enough:
   * Any day < D will also not be enough.
-- This monotonic behavior â†’ perfect for binary search.
+- This monotonic behavior → perfect for binary search.
 - We search the SMALLEST day that satisfies the requirement.
 - Counting consecutive blocks is greedy:
   * Each block of K consecutive available flavours = 1 cake
@@ -7257,9 +7257,9 @@ class Solution {
 
 **Complexity (Time & Space):**
 - Time:
-  * Binary search iterations: log(max(A)) â‰ˆ log(10000) â‰ˆ 14
+  * Binary search iterations: log(max(A)) ≈ log(10000) ≈ 14
   * Each check: O(N)
-  * Total: O(N log Amax) â‰ˆ 1000 * 14 = 14000 operations per test
+  * Total: O(N log Amax) ≈ 1000 * 14 = 14000 operations per test
 - Space:
   * O(1)
 
@@ -7288,18 +7288,18 @@ class Solution {
 
 ## 8. Tips & Observations
 
-- Always check M*K > N early â†’ impossible
+- Always check M*K > N early → impossible
 - The key is consecutive availability
 - Use greedy scanning to form groups
-- No need to build boolean array, just compare A[i] â‰¤ day
+- No need to build boolean array, just compare A[i] ≤ day
 - Low = min(A), high = max(A)
 - Always binary search on answer, not index
 
-- **âš ï¸ Pitfalls**
+- **⚠️ Pitfalls**
     - Forgetting that each flavour can be used ONCE
     - Forgetting to reset when block breaks
     - Doing sliding window incorrectly (blocks must be consecutive, not ANY K available)
-    - Using sum or counting A[i] â‰¤ mid â€” DOES NOT work because flavours must be consecutive
+    - Using sum or counting A[i] ≤ mid — DOES NOT work because flavours must be consecutive
     - Off-by-one in binary search
 ---
 
@@ -7324,18 +7324,18 @@ class Solution {
 
 ## 2. Constraints
 
-- 1 â‰¤ n â‰¤ 1e5
-- 1 â‰¤ nums[i] â‰¤ 1e9
-- 1 â‰¤ maxOperations â‰¤ 1e9
+- 1 ≤ n ≤ 1e5
+- 1 ≤ nums[i] ≤ 1e9
+- 1 ≤ maxOperations ≤ 1e9
 ---
 
 ## 3. Edge Cases
 
-- maxOperations = 0 â†’ penalty = max(nums)
-- Already small numbers â†’ answer = max(nums)
-- Extremely large bag (like 1e9) â†’ binary search required
-- Many bags with small values â†’ operations not needed
-- Many operations â†’ can make all bags = 1
+- maxOperations = 0 → penalty = max(nums)
+- Already small numbers → answer = max(nums)
+- Extremely large bag (like 1e9) → binary search required
+- Many bags with small values → operations not needed
+- Many operations → can make all bags = 1
 ---
 
 ## 4. Examples
@@ -7343,11 +7343,11 @@ class Solution {
 ```text
 Example 1
 nums = [9], maxOperations = 2
-Possible final: [3,3,3] â†’ penalty = 3
+Possible final: [3,3,3] → penalty = 3
 
 Example 2
 nums = [2,4,8,2], maxOperations = 4
-Final: [2,2,2,2,2,2,2,2] â†’ penalty = 2
+Final: [2,2,2,2,2,2,2,2] → penalty = 2
 ```
 
 ---
@@ -7360,15 +7360,15 @@ Final: [2,2,2,2,2,2,2,2] â†’ penalty = 2
 - Split largest bag repeatedly.
 - Use a max heap.
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - Feels greedy: keep splitting largest bag.
-- âŒ Why it fails / too slow
+- ❌ Why it fails / too slow
     * Splitting 1e9 can take too many operations because:
     * heap operations cost O(log n)
-    * up to maxOperations = 1e9 â†’ impossible
+    * up to maxOperations = 1e9 → impossible
 
 **Complexity (Time & Space):**
-- Time: O(maxOperations * log n) â†’ TLE
+- Time: O(maxOperations * log n) → TLE
 - Space: O(n)
 
 ### Approach 2: Binary Search on Answer
@@ -7377,33 +7377,33 @@ Final: [2,2,2,2,2,2,2,2] â†’ penalty = 2
 - Key Insight
 - Let penalty = X (the maximum allowed balls in any bag).
 - Then we ask:
-- â“ How many splits needed to make every bag â‰¤ X?
+- ❓ How many splits needed to make every bag ≤ X?
 - For a bag with size v:
 - We need:
   * splits = (v - 1) / X
 - Explanation:
   * Example: v = 9, X = 3
-  * (9 - 1) / 3 = 8 / 3 = 2 splits â†’ which is correct: 9 â†’ 6+3 â†’ 3+3+3
+  * (9 - 1) / 3 = 8 / 3 = 2 splits → which is correct: 9 → 6+3 → 3+3+3
 - We sum splits for all bags:
-  * totalSplits = Î£ (v - 1) / X
+  * totalSplits = Σ (v - 1) / X
 - Then:
   * if totalSplits <= maxOperations
-       * X is possible â†’ try smaller X
+       * X is possible → try smaller X
   * else
-       * X too small â†’ try bigger X
+       * X too small → try bigger X
 - This is monotonic:
-  * If penalty X is possible â†’ any Xâ€™ > X is also possible
-  * If X is not possible â†’ any Xâ€™ < X is also not possible
-- â†’ Perfect for binary search.
+  * If penalty X is possible → any X’ > X is also possible
+  * If X is not possible → any X’ < X is also not possible
+- → Perfect for binary search.
 
 **Steps:**
 - low = 1
 - high = max(nums)
-- While low â‰¤ high:
+- While low ≤ high:
   * mid = possible penalty
   * compute splits needed
-  * if splits â‰¤ maxOperations â†’ high = mid - 1
-  * else â†’ low = mid + 1
+  * if splits ≤ maxOperations → high = mid - 1
+  * else → low = mid + 1
 - Answer = low
 
 **Java Code:**
@@ -7443,15 +7443,15 @@ class Solution {
 }
 ```
 
-**ðŸ’­ Intuition Behind the Approach:**
+**💭 Intuition Behind the Approach:**
 - If penalty = X is allowed, each bag of size v becomes roughly v/X bags.
 - Number of splits needed is (v - 1)/X.
-- Lower penalty â†’ more splits â†’ harder.
-- Higher penalty â†’ fewer splits â†’ easier.
+- Lower penalty → more splits → harder.
+- Higher penalty → fewer splits → easier.
 - So:
-  * Penalty too small â†’ too many splits required â†’ infeasible
-  * Penalty large enough â†’ splits fit within maxOperations â†’ feasible
-- This monotonic property â†’ Binary Search on Answer.
+  * Penalty too small → too many splits required → infeasible
+  * Penalty large enough → splits fit within maxOperations → feasible
+- This monotonic property → Binary Search on Answer.
 - Same idea as:
   * Gas stations problem
   * Split array largest sum
@@ -7460,13 +7460,13 @@ class Solution {
   * Koko eating bananas
 
 **Complexity (Time & Space):**
-- â±ï¸ Time Complexity
+- ⏱️ Time Complexity
 - Each check: O(n)
-- Binary search: O(log max(nums)) â‰ˆ 31
+- Binary search: O(log max(nums)) ≈ 31
 - Total:
   * O(n log max(nums))
-  * âœ” Fits constraints: n = 1e5
-- ðŸ’¾ Space Complexity
+  * ✔ Fits constraints: n = 1e5
+- 💾 Space Complexity
   * O(1)
 
 ---
@@ -7482,8 +7482,8 @@ class Solution {
   * Required splits decrease
   * Easier to achieve within maxOperations
 - Thus:
-  * If penalty X is feasible â†’ any value > X is also feasible
-  * If penalty X is not feasible â†’ any value < X is also not feasible
+  * If penalty X is feasible → any value > X is also feasible
+  * If penalty X is not feasible → any value < X is also not feasible
 - This monotonic feasibility allows a binary search on the answer.
 - No other approach can beat this time complexity due to range (1 to 1e9) and constraints.
 ---
@@ -7500,18 +7500,18 @@ class Solution {
 
 ## 8. Tips & Observations
 
-- Whenever an operation divides something â†’ BSOA appears
-- Splitting until all â‰¤ X uses formula (v-1)/X
+- Whenever an operation divides something → BSOA appears
+- Splitting until all ≤ X uses formula (v-1)/X
 - Lower penalty = harder = more operations
 - Higher penalty = easier = fewer operations
 
-- **âš ï¸ Pitfalls**
-    - Using greedy splits on heap â†’ TLE
+- **⚠️ Pitfalls**
+    - Using greedy splits on heap → TLE
     - Overflow if using int for ops (use long)
     - Wrong split formula:
-      * âŒ v / X
-      * âœ” splits = (v - 1) / X
-    - Returning high instead of lowâ€”use low at the end
+      * ❌ v / X
+      * ✔ splits = (v - 1) / X
+    - Returning high instead of low—use low at the end
     - Missing binary search on penalty logic (not on indices)
 ---
 
