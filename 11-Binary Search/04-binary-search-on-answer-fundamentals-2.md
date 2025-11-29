@@ -80,8 +80,16 @@ for (int x = low; x <= high; x++) {
 
 ### Approach 2: Binary Search on Answer (l <= h)
 
+
 **Idea:**
-- Same concept, but keep track of best candidate using ans.
+- Use **binary search on the answer space**, not on the array itself.
+- Let `mid` be the **candidate answer**.
+- Use a helper function to check if this `mid` value is **valid/possible**.
+- If `mid` is valid:
+  - store it as the **current best answer** (`ans = mid`)
+  - move **left** to try finding a smaller valid answer.
+- If `mid` is not valid:
+  - move **right** to search for a larger possible answer.
 
 **Steps:**
 - low = L
