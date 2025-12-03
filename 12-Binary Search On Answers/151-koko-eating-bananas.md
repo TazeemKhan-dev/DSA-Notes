@@ -2,20 +2,43 @@
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q151: Koko eating bananas</h1>
 
-## 1. Problem Understanding
+## 1. Problem Statement
 
-- You’re given:
-  * n piles of bananas
-  * nums[i] bananas in the i-th pile
-  * h hours to finish all piles
-  * Each hour, Koko chooses one pile and eats k bananas
-  * If the pile has fewer than k bananas → she eats the entire pile and does not continue eating more that hour
-- Goal:
-  * Find the minimum integer k such that Koko can finish all bananas in ≤ h hours.
-  * This is a classic Binary Search on Answer problem.
+- You are given n piles of bananas, where the i-th pile contains piles[i] bananas.
+- Koko can choose an integer eating speed k (bananas per hour).
+- Each hour:
+  * She selects one pile.
+  * She eats k bananas from that pile.
+  * If the pile has fewer than k bananas → she eats the whole pile and the rest of the hour is idle.
+- The guards will return in h hours, and Koko wants to finish eating all the bananas before they return.
+- You must return the minimum integer eating speed k such that Koko finishes all piles within h hours.
 ---
 
-## 2. Constraints
+## 2. Problem Understanding
+
+- This problem is asking:
+  * What is the slowest speed k at which Koko can still finish all bananas within exactly h hours?
+- Key details:
+  * Koko eats from only one pile per hour.
+  * If she eats k bananas per hour:
+    * A pile of size p requires ceil(p / k) hours to finish.
+  * Total hours needed is:
+    * sum( ceil(piles[i] / k) ) for all i
+  * As k increases:
+    * Eating becomes faster.
+    * The total hours needed decreases.
+  * As k decreases:
+    * Eating becomes slower.
+    * The total hours increases.
+- We need to find the minimum k such that:
+  * totalHours(k) <= h
+- This forms a monotonically decreasing function with respect to k,
+- which makes the problem a classic Binary Search on Answer (BSOA) problem.
+---
+
+<!-- #endregion -->
+
+## 3. Constraints
 
 - 1 ≤ n ≤ 10^4
 - 1 ≤ nums[i] ≤ 10^9
@@ -24,7 +47,7 @@
 - Answer range = 1 → max(nums[])
 ---
 
-## 3. Edge Cases
+## 4. Edge Cases
 
 - If h = n → Koko must finish each pile in 1 hour → k = max(nums)
 - If all piles are size 1 → answer is 1
@@ -33,7 +56,7 @@
 - Single pile case
 ---
 
-## 4. Examples
+## 5. Examples
 
 ```text
 Example 1
@@ -54,7 +77,7 @@ Output: 3
 
 ---
 
-## 5. Approaches
+## 6. Approaches
 
 ### Approach 1: Brute Force
 
@@ -145,7 +168,7 @@ private boolean canEat(int[] nums, int k, int h) {
 
 ---
 
-## 6. Justification / Proof of Optimality
+## 7. Justification / Proof of Optimality
 
 - This works because:
 - hours(k) = sum(ceil(nums[i]/k))
@@ -157,7 +180,7 @@ private boolean canEat(int[] nums, int k, int h) {
 - Binary search can find the first valid speed.
 ---
 
-## 7. Variants / Follow-Ups
+## 8. Variants / Follow-Ups
 
 - Minimum ship capacity
 - Smallest divisor
@@ -166,7 +189,7 @@ private boolean canEat(int[] nums, int k, int h) {
 - Minimum eating speed (LeetCode #875)
 ---
 
-## 8. Tips & Observations
+## 9. Tips & Observations
 
 - Divisor must start at 1, not 0
 - Upper bound is max(nums[])
