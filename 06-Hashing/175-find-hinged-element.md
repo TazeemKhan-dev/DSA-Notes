@@ -95,9 +95,10 @@ No valid hinge.
 
 **Java Code:**
 ```java
-public int findHingedElement(int[] arr) {
-    int n = arr.length;
-    if (n < 3) return -1;
+public int findElement(int[] arr, int n) {
+
+    // Special case: N = 1 -> return 0
+    if (n == 1) return 0;
 
     int[] leftMax = new int[n];
     int[] rightMin = new int[n];
@@ -112,18 +113,19 @@ public int findHingedElement(int[] arr) {
         rightMin[i] = Math.min(rightMin[i + 1], arr[i]);
     }
 
-    // Check from 1 to n-2 (first can’t be hinge)
+    // MUST check last element FIRST (as per problem statement)
+    if (arr[n - 1] > leftMax[n - 2]) return n - 1;
+
+    // Now check internal elements
     for (int i = 1; i < n - 1; i++) {
         if (leftMax[i - 1] < arr[i] && arr[i] < rightMin[i + 1]) {
             return i;
         }
     }
 
-    // Last index special rule
-    if (arr[n - 1] > leftMax[n - 2]) return n - 1;
-
     return -1;
 }
+
 ```
 
 **💭 Intuition Behind the Approach:**
