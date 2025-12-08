@@ -2,18 +2,30 @@
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q166: Employees and Manager</h1>
 
-## 1. Problem Understanding
+## 1. Problem Statement
 
-- You are given a mapping employee → manager.
-- For every person, you must compute how many employees they manage, including:
+- Given a mapping of employee → manager, compute the number of employees under each person, including:
   * Direct reports
-  * Indirect reports (reports of their reports, recursively)
-- CEO is the person whose manager is himself.
-- Finally, print in lexical order of employee names:
-- employee total_reports
+  * Indirect reports (recursive)
+- CEO is the one who manages himself.
+- You must print:
+  * employee total_reports
+- For every employee, sorted lexicographically.
 ---
 
-## 2. Constraints
+## 2. Problem Understanding
+
+- We are given a hierarchy:
+  * Each employee has exactly one manager
+  * CEO reports to himself
+  * We must count all people working under each employee
+  * “Under” includes:
+    * Direct reports
+    * Reports of reports
+    * Multi-level chain
+- This is effectively subtree size computation in a tree/forest.
+---
+## 3. Constraints
 
 - 1 <= N <= 100
 - Single manager per employee
@@ -22,7 +34,7 @@
 - Indirect reports included
 ---
 
-## 3. Edge Cases
+## 4. Edge Cases
 
 - Single employee (self-reporting) → output employee 0
 - Multiple disconnected chains (rare but possible in input)
@@ -31,7 +43,7 @@
 - Output must be lexically sorted
 ---
 
-## 4. Examples
+## 5. Examples
 
 ```text
 Input
@@ -57,7 +69,7 @@ F 5
 
 ---
 
-## 5. Approaches
+## 6. Approaches
 
 ### Approach 1: Brute Force (DFS for each employee)
 
@@ -180,15 +192,101 @@ private int dfs(char manager, Map<Character, List<Character>> tree,
 - 💾 Why this complexity?
     * Each employee and each edge is processed a single time.
 
+
+### Approach 3: CEO-based DFS (Clean Version of Your Logic)
+
+**Idea:**
+- Identify CEO
+- Build a map:
+- manager → list of direct employees
+- Run one DFS starting from CEO
+- DFS returns:
+- total employees under manager + 1
+
+**Steps:**
+- Parse input
+- Build adjacency list of manager → employees
+- Detect CEO
+- DFS from CEO
+- Store each manager’s direct+indirect employee count
+- Print all employees (sorted)
+
+**Java Code:**
+```java
+public Map<String, Integer> countEmployees(Map<String, String> emp) {
+
+    // manager → list of direct reports
+    Map<String, List<String>> tree = new HashMap<>();
+    String ceo = "";
+
+    // Build tree + identify CEO
+    for (String e : emp.keySet()) {
+        String m = emp.get(e);
+        if (e.equals(m)) {
+            ceo = e;  // CEO
+        } else {
+            tree.computeIfAbsent(m, k -> new ArrayList<>()).add(e);
+        }
+    }
+
+    // Store results
+    Map<String, Integer> ans = new HashMap<>();
+
+    // DFS from CEO
+    dfs(ceo, tree, ans);
+
+    // Employees with no reports → 0
+    for (String e : emp.keySet()) {
+        ans.putIfAbsent(e, 0);
+    }
+
+    return ans;
+}
+
+private int dfs(String manager, Map<String, List<String>> tree,
+                Map<String, Integer> ans) {
+
+    // If manager has no reports → leaf
+    if (!tree.containsKey(manager)) {
+        ans.put(manager, 0);
+        return 1; // count itself for parent
+    }
+
+    int total = 0;
+
+    // Count all direct + indirect reports
+    for (String emp : tree.get(manager)) {
+        total += dfs(emp, tree, ans);
+    }
+
+    ans.put(manager, total);    // store counts excluding itself
+    return total + 1;           // return subtree size including itself
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Think of each employee as a node in a tree.
+- CEO is the root
+- Manager–employee relationships form edges
+- The number of employees under a manager = size of its subtree − 1
+- Your DFS returns:
+  * size of subtree = total reports + 1 (for the node itself)
+- We store:
+  * total reports = subtree size - 1
+
+**Complexity (Time & Space):**
+- Time Complexity:   O(N)
+- Space Complexity:  O(N)
+
 ---
 
-## 6. Justification / Proof of Optimality
+## 7. Justification / Proof of Optimality
 
 - The memoized DFS approach is optimal because each report-chain is computed only once.
 - Hierarchy is a directed tree → one DFS solves all subtree sizes efficiently.
 ---
 
-## 7. Variants / Follow-Ups
+## 8. Variants / Follow-Ups
 
 - Print only manager nodes (those who have at least 1 report)
 - Multi-level hierarchy with depth tracking
@@ -196,7 +294,7 @@ private int dfs(char manager, Map<Character, List<Character>> tree,
 - Print tree structure visually
 ---
 
-## 8. Tips & Observations
+## 9. Tips & Observations
 
 - Always use adjacency list for hierarchy problems
 - Memoization drastically improves performance
