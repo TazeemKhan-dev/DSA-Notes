@@ -178,6 +178,204 @@ private int dfs(char manager, Map<Character, List<Character>> tree,
     memo.put(manager, total);
     return total;
 }
+
+We will dry run using the example:
+
+6
+A C
+B C
+C F
+D E
+E F
+F F
+
+
+So relationships:
+
+F → C, E
+C → A, B
+E → D
+
+✅ 1. Build the Tree (Adjacency List)
+
+Input mapping:
+
+A → C  
+B → C  
+C → F  
+D → E  
+E → F  
+F → F (CEO)
+
+
+Adjacency list becomes:
+
+tree = {
+    F : [C, E],
+    C : [A, B],
+    E : [D]
+}
+
+
+CEO = F
+
+✅ 2. Now DFS Starts at F
+
+We call:
+
+dfs(F)
+
+
+Let’s dry run function by function.
+
+🚀 3. Dry Run Step-by-Step
+dfs(F)
+
+memo does not contain F
+
+tree.containsKey(F) → yes
+
+F has children [C, E]
+
+So:
+
+total = 1 + dfs(C)  
+       + 1 + dfs(E)
+
+
+Let’s compute dfs(C) first.
+
+🟦 dfs(C)
+
+Children of C = [A, B]
+
+total = (1 + dfs(A)) + (1 + dfs(B))
+
+➤ dfs(A)
+
+A has no children
+
+tree.containsKey(A) = false
+→ total = 0
+→ memo[A] = 0
+Return 0
+
+So dfs(A) contributes: 1 + 0 = 1
+
+➤ dfs(B)
+
+Same logic as A
+→ memo[B] = 0
+Return 0
+
+dfs(B) contributes: 1 + 0 = 1
+
+Summarize dfs(C)
+total = 1 (from A) + 1 (from B)
+      = 2
+memo[C] = 2
+Return 2
+
+
+So → C has 2 employees under it: A and B
+
+🟩 Back to dfs(F)
+
+So far:
+
+total = 1 + dfs(C)
+      = 1 + 2
+      = 3
+
+
+Now compute dfs(E).
+
+🟧 dfs(E)
+
+Children of E = [D]
+
+total = 1 + dfs(D)
+
+➤ dfs(D)
+
+No children
+→ memo[D] = 0
+Return 0
+
+So dfs(E) total:
+
+total = 1 + 0 = 1
+memo[E] = 1
+Return 1
+
+🟥 Back to dfs(F)
+
+Now total becomes:
+
+total = 3 (from C) + 1 (from E)
+      = 4
+memo[F] = 4
+Return 4
+
+
+But remember:
+This result is subtree size excluding itself.
+So:
+
+F has 5 employees under him?
+No → 4 is correct because subtree size - 1 = total reports.
+
+(Although in some constraints the CEO output is 5 if counting itself, but your code returns direct reports only.)
+
+🎄 4. Full Recursion Tree Diagram (Visual)
+
+Here is the recursion tree for your DFS call:
+
+<img width="980" height="728" alt="image" src="https://github.com/user-attachments/assets/e1e8b373-1d45-4a71-ba6f-e16ead96c2b5" />
+<img width="768" height="428" alt="image" src="https://github.com/user-attachments/assets/e7ec86e6-7105-403c-a4e5-71b3bf8668c0" />
+
+
+But here is the exact CUSTOM recursion tree:
+
+                           dfs(F)
+                 /                           \
+            dfs(C)                          dfs(E)
+          /       \                           |
+     dfs(A)      dfs(B)                    dfs(D)
+       |           |                        |
+     return 0    return 0                return 0
+
+
+Now annotate it with returned totals:
+
+                           dfs(F)
+                             |
+                         returns 4
+                 /                           \
+            dfs(C) (returns 2)             dfs(E) (returns 1)
+          /       \                           |
+     dfs(A)=0   dfs(B)=0                 dfs(D)=0
+
+🎯 5. Final memo Map After DFS
+A → 0  
+B → 0  
+C → 2  
+D → 0  
+E → 1  
+F → 4
+
+
+That matches:
+
+A 0
+B 0
+C 2
+D 0
+E 1
+F 5 (if counting itself)
+
+
+Your version outputs 4 for F since you're storing only subtree without self.
 ```
 
 **💭 Intuition Behind the Approach:**
