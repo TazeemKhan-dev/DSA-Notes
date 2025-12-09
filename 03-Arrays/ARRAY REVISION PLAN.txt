@@ -1,0 +1,117 @@
+PHASE 1 — ARRAY REVISION PLAN (Follow This Before Asking for Test)
+
+You should prepare arrays in 2–3 hours total.
+Here’s your exact plan.
+
+✅ 1. Concepts to Revise
+✔ Basic array operations:
+
+Traversal
+
+Updating elements
+
+Finding min/max
+
+Searching
+
+✔ Important array patterns:
+
+Prefix sums
+
+Two pointers
+
+Sliding window (basic intro)
+
+Hashing connection
+
+Subarray vs subsequence
+
+Distinguish between:
+
+subarray = contiguous
+
+subsequence = non-contiguous
+
+✔ Sorting understanding:
+
+When sorting helps
+
+When sorting breaks logic (subarrays questions)
+
+✔ Avoiding common errors:
+
+Off-by-one
+
+Index out of bounds
+
+Integer overflow (sum)
+
+Resetting variables correctly
+
+✅ 2. Problems You MUST Solve Before Test
+
+These problems cover easy → medium patterns every interview expects.
+
+⭐ Beginner Level
+
+Find max & min
+
+Reverse an array
+
+Check if array is sorted
+
+Rotate array by k (brute + optimal)
+
+⭐ Intermediate Level
+
+Kadane’s Algorithm — Maximum Subarray Sum
+
+Two Sum (2-pointer + hashing)
+
+Move Zeroes
+
+Sort Colors (Dutch National Flag algorithm)
+
+Remove Duplicates from Sorted Array
+
+⭐ Important Subarray Patterns
+
+Longest subarray sum = K (if you know prefix-hashing)
+
+Subarray with given sum (positive numbers → sliding window)
+
+Count number of subarrays (prefix sum logic)
+
+⭐ Two Pointer Patterns
+
+Pair with given difference
+
+Pair with given sum (sorted array)
+
+⭐ Bonus (Optional but Good):
+
+Trapping Rainwater
+
+Container With Most Water
+
+These 16 problems give you complete array mastery.
+
+✅ 3. How to Prepare
+✔ Step 1: Revise all concepts above (20–30 mins)
+✔ Step 2: Solve at least 7–10 problems from the list.
+✔ Step 3: Make notes
+✔ Step 4: When you feel ready → Say:
+Test me on Arrays
+
+
+And I will give you:
+
+🔥 A Real DSA Test
+
+5 concept questions
+
+2 dry-run questions
+
+3 coding problems (increasing difficulty)
+
+And I will rate your performance honestly
