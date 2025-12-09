@@ -5,26 +5,29 @@
 ## 1. Problem Statement
 
 - Given a mapping of employee → manager, compute the number of employees under each person, including:
-  * Direct reports
-  * Indirect reports (recursive)
+  - Direct reports
+  - Indirect reports (recursive)
 - CEO is the one who manages himself.
 - You must print:
-  * employee total_reports
+  - employee total_reports
 - For every employee, sorted lexicographically.
+
 ---
 
 ## 2. Problem Understanding
 
 - We are given a hierarchy:
-  * Each employee has exactly one manager
-  * CEO reports to himself
-  * We must count all people working under each employee
-  * “Under” includes:
-    * Direct reports
-    * Reports of reports
-    * Multi-level chain
+  - Each employee has exactly one manager
+  - CEO reports to himself
+  - We must count all people working under each employee
+  - “Under” includes:
+    - Direct reports
+    - Reports of reports
+    - Multi-level chain
 - This is effectively subtree size computation in a tree/forest.
+
 ---
+
 ## 3. Constraints
 
 - 1 <= N <= 100
@@ -32,6 +35,7 @@
 - CEO reports to himself
 - Characters used to represent employees/managers
 - Indirect reports included
+
 ---
 
 ## 4. Edge Cases
@@ -41,6 +45,7 @@
 - Deep hierarchy (chain-like)
 - Employee with zero reports
 - Output must be lexically sorted
+
 ---
 
 ## 5. Examples
@@ -74,15 +79,18 @@ F 5
 ### Approach 1: Brute Force (DFS for each employee)
 
 **Idea:**
+
 - For each employee X, run a DFS/BFS to count all nodes reachable under him.
 
 **Steps:**
+
 - Build adjacency list: manager → list of direct reports
 - For each employee:
-  * DFS starting from them
-  * Count reachable nodes (excluding themselves)
+  - DFS starting from them
+  - Count reachable nodes (excluding themselves)
 
 **Java Code:**
+
 ```java
 public Map<Character, Integer> countEmployees(Map<Character, Character> emp) {
     Map<Character, List<Character>> tree = new HashMap<>();
@@ -117,22 +125,26 @@ private int dfs(char manager, Map<Character, List<Character>> tree) {
 ```
 
 **💭 Intuition Behind the Approach:**
+
 - You repeatedly compute subtrees independently.
 - Simple but inefficient since same subtrees are computed multiple times.
 
 **Complexity (Time & Space):**
+
 - ⏱️ Time Complexity
-  * DFS for each employee → N * (N) = O(N^2)
-  * Space for recursion tree → O(N)
+  - DFS for each employee → N \* (N) = O(N^2)
+  - Space for recursion tree → O(N)
 - 💾 Why this complexity?
-  * Each DFS can touch all nodes in worst-case chain-like hierarchy.
+  - Each DFS can touch all nodes in worst-case chain-like hierarchy.
 
 ### Approach 2: Single DFS with Memoization
 
 **Idea:**
+
 - Use a tree + memoization so each subtree-count is computed once.
 
 **Steps:**
+
 - Build adjacency list
 - Identify CEO (employee who reports to themselves)
 - DFS from CEO, computing subtree sizes
@@ -140,6 +152,7 @@ private int dfs(char manager, Map<Character, List<Character>> tree) {
 - Print sorted
 
 **Java Code:**
+
 ```java
 public Map<Character, Integer> countEmployees(Map<Character, Character> emp) {
     Map<Character, List<Character>> tree = new HashMap<>();
@@ -200,11 +213,11 @@ E → D
 
 Input mapping:
 
-A → C  
-B → C  
-C → F  
-D → E  
-E → F  
+A → C
+B → C
+C → F
+D → E
+E → F
 F → F (CEO)
 
 
@@ -239,7 +252,7 @@ F has children [C, E]
 
 So:
 
-total = 1 + dfs(C)  
+total = 1 + dfs(C)
        + 1 + dfs(E)
 
 
@@ -328,14 +341,7 @@ No → 4 is correct because subtree size - 1 = total reports.
 (Although in some constraints the CEO output is 5 if counting itself, but your code returns direct reports only.)
 
 🎄 4. Full Recursion Tree Diagram (Visual)
-
-Here is the recursion tree for your DFS call:
-
-<img width="980" height="728" alt="image" src="https://github.com/user-attachments/assets/e1e8b373-1d45-4a71-ba6f-e16ead96c2b5" />
-<img width="768" height="428" alt="image" src="https://github.com/user-attachments/assets/e7ec86e6-7105-403c-a4e5-71b3bf8668c0" />
-
-
-But here is the exact CUSTOM recursion tree:
+ here is the exact CUSTOM recursion tree:
 
                            dfs(F)
                  /                           \
@@ -357,11 +363,11 @@ Now annotate it with returned totals:
      dfs(A)=0   dfs(B)=0                 dfs(D)=0
 
 🎯 5. Final memo Map After DFS
-A → 0  
-B → 0  
-C → 2  
-D → 0  
-E → 1  
+A → 0
+B → 0
+C → 2
+D → 0
+E → 1
 F → 4
 
 
@@ -379,21 +385,23 @@ Your version outputs 4 for F since you're storing only subtree without self.
 ```
 
 **💭 Intuition Behind the Approach:**
+
 - Each subtree is solved once and cached.
 - This converts repeated work into constant-time lookups → optimal.
 
 **Complexity (Time & Space):**
-- ⏱️ Time Complexity
-  * Building tree → O(N)
-  * DFS traversal → O(N)
-  * Overall → O(N)
-- 💾 Why this complexity?
-    * Each employee and each edge is processed a single time.
 
+- ⏱️ Time Complexity
+  - Building tree → O(N)
+  - DFS traversal → O(N)
+  - Overall → O(N)
+- 💾 Why this complexity?
+  - Each employee and each edge is processed a single time.
 
 ### Approach 3: CEO-based DFS (Clean Version of Your Logic)
 
 **Idea:**
+
 - Identify CEO
 - Build a map:
 - manager → list of direct employees
@@ -402,6 +410,7 @@ Your version outputs 4 for F since you're storing only subtree without self.
 - total employees under manager + 1
 
 **Steps:**
+
 - Parse input
 - Build adjacency list of manager → employees
 - Detect CEO
@@ -410,6 +419,7 @@ Your version outputs 4 for F since you're storing only subtree without self.
 - Print all employees (sorted)
 
 **Java Code:**
+
 ```java
 public Map<String, Integer> countEmployees(Map<String, String> emp) {
 
@@ -463,18 +473,20 @@ private int dfs(String manager, Map<String, List<String>> tree,
 ```
 
 **💭 Intuition Behind the Approach:**
+
 - Think of each employee as a node in a tree.
 - CEO is the root
 - Manager–employee relationships form edges
 - The number of employees under a manager = size of its subtree − 1
 - Your DFS returns:
-  * size of subtree = total reports + 1 (for the node itself)
+  - size of subtree = total reports + 1 (for the node itself)
 - We store:
-  * total reports = subtree size - 1
+  - total reports = subtree size - 1
 
 **Complexity (Time & Space):**
-- Time Complexity:   O(N)
-- Space Complexity:  O(N)
+
+- Time Complexity: O(N)
+- Space Complexity: O(N)
 
 ---
 
@@ -482,6 +494,7 @@ private int dfs(String manager, Map<String, List<String>> tree,
 
 - The memoized DFS approach is optimal because each report-chain is computed only once.
 - Hierarchy is a directed tree → one DFS solves all subtree sizes efficiently.
+
 ---
 
 ## 8. Variants / Follow-Ups
@@ -490,6 +503,7 @@ private int dfs(String manager, Map<String, List<String>> tree,
 - Multi-level hierarchy with depth tracking
 - Count only direct reports
 - Print tree structure visually
+
 ---
 
 ## 9. Tips & Observations
@@ -498,6 +512,7 @@ private int dfs(String manager, Map<String, List<String>> tree,
 - Memoization drastically improves performance
 - CEO detection = employee whose manager = themselves
 - Lexically sorting ensures deterministic output
+
 ---
 
 <!-- #endregion -->
