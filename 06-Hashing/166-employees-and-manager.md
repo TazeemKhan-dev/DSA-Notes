@@ -137,7 +137,6 @@ private int dfs(char manager, Map<Character, List<Character>> tree) {
 - 💾 Why this complexity?
   - Each DFS can touch all nodes in worst-case chain-like hierarchy.
 
-
 ### Approach 2: CEO-based DFS (Clean Version of Your Logic)
 
 **Idea:**
@@ -182,12 +181,6 @@ public Map<String, Integer> countEmployees(Map<String, String> emp) {
 
     // DFS from CEO
     dfs(ceo, tree, ans);
-
-    // Employees with no reports → 0
-    for (String e : emp.keySet()) {
-        ans.putIfAbsent(e, 0);
-    }
-
     return ans;
 }
 
@@ -424,7 +417,6 @@ F = 5
 
 ---
 
-
 ### Approach 3: Single DFS with Memoization
 
 **Idea:**
@@ -456,12 +448,6 @@ public Map<Character, Integer> countEmployees(Map<Character, Character> emp) {
 
     Map<Character, Integer> memo = new HashMap<>();
     dfs(ceo, tree, memo);
-
-    // for leaf nodes not managers
-    for (char e : emp.keySet()) {
-        memo.putIfAbsent(e, 0);
-    }
-
     return memo;
 }
 
