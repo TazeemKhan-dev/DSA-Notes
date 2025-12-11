@@ -49,7 +49,7 @@ Difference = 20 - (-10) = 30 → print 1.
 
 ## 6. Approaches
 
-### Approach 1: e Force (Check all pairs)
+### Approach 1: Brute Force (Check all pairs)
 
 **Idea:**
 - Try all pairs (i, j) and check if |A[i] - A[j]| == B.
@@ -159,6 +159,7 @@ public int solve(int[] A, int B) {
     }
 
     return 0;
+
 }
 ```
 
