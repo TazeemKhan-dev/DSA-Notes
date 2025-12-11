@@ -137,11 +137,300 @@ private int dfs(char manager, Map<Character, List<Character>> tree) {
 - 💾 Why this complexity?
   - Each DFS can touch all nodes in worst-case chain-like hierarchy.
 
-### Approach 2: Single DFS with Memoization
+
+### Approach 2: CEO-based DFS (Clean Version of Your Logic)
+
+**Idea:**
+
+- Identify CEO
+- Build a map:
+- manager → list of direct employees
+- Run one DFS starting from CEO
+- DFS returns:
+- total employees under manager + 1
+
+**Steps:**
+
+- Parse input
+- Build adjacency list of manager → employees
+- Detect CEO
+- DFS from CEO
+- Store each manager’s direct+indirect employee count
+- Print all employees (sorted)
+
+**Java Code:**
+
+```java
+public Map<String, Integer> countEmployees(Map<String, String> emp) {
+
+    // manager → list of direct reports
+    Map<String, List<String>> tree = new HashMap<>();
+    String ceo = "";
+
+    // Build tree + identify CEO
+    for (String e : emp.keySet()) {
+        String m = emp.get(e);
+        if (e.equals(m)) {
+            ceo = e;  // CEO
+        } else {
+            tree.computeIfAbsent(m, k -> new ArrayList<>()).add(e);
+        }
+    }
+
+    // Store results
+    Map<String, Integer> ans = new HashMap<>();
+
+    // DFS from CEO
+    dfs(ceo, tree, ans);
+
+    // Employees with no reports → 0
+    for (String e : emp.keySet()) {
+        ans.putIfAbsent(e, 0);
+    }
+
+    return ans;
+}
+
+private int dfs(String manager, Map<String, List<String>> tree,
+                Map<String, Integer> ans) {
+
+    // If manager has no reports → leaf
+    if (!tree.containsKey(manager)) {
+        ans.put(manager, 0);
+        return 1; // count itself for parent
+    }
+
+    int total = 0;
+
+    // Count all direct + indirect reports
+    for (String emp : tree.get(manager)) {
+        total += dfs(emp, tree, ans);
+    }
+
+    ans.put(manager, total);    // store counts excluding itself
+    return total + 1;           // return subtree size including itself
+}
+
+
+
+Input Used for Dry Run
+
+
+6
+A C
+B C
+C F
+D E
+E F
+F F
+
+
+Meaning:
+
+A → C
+B → C
+C → F
+D → E
+E → F
+F → F (CEO)
+
+✅ 1. Build the tree
+
+We loop through emp:
+
+Employee	Manager
+A	C
+B	C
+C	F
+D	E
+E	F
+F	F
+
+CEO = "F" (because F = F)
+
+Tree becomes:
+
+F → [C, E]
+C → [A, B]
+E → [D]
+
+
+Employees (leaves): A, B, D.
+
+✅ 2. Start DFS from CEO “F”
+
+We call:
+
+dfs("F")
+
+
+Important:
+Your DFS returns:
+
+return subtree_size_including_self
+
+but stores ans[manager] = subtree_size_excluding_self
+
+So we track both.
+
+🚀 3. Step-by-step Dry Run
+⭐ DFS("F")
+
+F has children → ["C", "E"]
+
+total = dfs("C") + dfs("E")
+
+
+Let’s compute each.
+
+🟦 DFS("C")
+
+C has children → ["A", "B"]
+
+total = dfs("A") + dfs("B")
+
+➤ DFS("A")
+
+A has no children → leaf
+
+So:
+
+ans["A"] = 0
+return 1   // counts itself (1 node in subtree)
+
+➤ DFS("B")
+
+Same:
+
+ans["B"] = 0
+return 1
+
+
+Now C computes:
+
+total = 1 + 1 = 2
+ans["C"] = 2
+return 3       // including C itself → 2 employees + C
+
+🟧 DFS("E")
+
+E → ["D"]
+
+So:
+
+total = dfs("D")
+
+➤ DFS("D")
+
+Leaf
+
+ans["D"] = 0
+return 1
+
+
+Now E computes:
+
+total = 1
+ans["E"] = 1
+return 2     // including E itself → 1 employee + E
+
+🟥 Back to DFS("F")
+
+Now we have:
+
+dfs("C") returned 3
+dfs("E") returned 2
+
+
+So:
+
+total = 3 + 2 = 5
+ans["F"] = 5       // meaning F has 5 employees under it
+return 6           // including itself
+
+🎯 4. Final ans before filling missing entries
+
+After DFS:
+
+A = 0
+B = 0
+C = 2
+D = 0
+E = 1
+F = 5
+
+
+Nothing missing (all employees covered), so final answer stays same.
+
+🌳 5. Full Recursion Tree (Annotated)
+                             dfs(F)
+                     returns 6  (stores 5 in ans)
+                     /                      \
+            dfs(C)                          dfs(E)
+     returns 3 (stores 2)            returns 2 (stores 1)
+           /       \                        |
+     dfs(A)       dfs(B)                dfs(D)
+returns 1 (0)  returns 1 (0)       returns 1 (0)
+
+
+Legend:
+
+returns X → subtree size including self
+
+stores Y → ans[manager] = number of employees under manager
+
+So:
+
+Node	dfs returns	ans stores
+A	1	0
+B	1	0
+D	1	0
+C	3	2
+E	2	1
+F	6	5
+🧠 6. Why does ans["F"] = 5?
+
+Because:
+
+Employees under F → C, A, B, E, D = 5 employees
+
+DFS returns 6 because that includes F itself.
+
+✅ Final Output
+A = 0
+B = 0
+C = 2
+D = 0
+E = 1
+F = 5
+
+```
+
+**💭 Intuition Behind the Approach:**
+
+- Think of each employee as a node in a tree.
+- CEO is the root
+- Manager–employee relationships form edges
+- The number of employees under a manager = size of its subtree − 1
+- Your DFS returns:
+  - size of subtree = total reports + 1 (for the node itself)
+- We store:
+  - total reports = subtree size - 1
+
+**Complexity (Time & Space):**
+
+- Time Complexity: O(N)
+- Space Complexity: O(N)
+
+---
+
+
+### Approach 3: Single DFS with Memoization
 
 **Idea:**
 
 - Use a tree + memoization so each subtree-count is computed once.
+- this solution will count the number below manager as u can see it in dry run so ignore this for this q, just for refrence if we donot have to count the manager itself
 
 **Steps:**
 
@@ -397,98 +686,6 @@ Your version outputs 4 for F since you're storing only subtree without self.
   - Overall → O(N)
 - 💾 Why this complexity?
   - Each employee and each edge is processed a single time.
-
-### Approach 3: CEO-based DFS (Clean Version of Your Logic)
-
-**Idea:**
-
-- Identify CEO
-- Build a map:
-- manager → list of direct employees
-- Run one DFS starting from CEO
-- DFS returns:
-- total employees under manager + 1
-
-**Steps:**
-
-- Parse input
-- Build adjacency list of manager → employees
-- Detect CEO
-- DFS from CEO
-- Store each manager’s direct+indirect employee count
-- Print all employees (sorted)
-
-**Java Code:**
-
-```java
-public Map<String, Integer> countEmployees(Map<String, String> emp) {
-
-    // manager → list of direct reports
-    Map<String, List<String>> tree = new HashMap<>();
-    String ceo = "";
-
-    // Build tree + identify CEO
-    for (String e : emp.keySet()) {
-        String m = emp.get(e);
-        if (e.equals(m)) {
-            ceo = e;  // CEO
-        } else {
-            tree.computeIfAbsent(m, k -> new ArrayList<>()).add(e);
-        }
-    }
-
-    // Store results
-    Map<String, Integer> ans = new HashMap<>();
-
-    // DFS from CEO
-    dfs(ceo, tree, ans);
-
-    // Employees with no reports → 0
-    for (String e : emp.keySet()) {
-        ans.putIfAbsent(e, 0);
-    }
-
-    return ans;
-}
-
-private int dfs(String manager, Map<String, List<String>> tree,
-                Map<String, Integer> ans) {
-
-    // If manager has no reports → leaf
-    if (!tree.containsKey(manager)) {
-        ans.put(manager, 0);
-        return 1; // count itself for parent
-    }
-
-    int total = 0;
-
-    // Count all direct + indirect reports
-    for (String emp : tree.get(manager)) {
-        total += dfs(emp, tree, ans);
-    }
-
-    ans.put(manager, total);    // store counts excluding itself
-    return total + 1;           // return subtree size including itself
-}
-```
-
-**💭 Intuition Behind the Approach:**
-
-- Think of each employee as a node in a tree.
-- CEO is the root
-- Manager–employee relationships form edges
-- The number of employees under a manager = size of its subtree − 1
-- Your DFS returns:
-  - size of subtree = total reports + 1 (for the node itself)
-- We store:
-  - total reports = subtree size - 1
-
-**Complexity (Time & Space):**
-
-- Time Complexity: O(N)
-- Space Complexity: O(N)
-
----
 
 ## 7. Justification / Proof of Optimality
 
