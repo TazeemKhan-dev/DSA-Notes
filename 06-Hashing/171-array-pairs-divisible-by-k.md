@@ -46,6 +46,20 @@ arr = [1,2,3,4,5,10,6,7,8,9], k = 5
 Pairs:
 (1,9), (2,8), (3,7), (4,6), (5,10)
 All sums divisible by 5.
+
+Example 2
+Input
+
+5 10
+1 2 3 4 5 6
+Output
+
+false
+Explanation
+
+there is no way to divide arr into 3 pairs each with sum divisible by 10.
+
+
 ```
 
 ---
@@ -137,6 +151,7 @@ public boolean canArrange(int[] arr, int k) {
     }
 
     return true;
+
 }
 ```
 
