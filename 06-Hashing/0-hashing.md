@@ -180,5 +180,46 @@
     - Understand hashCode() + equals() for interviews.
     - Practice problems: Two Sum, Subarray Sum, Anagrams.
 ---
+# 🌳 DECISION TREE — Sliding Window vs Prefix HashMap
+```
+START
+│
+├─ ❓ Does the problem talk about **SUBARRAY / SUBSTRING** (contiguous)?
+│   │
+│   ├─ ❌ NO
+│   │     → Not a window / prefix problem
+│   │     → Think: Set, Greedy, Sorting, DP
+│   │
+│   └─ ✅ YES
+│         │
+│         ├─ ❓ Is the goal to **COUNT** subarrays?
+│         │     │
+│         │     ├─ ✅ YES
+│         │     │     → Use **PREFIX + HASHMAP**
+│         │     │     → map.put(neutral, 1)
+│         │     │
+│         │     └─ ❌ NO (min / max / longest / shortest)
+│         │           │
+│         │           ├─ ❓ Are all numbers **NON-NEGATIVE**
+│         │           │   (or condition monotonic)?
+│         │           │
+│         │           ├─ ✅ YES
+│         │           │     → Use **SLIDING WINDOW**
+│         │           │     → Expand + shrink
+│         │           │
+│         │           └─ ❌ NO (negatives / unpredictable)
+│         │                 → Use **PREFIX + HASHMAP**
+│         │                 → store first occurrence
+│         │
+│         └─ ❓ Does the condition require **exact equality**
+│               (sum = k, xor = k, divisible)?
+│
+│               ├─ ✅ YES
+│               │     → PREFIX + HASHMAP
+│               │
+│               └─ ❌ NO (at most / at least / range)
+│                     → SLIDING 
 
+```
+---
 <!-- #endregion -->
