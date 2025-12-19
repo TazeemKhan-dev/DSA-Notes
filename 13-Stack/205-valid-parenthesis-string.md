@@ -6,23 +6,23 @@
 
 - Given a string s containing only three characters '(', ')', and '*', determine whether the string is valid.
 - Rules for validity:
-  * Every '(' must have a matching ')'
-  * Every ')' must have a matching '('
-  * '(' must come before its matching ')'
-  * '*' can act as:
-    * '('
-    * ')'
-    * empty string ""
-- Print true if the string is valid, otherwise print false.
+- Every '(' must have a matching ')'
+- Every ')' must have a matching '('
+- '(' must come before its matching ')'
+- '*' can act as:
+  * '('
+  * ')'
+  * empty string ""
+- Return true if the string is valid, otherwise return false.
 ---
 
 ## 2. Problem Understanding
 
-- This is an extension of the Balanced Parentheses problem
-- The wildcard '*' introduces multiple possibilities
-- We must check if at least one interpretation of '*' makes the string valid
-- Brute-force substitution is not feasible
-- We need a greedy / range-based approach
+- We must validate balanced parentheses, but with a twist:
+  * '*' is flexible
+- Order matters → '(' must appear before ')'
+- We must check existence of at least one valid interpretation
+- This is not about counting exact matches, but about possibility
 ---
 
 ## 3. Constraints
@@ -33,145 +33,180 @@
 
 ## 4. Edge Cases
 
-- String with only '*'
-- String starting with ')'
-- More ')' than '(' at any point
-- All '*' treated as empty
-- Unmatched '(' at the end
+- String with only '*' → valid
+- More ')' than possible '(' at any point → invalid
+- Unmatched '(' at end → invalid
+- '*' before '(' cannot act as its closing ')'
 ---
 
 ## 5. Examples
 
 ```text
-Example 1
+"()" → true
 
-Input:
+"(*)" → true
 
-2
-()
+"(*))" → true
 
+"())" → false
 
-Output:
-
-true
-
-Example 2
-
-Input:
-
-4
-((*)
-
-
-Output:
-
-true
-
-
-Explanation:
-'*' is treated as ')'.
+"*)(" → false
 ```
 
 ---
 
 ## 6. Approaches
 
-### Approach 1: Greedy Range Tracking (Optimal)
+### Approach 1: Stack-Based (Two Stacks)
 
 **Idea:**
-- Track the range of possible open parentheses
-- Maintain two counters:
-- minOpen → minimum possible '(' count
-- maxOpen → maximum possible '(' count
-- '*' increases flexibility by affecting both bounds
+- Track positions of:
+  * '(' in one stack
+  * '*' in another stack
+- When ')' appears  :
+  * Prefer matching '('
+  * Else use '*' as '('
+- After traversal:
+  * Match remaining '(' with '*' acting as ')'
+  * Ensure '*' comes after '(' (index order)
 
 **Steps:**
-- Initialize minOpen = 0, maxOpen = 0
-- Traverse string character by character
-- For '(':
-  * minOpen++
-  * maxOpen++
-- For ')':
-  * minOpen--
-  * maxOpen--
-- For '*':
-  * minOpen-- (treat as ')')
-  * maxOpen++ (treat as '(')
-- If maxOpen < 0 → return false
-- Clamp minOpen to 0 if it becomes negative
+- Traverse the string
+- Push indices of '(' and '*'
+- On ')':
+  * Pop '(' if possible
+  * Else pop '*'
+  * Else return false
 - After traversal:
-  * If minOpen == 0 → valid
-  * Else → invalid
+  * Match leftover '(' with '*' (order check)
+- If unmatched '(' remains → invalid
 
 **Java Code:**
 ```java
-class Solution {
-    public static boolean checkValidString(String s) {
-        int minOpen = 0;
-        int maxOpen = 0;
+public static boolean checkValidString(String s) {
+    Stack<Integer> open = new Stack<>();
+    Stack<Integer> star = new Stack<>();
 
-        for (char ch : s.toCharArray()) {
-            if (ch == '(') {
-                minOpen++;
-                maxOpen++;
-            } else if (ch == ')') {
-                minOpen--;
-                maxOpen--;
-            } else { // '*'
-                minOpen--;   // treat as ')'
-                maxOpen++;   // treat as '('
+    for (int i = 0; i < s.length(); i++) {
+        char ch = s.charAt(i);
+
+        if (ch == '(') {
+            open.push(i);
+        } else if (ch == '*') {
+            star.push(i);
+        } else { // ')'
+            if (!open.isEmpty()) {
+                open.pop();
+            } else if (!star.isEmpty()) {
+                star.pop();
+            } else {
+                return false;
             }
-
-            if (maxOpen < 0) return false;
-            if (minOpen < 0) minOpen = 0;
         }
-
-        return minOpen == 0;
     }
+
+    while (!open.isEmpty() && !star.isEmpty()) {
+        if (open.peek() > star.peek()) return false;
+        open.pop();
+        star.pop();
+    }
+
+    return open.isEmpty();
 }
 ```
 
 **💭 Intuition Behind the Approach:**
-- maxOpen assumes '*' acts as '('
-- minOpen assumes '*' acts as ')'
-- If even the maximum possibility fails → invalid
-- If the minimum open count can reach 0 → valid
-- This ensures at least one valid configuration exists
+- '(' and ')' need order-aware matching
+- '*' acts as a buffer
+- Index comparison enforces correct bracket order
 
 **Complexity (Time & Space):**
-- Time: O(N) — single pass through the string
-- Space: O(1) — constant extra space
+- Time: O(N) — each character is pushed/popped once
+- Space: O(N) — stacks store indices
+
+### Approach 2: Greedy Range Method (Optimal)
+
+**Idea:**
+- Track a range of possible open brackets:
+  * minOpen → minimum possible '('
+  * maxOpen → maximum possible '('
+- '*' expands the range
+- If range becomes invalid → return false
+
+**Steps:**
+- Initialize minOpen = 0, maxOpen = 0
+- Traverse characters:
+  * '(' → both increase
+  * ')' → both decrease
+  * '*' → minOpen--, maxOpen++
+- If maxOpen < 0 → invalid
+- Clamp minOpen to 0
+- At end, if minOpen == 0 → valid
+
+**Java Code:**
+```java
+public static boolean checkValidString(String s) {
+    int minOpen = 0, maxOpen = 0;
+
+    for (char ch : s.toCharArray()) {
+        if (ch == '(') {
+            minOpen++;
+            maxOpen++;
+        } else if (ch == ')') {
+            minOpen--;
+            maxOpen--;
+        } else { // '*'
+            minOpen--;
+            maxOpen++;
+        }
+
+        if (maxOpen < 0) return false;
+        if (minOpen < 0) minOpen = 0;
+    }
+
+    return minOpen == 0;
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- We don’t care about exact matching — only possibility
+- Track best and worst cases simultaneously
+- If even the best case fails → impossible
+
+**Complexity (Time & Space):**
+- Time: O(N) — single traversal
+- Space: O(1) — no extra data structures
 
 ---
 
 ## 7. Justification / Proof of Optimality
 
-- The greedy range-based approach efficiently checks all possible interpretations of '*' without explicitly generating them, ensuring correctness within optimal time and space constraints.
+- Stack approach guarantees correctness via explicit matching
+- Greedy approach compresses all valid stack states into a range
+- Both correctly validate existence of at least one valid interpretation
 ---
 
 ## 8. Variants / Follow-Ups
 
-- Balanced Parentheses
-- Extra Brackets
+- Valid Parentheses ((, ))
+- Balanced Brackets (()[]{})
 - Remove Invalid Parentheses
-- Longest Valid Parentheses
-- Parentheses with wildcard constraints
+- Minimum Add to Make Parentheses Valid
 ---
 
 ## 9. Tips & Observations
 
-- Never let maxOpen go negative
-- Clamp minOpen to zero
-- '*' increases ambiguity, not complexity
-- This is a range feasibility problem, not a pure stack problem
+- If order matters, stacks are natural
+- If existence of solution matters, greedy often works
+- '*' is not fixed, treat it as a range contributor
 ---
 
 ## 10. Pitfalls
 
-- Treating '*' as a fixed character
-- Using stack-based brute force
-- Forgetting to clamp minOpen
-- Assuming '*' must always be used
+- Treating this as a normal parentheses problem
+- Forgetting '*' can be empty
+- Not enforcing index order in stack approach
+- Assuming greedy means guessing — it’s bounded logic
 ---
 
 <!-- #endregion -->

@@ -119,6 +119,36 @@ class Solution {
         return false;
     }
 }
+
+// below is in-class solution 
+// Structural Check for Extra Brackets
+// ------------------------------------------------
+// This solution detects extra brackets by checking for empty brackets "()".
+// When a closing ')' is encountered:
+// - If the stack top is immediately '(', it means there was nothing inside → extra brackets.
+// - Otherwise, elements are popped until '(' is found.
+//
+// Note:
+// This approach works because the expression is assumed to be valid.
+// It checks only the presence of content inside brackets,
+// not whether that content contains an operator.
+// For semantic correctness (checking actual usefulness of brackets),
+// refer to the operator-based solution below.
+
+  public boolean ExtraBrackets(String exp) {
+        // Write your code here
+        Stack<Character> st=new Stack<>();
+        for(int i=0;i<exp.length();i++){
+            char c=exp.charAt(i);
+            if(c==')'){
+            if(!st.isEmpty() && st.peek()=='(' ) return true;
+            while(!st.isEmpty() && st.peek()!='(' ) st.pop();
+            st.pop();
+            }else st.push(c);
+        }
+        return false;
+       
+    }
 ```
 
 **💭 Intuition Behind the Approach:**
