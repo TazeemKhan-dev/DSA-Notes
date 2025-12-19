@@ -136,6 +136,56 @@ class Solution {
 - Space: O(N) — stack + result array
 
 ---
+### Approach 3: Reverse Traversal (Right → Left)
+
+**Idea:**
+- Instead of waiting for a future element to resolve answers, we pre-load future elements by traversing from right to left.
+- At each index:
+  * The stack already contains elements to the right
+  * The nearest greater element will be on top after cleanup
+- This approach is the mirror image of Previous Greater Element.
+
+**Steps:**
+- Traverse the array from n-1 to 0
+- Pop elements from stack while stack.top <= arr[i]
+- After popping:
+  * If stack is empty → ans[i] = -1
+  * Else → ans[i] = stack.top
+- Push arr[i] into stack
+
+**Java Code:**
+```java
+public static long[] nextGreater(long[] arr, int n) {
+    long[] ans = new long[n];
+    Stack<Long> st = new Stack<>();
+
+    for (int i = n - 1; i >= 0; i--) {
+
+        while (!st.isEmpty() && st.peek() <= arr[i]) {
+            st.pop();
+        }
+
+        ans[i] = st.isEmpty() ? -1 : st.peek();
+        st.push(arr[i]);
+    }
+
+    return ans;
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- When scanning from right to left:
+  * The stack always represents future elements
+  * Smaller future elements are useless and removed
+  * The top of the stack becomes the closest greater element on the right
+- No element is left “pending”, so no cleanup loop is required.
+
+**Complexity (Time & Space):**
+- Time: O(n) — each element is pushed and popped at most once
+- Space: O(n) — stack in the worst case (strictly decreasing array)
+
+---
+
 
 ## 7. Justification / Proof of Optimality
 
