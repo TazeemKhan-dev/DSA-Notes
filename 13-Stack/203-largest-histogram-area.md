@@ -131,6 +131,58 @@ class Solution {
         return maxArea;
     }
 }
+
+
+// In class solution its slow compare to the above 1 ,
+
+class Solution {
+
+    public static long maximumArea(long hist[], long n) {
+
+        long[] left = nsl(hist, (int)n);
+        long[] right = nsr(hist, (int)n);
+
+        long maxArea = 0;
+
+        for (int i = 0; i < n; i++) {
+            long width = right[i] - left[i] - 1;
+            long area = hist[i] * width;
+            maxArea = Math.max(maxArea, area);
+        }
+
+        return maxArea;
+    }
+
+    // Nearest Smaller to Left
+    private static long[] nsl(long[] hist, int n) {
+        long[] left = new long[n];
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+            while (!st.isEmpty() && hist[st.peek()] >= hist[i]) {
+                st.pop();
+            }
+            left[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(i);
+        }
+        return left;
+    }
+
+    // Nearest Smaller to Right
+    private static long[] nsr(long[] hist, int n) {
+        long[] right = new long[n];
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.isEmpty() && hist[st.peek()] >= hist[i]) {
+                st.pop();
+            }
+            right[i] = st.isEmpty() ? n : st.peek();
+            st.push(i);
+        }
+        return right;
+    }
+}
 ```
 
 **💭 Intuition Behind the Approach:**
