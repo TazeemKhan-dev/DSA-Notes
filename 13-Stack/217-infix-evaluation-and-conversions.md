@@ -80,16 +80,99 @@ Output:
 
 **Java Code:**
 ```java
-public void bruteInfix(String exp) {
-    String postfix = infixToPostfix(exp);
-    int val = evalPostfix(postfix);
-    String prefix = postfixToPrefix(postfix);
+import java.util.*;
 
-    System.out.println(val);
-    System.out.println(postfix);
-    System.out.println(prefix);
+public class ExpressionConversion {
+
+    // Entry method
+    public void bruteInfix(String exp) {
+        String postfix = infixToPostfix(exp);
+        int val = evalPostfix(postfix);
+        String prefix = postfixToPrefix(postfix);
+
+        System.out.println(val);
+        System.out.println(postfix);
+        System.out.println(prefix);
+    }
+
+    // Operator precedence
+    private int precedence(char ch) {
+        if (ch == '+' || ch == '-') return 1;
+        if (ch == '*' || ch == '/') return 2;
+        return 0;
+    }
+
+    // Infix to Postfix
+    private String infixToPostfix(String exp) {
+        Stack<Character> st = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+
+        for (char ch : exp.toCharArray()) {
+
+            if (Character.isDigit(ch)) {
+                sb.append(ch);
+            }
+            else if (ch == '(') {
+                st.push(ch);
+            }
+            else if (ch == ')') {
+                while (!st.isEmpty() && st.peek() != '(') {
+                    sb.append(st.pop());
+                }
+                st.pop(); // remove '('
+            }
+            else { // operator
+                while (!st.isEmpty() && precedence(st.peek()) >= precedence(ch)) {
+                    sb.append(st.pop());
+                }
+                st.push(ch);
+            }
+        }
+
+        while (!st.isEmpty()) {
+            sb.append(st.pop());
+        }
+
+        return sb.toString();
+    }
+
+    // Evaluate Postfix
+    private int evalPostfix(String exp) {
+        Stack<Integer> st = new Stack<>();
+
+        for (char ch : exp.toCharArray()) {
+            if (Character.isDigit(ch)) {
+                st.push(ch - '0');
+            } else {
+                int b = st.pop();
+                int a = st.pop();
+
+                if (ch == '+') st.push(a + b);
+                else if (ch == '-') st.push(a - b);
+                else if (ch == '*') st.push(a * b);
+                else if (ch == '/') st.push(a / b);
+            }
+        }
+        return st.pop();
+    }
+
+    // Postfix to Prefix
+    private String postfixToPrefix(String exp) {
+        Stack<String> st = new Stack<>();
+
+        for (char ch : exp.toCharArray()) {
+            if (Character.isDigit(ch)) {
+                st.push(String.valueOf(ch));
+            } else {
+                String b = st.pop();
+                String a = st.pop();
+                st.push(ch + a + b);
+            }
+        }
+        return st.pop();
+    }
 }
-(Helper methods omitted for brevity; logic repeats across problems)
+
 ```
 
 **💭 Intuition Behind the Approach:**
