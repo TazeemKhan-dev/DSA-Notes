@@ -135,37 +135,93 @@ public void postfixBrute(String exp) {
 
 **Java Code:**
 ```java
-public void evaluatePostfix(String exp) {
+import java.util.*;
 
-    Stack<Integer> values = new Stack<>();
-    Stack<String> infix = new Stack<>();
-    Stack<String> prefix = new Stack<>();
+class Node {
+    char val;
+    Node left, right;
 
-    for (char ch : exp.toCharArray()) {
+    Node(char v) {
+        val = v;
+        left = right = null;
+    }
+}
 
-        if (Character.isDigit(ch)) {
-            values.push(ch - '0');
-            infix.push(ch + "");
-            prefix.push(ch + "");
-        } else {
-            int b = values.pop();
-            int a = values.pop();
-            values.push(apply(a, b, ch));
+public class ExpressionTreeFromPostfix {
 
-            String ib = infix.pop();
-            String ia = infix.pop();
-            infix.push("(" + ia + ch + ib + ")");
+    // Main brute method
+    public void postfixBrute(String exp) {
+        Stack<Node> st = new Stack<>();
 
-            String pb = prefix.pop();
-            String pa = prefix.pop();
-            prefix.push(ch + pa + pb);
+        for (char c : exp.toCharArray()) {
+            Node node = new Node(c);
+
+            if (Character.isDigit(c)) {
+                st.push(node);
+            } else {
+                node.right = st.pop();
+                node.left = st.pop();
+                st.push(node);
+            }
         }
+
+        Node root = st.pop();
+
+        System.out.println(eval(root));
+        System.out.println(infix(root));
+        System.out.println(prefix(root));
     }
 
-    System.out.println(values.pop());
-    System.out.println(infix.pop());
-    System.out.println(prefix.pop());
+    // Evaluate expression tree
+    private int eval(Node root) {
+        if (root.left == null && root.right == null) {
+            return root.val - '0';
+        }
+
+        int left = eval(root.left);
+        int right = eval(root.right);
+
+        if (root.val == '+') return left + right;
+        if (root.val == '-') return left - right;
+        if (root.val == '*') return left * right;
+        if (root.val == '/') return left / right;
+
+        return 0;
+    }
+
+    // Infix traversal
+    private String infix(Node root) {
+        if (root.left == null && root.right == null) {
+            return String.valueOf(root.val);
+        }
+
+        String left = infix(root.left);
+        String right = infix(root.right);
+
+        return "(" + left + root.val + right + ")";
+    }
+
+    // Prefix traversal
+    private String prefix(Node root) {
+        if (root.left == null && root.right == null) {
+            return String.valueOf(root.val);
+        }
+
+        String left = prefix(root.left);
+        String right = prefix(root.right);
+
+        return root.val + left + right;
+    }
+
+    // Driver
+    public static void main(String[] args) {
+        ExpressionTreeFromPostfix obj = new ExpressionTreeFromPostfix();
+
+        // Example: postfix of 1+2+(3*4) → 12+34*+
+        obj.postfixBrute("12+34*+");
+    }
 }
+
 ```
 ### 💭 Intuition Behind the Approach (Approach 2: Stack-Based)
 
