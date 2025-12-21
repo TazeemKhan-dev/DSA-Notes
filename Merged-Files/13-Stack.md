@@ -114,6 +114,285 @@
 ---
 
 <!-- #endregion -->
+<!-- #region 1-Infix, Prefix & Postfix — Evaluation & Conversions -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q1: Infix, Prefix & Postfix — Evaluation & Conversions</h1>
+
+## 1. Problem Statement
+
+- Expressions can be written in 3 forms:
+  * Infix: a + b
+  * Postfix: ab+
+  * Prefix: +ab
+- Stacks help:
+- Operands → value / string stack
+- Operators → operator stack
+
+- **Helper Rules (IMPORTANT)**
+- Operator Precedence
+  * +  -  → 1
+  * *  /  → 2
+- Digit vs Alphabet
+  * Character.isDigit(ch)      // '1'...'9'
+  * Character.isLetter(ch)     // 'a'...'z'
+- 🧪 Operator Utility Methods (Used Everywhere)
+
+```text
+static int precedence(char op) {
+    if (op == '+' || op == '-') return 1;
+    if (op == '*' || op == '/') return 2;
+    return 0;
+}
+
+static int apply(int a, int b, char op) {
+    if (op == '+') return a + b;
+    if (op == '-') return a - b;
+    if (op == '*') return a * b;
+    return a / b;
+}
+
+```
+---
+
+## 2. Approaches
+
+### Approach 1: Infix → Postfix
+
+**Idea:**
+- Operators wait until higher precedence operators are processed
+- Parentheses control scope
+
+**Java Code:**
+```java
+static String infixToPostfix(String exp) {
+    Stack<Character> ops = new Stack<>();
+    StringBuilder res = new StringBuilder();
+
+    for (char ch : exp.toCharArray()) {
+        if (Character.isLetterOrDigit(ch)) {
+            res.append(ch);
+        } 
+        else if (ch == '(') {
+            ops.push(ch);
+        } 
+        else if (ch == ')') {
+            while (ops.peek() != '(')
+                res.append(ops.pop());
+            ops.pop();
+        } 
+        else {
+            while (!ops.isEmpty() && precedence(ops.peek()) >= precedence(ch))
+                res.append(ops.pop());
+            ops.push(ch);
+        }
+    }
+
+    while (!ops.isEmpty())
+        res.append(ops.pop());
+
+    return res.toString();
+}
+```
+
+### Approach 2: Infix → Prefix
+
+**Idea:**
+- Reverse expression
+- Swap ( and )
+- Convert to postfix
+- Reverse result
+
+**Java Code:**
+```java
+static String infixToPrefix(String exp) {
+    StringBuilder rev = new StringBuilder(exp).reverse();
+    for (int i = 0; i < rev.length(); i++) {
+        if (rev.charAt(i) == '(') rev.setCharAt(i, ')');
+        else if (rev.charAt(i) == ')') rev.setCharAt(i, '(');
+    }
+
+    String postfix = infixToPostfix(rev.toString());
+    return new StringBuilder(postfix).reverse().toString();
+}
+```
+
+### Approach 3: Infix Evaluation (Digits Only)
+
+**Java Code:**
+```java
+static int evaluateInfix(String exp) {
+    Stack<Integer> val = new Stack<>();
+    Stack<Character> ops = new Stack<>();
+
+    for (char ch : exp.toCharArray()) {
+        if (Character.isDigit(ch)) {
+            val.push(ch - '0');
+        } 
+        else if (ch == '(') {
+            ops.push(ch);
+        } 
+        else if (ch == ')') {
+            while (ops.peek() != '(') {
+                int b = val.pop(), a = val.pop();
+                val.push(apply(a, b, ops.pop()));
+            }
+            ops.pop();
+        } 
+        else {
+            while (!ops.isEmpty() && precedence(ops.peek()) >= precedence(ch)) {
+                int b = val.pop(), a = val.pop();
+                val.push(apply(a, b, ops.pop()));
+            }
+            ops.push(ch);
+        }
+    }
+
+    while (!ops.isEmpty()) {
+        int b = val.pop(), a = val.pop();
+        val.push(apply(a, b, ops.pop()));
+    }
+
+    return val.peek();
+}
+```
+
+### Approach 4: Postfix → Infix
+
+**Java Code:**
+```java
+static String postfixToInfix(String exp) {
+    Stack<String> st = new Stack<>();
+
+    for (char ch : exp.toCharArray()) {
+        if (Character.isLetterOrDigit(ch)) {
+            st.push(ch + "");
+        } else {
+            String b = st.pop();
+            String a = st.pop();
+            st.push("(" + a + ch + b + ")");
+        }
+    }
+    return st.peek();
+}
+```
+
+### Approach 5: Postfix → Prefix
+
+**Java Code:**
+```java
+static String postfixToPrefix(String exp) {
+    Stack<String> st = new Stack<>();
+
+    for (char ch : exp.toCharArray()) {
+        if (Character.isLetterOrDigit(ch)) {
+            st.push(ch + "");
+        } else {
+            String b = st.pop();
+            String a = st.pop();
+            st.push(ch + a + b);
+        }
+    }
+    return st.peek();
+}
+```
+
+### Approach 6: Postfix Evaluation (Digits)
+
+**Java Code:**
+```java
+static int evaluatePostfix(String exp) {
+    Stack<Integer> st = new Stack<>();
+
+    for (char ch : exp.toCharArray()) {
+        if (Character.isDigit(ch)) {
+            st.push(ch - '0');
+        } else {
+            int b = st.pop();
+            int a = st.pop();
+            st.push(apply(a, b, ch));
+        }
+    }
+    return st.peek();
+}
+```
+
+### Approach 7: Prefix → Infix
+
+**Java Code:**
+```java
+static String prefixToInfix(String exp) {
+    Stack<String> st = new Stack<>();
+
+    for (int i = exp.length() - 1; i >= 0; i--) {
+        char ch = exp.charAt(i);
+        if (Character.isLetterOrDigit(ch)) {
+            st.push(ch + "");
+        } else {
+            String a = st.pop();
+            String b = st.pop();
+            st.push("(" + a + ch + b + ")");
+        }
+    }
+    return st.peek();
+}
+```
+
+### Approach 8: Prefix → Postfix
+
+**Java Code:**
+```java
+static String prefixToPostfix(String exp) {
+    Stack<String> st = new Stack<>();
+
+    for (int i = exp.length() - 1; i >= 0; i--) {
+        char ch = exp.charAt(i);
+        if (Character.isLetterOrDigit(ch)) {
+            st.push(ch + "");
+        } else {
+            String a = st.pop();
+            String b = st.pop();
+            st.push(a + b + ch);
+        }
+    }
+    return st.peek();
+}
+```
+
+### Approach 9: Prefix Evaluation (Digits)
+
+**Java Code:**
+```java
+static int evaluatePrefix(String exp) {
+    Stack<Integer> st = new Stack<>();
+
+    for (int i = exp.length() - 1; i >= 0; i--) {
+        char ch = exp.charAt(i);
+        if (Character.isDigit(ch)) {
+            st.push(ch - '0');
+        } else {
+            int a = st.pop();
+            int b = st.pop();
+            st.push(apply(a, b, ch));
+        }
+    }
+    return st.peek();
+}
+```
+
+---
+
+## 3. Tips & Observations
+
+- Conversion = stack of strings
+- Evaluation = stack of integers
+- Postfix → left to right
+- Prefix → right to left
+- Infix → operator precedence matters
+- Alphabet → conversion only
+- Digits → evaluation only
+---
+
+<!-- #endregion -->
 <!-- #region 197-Implement Stack using Arrays -->
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q197: Implement Stack using Arrays</h1>
@@ -662,9 +941,639 @@ class LinkedListStack {
 ---
 
 <!-- #endregion -->
+<!-- #region 202-Implement Queue using stack - Dequeue O(1) -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q202: Implement Queue using stack - Dequeue O(1)</h1>
+
+## 1. Problem Statement
+
+- You are required to implement a Queue using two Stacks S1 and S2.
+- You need to support the following operations:
+  * Type 1 x → Insert (enqueue) the element x into the queue.
+  * Type 2 → Remove (dequeue) the front element from the queue and print it.
+    * If the queue is empty, print -1.
+- Important Requirement
+  * The dequeue operation must run in O(1) time.
+---
+
+## 2. Problem Understanding
+
+- A queue follows FIFO (First In First Out) order, while a stack follows LIFO (Last In First Out).
+- Since dequeue must be O(1), we:
+  * Make enqueue costly
+  * Ensure the front element is always on top of a stack
+- We are allowed to use two stacks only.
+---
+
+## 3. Constraints
+
+- 1 <= Total number of queries <= 100
+- 1 <= value of x <= 100
+- Only stack operations (push, pop, peek, isEmpty) are allowed
+---
+
+## 4. Edge Cases
+
+- Dequeue on empty queue → return -1
+- Multiple enqueue operations before dequeue
+- Interleaved enqueue and dequeue operations
+---
+
+## 5. Examples
+
+```text
+Input
+
+5
+1 2
+1 3
+2
+1 4
+2
+
+
+Output
+
+2 3
+```
+
+---
+
+## 6. Approaches
+
+### Approach 1: Costly Enqueue, Cheap Dequeue (Optimal as per requirement)
+
+**Idea:**
+- Always keep the front of the queue on top of S1
+- Use S2 only during enqueue
+- This guarantees deQueue() in O(1)
+
+**Steps:**
+- enQueue(x):
+  * Move all elements from S1 to S2
+  * Push x into S1
+  * Move all elements back from S2 to S1
+- deQueue():
+  * If S1 is empty → return -1
+  * Else → pop from S1
+
+**Java Code:**
+```java
+class QueueUsingStack {
+    Stack<Integer> s1 = new Stack<>();
+    Stack<Integer> s2 = new Stack<>();
+
+    // Enqueue operation (O(N))
+    void push(int x) {
+        while (!s1.isEmpty()) {
+            s2.push(s1.pop());
+        }
+
+        s1.push(x);
+
+        while (!s2.isEmpty()) {
+            s1.push(s2.pop());
+        }
+    }
+
+    // Dequeue operation (O(1))
+    int pop() {
+        if (s1.isEmpty()) {
+            return -1;
+        }
+        return s1.pop();
+    }
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Queue needs FIFO
+- Stack gives LIFO
+- By reversing the stack during enqueue, we insert the new element at the bottom
+- After restoring, the front element stays on top, making dequeue constant time
+
+**Complexity (Time & Space):**
+- Time: O(N) — enqueue shifts all elements twice
+- Space: O(N) — two stacks storing elements
+
+---
+
+## 7. Justification / Proof of Optimality
+
+- This approach satisfies the problem requirement exactly by ensuring:
+- deQueue runs in O(1)
+- Cost is intentionally shifted to enQueue
+---
+
+## 8. Variants / Follow-Ups
+
+- enQueue O(1), deQueue O(N) → lazy two-stack approach
+- Amortized O(1) dequeue → interview-friendly but not accepted here
+---
+
+## 9. Tips & Observations
+
+- If problem explicitly says “deQueue O(1)”, never use the lazy two-stack solution
+- Always clarify worst-case vs amortized in interviews
+---
+
+## 10. Pitfalls
+
+- Using the enQueue O(1) logic by mistake
+- Forgetting to move elements back to S1
+- Missing empty queue check
+---
+
+<!-- #endregion -->
+<!-- #region 203-Implement Stack using Queue-push O(1) -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q203: Implement Stack using Queue-push O(1)</h1>
+
+## 1. Problem Statement
+
+- You are required to implement a Stack using two Queues.
+- You need to support the following operations:
+  * Type 1 x → Push the element x into the stack.
+  * Type 2 → Pop the top element from the stack and print it.
+    * If the stack is empty, print -1.
+- Important Requirement
+  * The push operation must run in O(1) time.
+---
+
+## 2. Problem Understanding
+
+- A stack follows LIFO (Last In First Out) order, while a queue follows FIFO (First In First Out).
+- Since push must be O(1), we:
+  * Insert elements directly into a queue
+  * Shift the cost to the pop operation
+- We are allowed to use two queues only.
+---
+
+## 3. Constraints
+
+- 1 <= Total number of queries <= 100
+- 1 <= value of x <= 100
+- Only queue operations (add, remove, peek, isEmpty) are allowed
+---
+
+## 4. Edge Cases
+
+- Pop on empty stack → return -1
+- Multiple push operations before pop
+- Interleaved push and pop operations
+---
+
+## 5. Examples
+
+```text
+Input
+
+5
+1 2
+1 3
+2
+1 4
+2
+
+
+Output
+
+3 4
+```
+
+---
+
+## 6. Approaches
+
+### Approach 1: Push O(1), Costly Pop (Required)
+
+**Idea:**
+- Always push into Queue q1
+- During pop:
+  * Move size - 1 elements from q1 → q2
+  * Pop the last remaining element (top of stack)
+  * Swap q1 and q2
+- This keeps push cheap and shifts cost to pop.
+
+**Steps:**
+- push(x):
+  * Add x directly to q1
+- pop():
+  * If q1 is empty → return -1
+  * Move elements from q1 to q2 until one element is left
+  * Remove and store the last element (this is the stack top)
+  * Swap q1 and q2
+  * Return stored value
+
+**Java Code:**
+```java
+class StackUsingQueue {
+    Queue<Integer> q1 = new LinkedList<>();
+    Queue<Integer> q2 = new LinkedList<>();
+
+    // Push operation (O(1))
+    void push(int x) {
+        q1.add(x);
+    }
+
+    // Pop operation (O(N))
+    int pop() {
+        if (q1.isEmpty()) {
+            return -1;
+        }
+
+        while (q1.size() > 1) {
+            q2.add(q1.remove());
+        }
+
+        int top = q1.remove();
+
+        // swap queues
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+
+        return top;
+    }
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Stack requires last pushed element first
+- Queue removes from front
+- By delaying the rearrangement until pop:
+  * Push stays constant time
+  * Pop extracts the “last inserted” element correctly
+
+**Complexity (Time & Space):**
+- Time: O(1) — push is a single queue add
+- Time: O(N) — pop moves all elements except one
+- Space: O(N) — two queues storing elements
+
+---
+
+## 7. Justification / Proof of Optimality
+
+- This approach strictly satisfies the problem requirement:
+  * Push is guaranteed O(1)
+  * Stack order (LIFO) is preserved using queue rotations
+---
+
+## 8. Variants / Follow-Ups
+
+- Pop O(1), Push O(N) → rotate during push
+- Single queue solution → rotate queue after each push
+---
+
+## 9. Tips & Observations
+
+- If problem says push O(1) → never rotate during push
+- Always swap queues after pop
+- Size check (q1.size() > 1) is critical
+---
+
+## 10. Pitfalls
+
+- Forgetting to swap queues after pop
+- Using pop O(1) logic by mistake
+- Missing empty stack check
+---
+
+<!-- #endregion -->
+<!-- #region 204-Implement Stack using Queue-pop O(1) -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q204: Implement Stack using Queue-pop O(1)</h1>
+
+## 1. Problem Statement
+
+- You are required to implement a Stack using two Queues.
+- You need to support the following operations:
+  * Type 1 x → Push the element x into the stack.
+  * Type 2 → Pop the top element from the stack and print it.
+    * If the stack is empty, print -1.
+- Important Requirement
+  * The pop operation must run in O(1) time.
+---
+
+## 2. Problem Understanding
+
+- A stack follows LIFO (Last In First Out) order, while a queue follows FIFO (First In First Out).
+- Since pop must be O(1), we:
+  * Make push expensive
+  * Always maintain the top element at the front of a queue
+- We are allowed to use two queues only.
+---
+
+## 3. Constraints
+
+- Constraints
+- 1 <= Total number of queries <= 100
+- 1 <= value of x <= 100
+- Only queue operations (add, remove, peek, isEmpty) are allowed
+---
+
+## 4. Edge Cases
+
+- Pop on empty stack → return -1
+- Multiple push operations before pop
+- Interleaved push and pop operations
+---
+
+## 5. Examples
+
+```text
+Input
+
+5
+1 2
+1 3
+2
+1 4
+2
+
+
+Output
+
+3 4
+```
+
+---
+
+## 6. Approaches
+
+### Approach 1: Costly Push, Cheap Pop (Required)
+
+**Idea:**
+- Always keep the most recently pushed element at the front of q1
+- Use q2 only during push
+- This guarantees pop() in O(1)
+
+**Steps:**
+- push(x):
+  * Add x to q2
+  * Move all elements from q1 → q2
+  * Swap q1 and q2
+- pop():
+  * If q1 is empty → return -1
+  * Else → remove from q1
+
+**Java Code:**
+```java
+class StackUsingQueue {
+    Queue<Integer> q1 = new LinkedList<>();
+    Queue<Integer> q2 = new LinkedList<>();
+
+    // Push operation (O(N))
+    void push(int x) {
+        q2.add(x);
+
+        while (!q1.isEmpty()) {
+            q2.add(q1.remove());
+        }
+
+        // swap queues
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+    }
+
+    // Pop operation (O(1))
+    int pop() {
+        if (q1.isEmpty()) {
+            return -1;
+        }
+        return q1.remove();
+    }
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Stack requires last pushed element first
+- Queue removes from front
+- By rotating elements during push:
+  * The newest element is always placed at the front
+- This makes pop() a direct queue removal
+
+**Complexity (Time & Space):**
+- Time: O(N) — push rearranges all existing elements
+- Time: O(1) — pop is a single queue remove
+- Space: O(N) — two queues storing elements
+
+---
+
+## 7. Justification / Proof of Optimality
+
+- This approach strictly satisfies the problem requirement:
+  * pop operation is guaranteed O(1)
+  * Stack order (LIFO) is preserved using queue rearrangement
+---
+
+## 8. Variants / Follow-Ups
+
+- Push O(1), Pop O(N) → delay rearrangement until pop
+- Single queue solution → rotate queue after every push
+---
+
+## 9. Tips & Observations
+
+- If problem says pop O(1) → rearrange during push
+- Always swap queues after push
+- Keep top element at front of q1
+---
+
+## 10. Pitfalls
+
+- Forgetting to swap q1 and q2
+- Using push O(1) logic by mistake
+- Missing empty stack check
+---
+
+<!-- #endregion -->
+<!-- #region 205-Implement two Stacks in an Array -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q205: Implement two Stacks in an Array</h1>
+
+## 1. Problem Statement
+
+- You are required to implement two stacks using a single array in a space-efficient manner.
+- You need to support the following operations:
+  * pop1() → Pop an element from Stack 1 and print it
+  * push1(x) → Push element x into Stack 1
+  * pop2() → Pop an element from Stack 2 and print it
+  * push2(x) → Push element x into Stack 2
+- Rules
+  * Both stacks must use the same array
+  * Print -1 in case of overflow or underflow
+---
+
+## 2. Problem Understanding
+
+- We need two independent stacks
+- We are allowed only one array
+- Space must be used efficiently
+- Naive approach (splitting array in half) wastes space.
+- Instead, we let:
+  * Stack 1 grow from the left
+  * Stack 2 grow from the right
+---
+
+## 3. Constraints
+
+- 1 <= n <= 500
+- Stack operations must be O(1)
+- No extra arrays allowed
+---
+
+## 4. Edge Cases
+
+- Pop from empty stack → print -1
+- Push when array is full → print -1
+- Interleaved operations on both stacks
+---
+
+## 5. Examples
+
+```text
+Input
+
+5
+1
+4 5156
+2 989
+3
+1
+
+
+Output
+
+-1
+5156
+989
+```
+
+---
+
+## 6. Approaches
+
+### Approach 1: Two Pointers (Optimal)
+
+**Idea:**
+- Use a single array arr[]
+- Maintain two pointers:
+  * top1 = -1 → Stack 1 (left to right)
+  * top2 = size → Stack 2 (right to left)
+- Stack overflow occurs when top1 + 1 == top2
+
+**Steps:**
+- push1(x):
+  * If top1 + 1 == top2 → overflow → print -1
+  * Else → arr[++top1] = x
+- push2(x):
+  * If top1 + 1 == top2 → overflow → print -1
+  * Else → arr[--top2] = x
+- pop1():
+  * If top1 == -1 → underflow → print -1
+  * Else → print arr[top1--]
+- pop2():
+  * If top2 == size → underflow → print -1
+  * Else → print arr[top2++]
+
+**Java Code:**
+```java
+class TwoStacks {
+    int[] arr;
+    int size;
+    int top1, top2;
+
+    TwoStacks(int n) {
+        size = n;
+        arr = new int[n];
+        top1 = -1;
+        top2 = n;
+    }
+
+    void push1(int x) {
+        if (top1 + 1 == top2) {
+            System.out.println(-1);
+            return;
+        }
+        arr[++top1] = x;
+    }
+
+    void push2(int x) {
+        if (top1 + 1 == top2) {
+            System.out.println(-1);
+            return;
+        }
+        arr[--top2] = x;
+    }
+
+    void pop1() {
+        if (top1 == -1) {
+            System.out.println(-1);
+            return;
+        }
+        System.out.println(arr[top1--]);
+    }
+
+    void pop2() {
+        if (top2 == size) {
+            System.out.println(-1);
+            return;
+        }
+        System.out.println(arr[top2++]);
+    }
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Stack 1 grows left → right
+- Stack 2 grows right → left
+- Both stacks expand towards the center
+- Space is fully utilized with zero wastage
+
+**Complexity (Time & Space):**
+- ⏱️ Time Complexity
+  * push1 / push2: O(1) — pointer movement only
+  * pop1 / pop2: O(1) — direct access
+- 💾 Space Complexity
+  * O(N) — single shared array
+  * No extra space used
+
+---
+
+## 7. Justification / Proof of Optimality
+
+- This is the most space-efficient solution:
+  * Uses one array
+  * No wasted space
+  * All operations are constant time
+---
+
+## 8. Variants / Follow-Ups
+
+- Fixed half-array stacks (wastes space)
+- Dynamic resizing (not allowed here)
+---
+
+## 9. Tips & Observations
+
+- Overflow condition is shared
+- top1 + 1 == top2 is the key check
+- This is a classic interview problem
+---
+
+## 10. Pitfalls
+
+- Forgetting shared overflow condition
+- Confusing stack directions
+- Off-by-one pointer errors
+---
+
+<!-- #endregion -->
 <!-- #region 207-Balanced Brackets -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q207: Balanced Brackets</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q206: Balanced Brackets</h1>
 
 ## 1. Problem Statement
 
@@ -821,7 +1730,7 @@ public String isBalanced(String s) {
 <!-- #endregion -->
 <!-- #region 209-Balanced Expression -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q209: Balanced Expression</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q207: Balanced Expression</h1>
 
 ## 1. Problem Statement
 
@@ -1054,7 +1963,7 @@ public static boolean expBalancedMap(String str) {
 <!-- #endregion -->
 <!-- #region 204-Extra Brackets -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q204: Extra Brackets</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q208: Extra Brackets</h1>
 
 ## 1. Problem Statement
 
@@ -1250,7 +2159,7 @@ class Solution {
 <!-- #endregion -->
 <!-- #region 205-Valid Parenthesis String -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q205: Valid Parenthesis String</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q209: Valid Parenthesis String</h1>
 
 ## 1. Problem Statement
 
@@ -1462,7 +2371,7 @@ public static boolean checkValidString(String s) {
 <!-- #endregion -->
 <!-- #region 208-Previous Greater element -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q208: Previous Greater element</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q210: Previous Greater element</h1>
 
 ## 1. Problem Statement
 
@@ -1645,7 +2554,7 @@ public static long[] prevGreater(long[] arr, int n) {
 <!-- #endregion -->
 <!-- #region 202-Next Greater Element -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q202: Next Greater Element</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q211: Next Greater Element</h1>
 
 ## 1. Problem Statement
 
@@ -1866,7 +2775,7 @@ public static long[] nextGreater(long[] arr, int n) {
 <!-- #endregion -->
 <!-- #region 206-Stock Span Problem -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q206: Stock Span Problem</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q212: Stock Span Problem</h1>
 
 ## 1. Problem Statement
 
@@ -2026,7 +2935,7 @@ public int[] stockSpan(int[] arr) {
 <!-- #endregion -->
 <!-- #region 203-Largest Histogram Area -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q203: Largest Histogram Area</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q213: Largest Histogram Area</h1>
 
 ## 1. Problem Statement
 
@@ -2257,7 +3166,7 @@ class Solution {
 <!-- #endregion -->
 <!-- #region 210-Reverse Integer -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q210: Reverse Integer</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q214: Reverse Integer</h1>
 
 ## 1. Problem Statement
 
@@ -2480,7 +3389,7 @@ public int reverseInteger(int x) {
 <!-- #endregion -->
 <!-- #region 211-Smallest Number Following Pattern -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q211: Smallest Number Following Pattern</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q215: Smallest Number Following Pattern</h1>
 
 ## 1. Problem Statement
 
@@ -2733,7 +3642,7 @@ public String smallestNumber(String str) {
 <!-- #endregion -->
 <!-- #region 212-Celebrity Problem -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q212: Celebrity Problem</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q216: Celebrity Problem</h1>
 
 ## 1. Problem Statement
 
@@ -2956,7 +3865,7 @@ public int celebrity(int[][] M, int n) {
 <!-- #endregion -->
 <!-- #region 213-Infix Evaluation and Conversions -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q213: Infix Evaluation and Conversions</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q217: Infix Evaluation and Conversions</h1>
 
 ## 1. Problem Statement
 
@@ -3036,16 +3945,99 @@ Output:
 
 **Java Code:**
 ```java
-public void bruteInfix(String exp) {
-    String postfix = infixToPostfix(exp);
-    int val = evalPostfix(postfix);
-    String prefix = postfixToPrefix(postfix);
+import java.util.*;
 
-    System.out.println(val);
-    System.out.println(postfix);
-    System.out.println(prefix);
+public class ExpressionConversion {
+
+    // Entry method
+    public void bruteInfix(String exp) {
+        String postfix = infixToPostfix(exp);
+        int val = evalPostfix(postfix);
+        String prefix = postfixToPrefix(postfix);
+
+        System.out.println(val);
+        System.out.println(postfix);
+        System.out.println(prefix);
+    }
+
+    // Operator precedence
+    private int precedence(char ch) {
+        if (ch == '+' || ch == '-') return 1;
+        if (ch == '*' || ch == '/') return 2;
+        return 0;
+    }
+
+    // Infix to Postfix
+    private String infixToPostfix(String exp) {
+        Stack<Character> st = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+
+        for (char ch : exp.toCharArray()) {
+
+            if (Character.isDigit(ch)) {
+                sb.append(ch);
+            }
+            else if (ch == '(') {
+                st.push(ch);
+            }
+            else if (ch == ')') {
+                while (!st.isEmpty() && st.peek() != '(') {
+                    sb.append(st.pop());
+                }
+                st.pop(); // remove '('
+            }
+            else { // operator
+                while (!st.isEmpty() && precedence(st.peek()) >= precedence(ch)) {
+                    sb.append(st.pop());
+                }
+                st.push(ch);
+            }
+        }
+
+        while (!st.isEmpty()) {
+            sb.append(st.pop());
+        }
+
+        return sb.toString();
+    }
+
+    // Evaluate Postfix
+    private int evalPostfix(String exp) {
+        Stack<Integer> st = new Stack<>();
+
+        for (char ch : exp.toCharArray()) {
+            if (Character.isDigit(ch)) {
+                st.push(ch - '0');
+            } else {
+                int b = st.pop();
+                int a = st.pop();
+
+                if (ch == '+') st.push(a + b);
+                else if (ch == '-') st.push(a - b);
+                else if (ch == '*') st.push(a * b);
+                else if (ch == '/') st.push(a / b);
+            }
+        }
+        return st.pop();
+    }
+
+    // Postfix to Prefix
+    private String postfixToPrefix(String exp) {
+        Stack<String> st = new Stack<>();
+
+        for (char ch : exp.toCharArray()) {
+            if (Character.isDigit(ch)) {
+                st.push(String.valueOf(ch));
+            } else {
+                String b = st.pop();
+                String a = st.pop();
+                st.push(ch + a + b);
+            }
+        }
+        return st.pop();
+    }
 }
-(Helper methods omitted for brevity; logic repeats across problems)
+
 ```
 
 **💭 Intuition Behind the Approach:**
@@ -3256,17 +4248,18 @@ private int apply(int a, int b, char op) {
 <!-- #endregion -->
 <!-- #region 214-Postfix Evaluation And Conversions   -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q214: Postfix Evaluation And Conversions</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q218: Postfix Evaluation And Conversions</h1>
 
 ## 1. Problem Statement
 
 - You are given a postfix expression consisting of:
-  * single-digit operands (0–9)
-  * operators: +, -, *, /
+  - single-digit operands (0–9)
+  - operators: +, -, \*, /
 - You must:
-  * Evaluate the postfix expression
-  * Convert it to an infix expression (with brackets)
-  * Convert it to a prefix expression
+  - Evaluate the postfix expression
+  - Convert it to an infix expression (with brackets)
+  - Convert it to a prefix expression
+
 ---
 
 ## 2. Problem Understanding
@@ -3276,14 +4269,16 @@ private int apply(int a, int b, char op) {
 - No parentheses are present in input
 - Every operator always applies to the two most recent operands
 - Key insight:
-  * Postfix expressions are evaluated naturally using a stack.
+  - Postfix expressions are evaluated naturally using a stack.
+
 ---
 
 ## 3. Constraints
 
 - Expression is valid
 - Operands are single-digit numbers
-- Operators: + - * /
+- Operators: + - \* /
+
 ---
 
 ## 4. Edge Cases
@@ -3292,6 +4287,7 @@ private int apply(int a, int b, char op) {
 - Nested operations
 - Division producing integer result
 - Order-sensitive operators (-, /)
+
 ---
 
 ## 5. Examples
@@ -3320,20 +4316,23 @@ Output:
 ### Approach 1: Brute Force (Expression Tree)
 
 **Idea:**
+
 - Build an expression tree from postfix
 - Traverse tree to:
-  * evaluate
-  * generate infix
-  * generate prefix
+  - evaluate
+  - generate infix
+  - generate prefix
 
 **Steps:**
+
 - Create tree nodes for operands
 - On operator:
-  * pop two nodes
-  * make them children
+  - pop two nodes
+  - make them children
 - Traverse tree
 
 **Java Code:**
+
 ```java
 class Node {
     char val;
@@ -3364,65 +4363,78 @@ public void postfixBrute(String exp) {
 ```
 
 **💭 Intuition Behind the Approach:**
+
 - Postfix naturally represents an expression tree
 - Tree traversal gives all notations
 
 **Complexity (Time & Space):**
+
 - Time: O(N)
 - Space: O(N)
 
 ### Approach 2: Stack-Based (Standard)
 
 **Idea:**
+
 - Use three stacks:
-  * values
-  * infix strings
-  * prefix strings
+  - values
+  - infix strings
+  - prefix strings
 - Process postfix left to right
 
 **Steps:**
+
 - Traverse postfix expression
 - On operand:
-  * push into all stacks
+  - push into all stacks
 - On operator:
-  * pop two operands
-  * evaluate
-  * build infix & prefix
+  - pop two operands
+  - evaluate
+  - build infix & prefix
 
 **Java Code:**
+
 ```java
-public void evaluatePostfix(String exp) {
+public void postfixStack(String exp) {
+    Stack<Integer> val = new Stack<>();
+    Stack<String> inf = new Stack<>();
+    Stack<String> pre = new Stack<>();
 
-    Stack<Integer> values = new Stack<>();
-    Stack<String> infix = new Stack<>();
-    Stack<String> prefix = new Stack<>();
-
-    for (char ch : exp.toCharArray()) {
-
-        if (Character.isDigit(ch)) {
-            values.push(ch - '0');
-            infix.push(ch + "");
-            prefix.push(ch + "");
+    for (char c : exp.toCharArray()) {
+        if (Character.isDigit(c)) {
+            val.push(c - '0');
+            inf.push(c + "");
+            pre.push(c + "");
         } else {
-            int b = values.pop();
-            int a = values.pop();
-            values.push(apply(a, b, ch));
+            int b = val.pop();
+            int a = val.pop();
+            val.push(apply(a, b, c));
 
-            String ib = infix.pop();
-            String ia = infix.pop();
-            infix.push("(" + ia + ch + ib + ")");
+            String infB = inf.pop();
+            String infA = inf.pop();
+            inf.push("(" + infA + c + infB + ")");
 
-            String pb = prefix.pop();
-            String pa = prefix.pop();
-            prefix.push(ch + pa + pb);
+            String preB = pre.pop();
+            String preA = pre.pop();
+            pre.push(c + preA + preB);
         }
     }
 
-    System.out.println(values.pop());
-    System.out.println(infix.pop());
-    System.out.println(prefix.pop());
+    System.out.println(val.pop());
+    System.out.println(inf.pop());
+    System.out.println(pre.pop());
 }
+
+private int apply(int a, int b, char op) {
+    if (op == '+') return a + b;
+    if (op == '-') return a - b;
+    if (op == '*') return a * b;
+    return a / b;
+}
+
+
 ```
+
 ### 💭 Intuition Behind the Approach (Approach 2: Stack-Based)
 
 - In postfix expressions, **operator precedence is already resolved**, so no operator stack is needed.
@@ -3460,48 +4472,24 @@ public void evaluatePostfix(String exp) {
 > Any further “optimal” approach is the same algorithm, just labeled differently.
 
 ---
-### Approach 3: Optimal (Single-Pass Multi-Stack)
-
-**Idea:**
-- Same as Approach 2, but recognized as optimal
-- No precedence handling needed
-
-**Java Code:**
-```java
-private int apply(int a, int b, char op) {
-    if (op == '+') return a + b;
-    if (op == '-') return a - b;
-    if (op == '*') return a * b;
-    return a / b;
-}
-```
-
-**💭 Intuition Behind the Approach:**
-- private int apply(int a, int b, char op) {
-    * if (op == '+') return a + b;
-    * if (op == '-') return a - b;
-    * if (op == '*') return a * b;
-    * return a / b;
-- }
-
-**Complexity (Time & Space):**
-- Time: O(N)
-- Space: O(N)
-
----
 
 ## 7. Justification / Proof of Optimality
 
 - Postfix evaluation is naturally stack-based
 - No need for operator precedence handling
 - Clean, linear-time solution
+
 ---
 
 ## 8. Variants / Follow-Ups
 
-- Postfix evaluation is naturally stack-based
-- No need for operator precedence handling
-- Clean, linear-time solution
+- Prefix evaluation
+- Infix to Postfix conversion
+- Infix to Prefix conversion
+- Multi-digit operands
+- Variable-based expressions (a+b\*c)
+- Expression Tree construction
+
 ---
 
 ## 9. Tips & Observations
@@ -3509,6 +4497,7 @@ private int apply(int a, int b, char op) {
 - Always pop right operand first
 - Wrap infix expressions in brackets
 - Order matters for - and /
+
 ---
 
 ## 10. Pitfalls
@@ -3517,12 +4506,13 @@ private int apply(int a, int b, char op) {
 - Forgetting parentheses in infix
 - Treating postfix like infix
 - Using recursion unnecessarily
+
 ---
 
 <!-- #endregion -->
 <!-- #region 215-  Prefix Evaluation and Conversion -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q215: Prefix Evaluation and Conversion</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q219: Prefix Evaluation and Conversion</h1>
 
 ## 1. Problem Statement
 
@@ -3749,7 +4739,7 @@ public void evaluatePrefix(String exp) {
 <!-- #endregion -->
 <!-- #region 216-Trapping Rainwater Problem -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q216: Trapping Rainwater Problem</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q220: Trapping Rainwater Problem</h1>
 
 ## 1. Problem Statement
 
@@ -4065,7 +5055,7 @@ public int trapStack(int[] height) {
 <!-- #endregion -->
 <!-- #region 217- Merge Intervals -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q217: Merge Intervals</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q221: Merge Intervals</h1>
 
 ## 1. Problem Statement
 
@@ -4299,7 +5289,7 @@ public List<int[]> mergeStack(int[][] intervals) {
 <!-- #endregion -->
 <!-- #region 218-Minimum Stack -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q218: Minimum Stack</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q222: Minimum Stack</h1>
 
 ## 1. Problem Statement
 
@@ -4536,7 +5526,7 @@ int getMin() {
 <!-- #endregion -->
 <!-- #region 219-Reverse Substrings Between Each Pair of Parentheses -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q219: Reverse Substrings Between Each Pair of Parentheses</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q223: Reverse Substrings Between Each Pair of Parentheses</h1>
 
 ## 1. Problem Statement
 
@@ -4761,7 +5751,7 @@ public String reverseParentheses(String s) {
 <!-- #endregion -->
 <!-- #region 220-Sum of Subarray Minimums -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q220: Sum of Subarray Minimums</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q224: Sum of Subarray Minimums</h1>
 
 ## 1. Problem Statement
 
@@ -4974,7 +5964,7 @@ public int minSubarraySum(int[] arr, int n) {
 <!-- #endregion -->
 <!-- #region 221-132 Pattern -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q221: 132 Pattern</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">225: 132 Pattern</h1>
 
 ## 1. Problem Statement
 
@@ -5207,6 +6197,451 @@ public boolean find132pattern(int[] nums) {
 - Resetting third incorrectly
 - Using stack for indices instead of values
 - Confusing this with contiguous subarray problems
+---
+
+<!-- #endregion -->
+<!-- #region 226-Height Problem -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q226: Height Problem</h1>
+
+## 1. Problem Statement
+
+- n people are standing in a line from left to right.
+- Each person wants to know the height of the closest person on the left who is strictly shorter than them.
+- If there are multiple such people, choose the closest one.
+- If no such person exists, return -1.
+---
+
+## 2. Problem Understanding
+
+- For each index i:
+  * Look only to the left (0 … i-1)
+  * Among people with height < arr[i]
+  * Pick the nearest one
+  * Output their height, not index
+- This is a Previous Smaller Element (PSE) problem.
+---
+
+## 3. Constraints
+
+- 2 ≤ n ≤ 10^5
+- 0 ≤ arr[i] ≤ 10^9
+- Large n → brute force will TLE
+---
+
+## 4. Edge Cases
+
+- First person → always -1
+- Strictly increasing array
+- Strictly decreasing array
+- Equal heights (not allowed, must be less than)
+---
+
+## 5. Examples
+
+```text
+Input
+
+5
+1 2 3 4 5
+
+
+Output
+
+-1 1 2 3 4
+```
+
+---
+
+## 6. Approaches
+
+### Approach 1: Brute Force (Naive) 
+
+**Idea:**
+- For each person, scan leftwards until you find a shorter height.
+
+**Steps:**
+- For each i:
+  * Start from j = i-1
+  * Move left while arr[j] >= arr[i]
+  * First arr[j] < arr[i] → answer
+  * If none found → -1
+
+**Java Code:**
+```java
+public int[] heightProblemBrute(int[] arr) {
+    int n = arr.length;
+    int[] ans = new int[n];
+
+    for (int i = 0; i < n; i++) {
+        ans[i] = -1;
+        for (int j = i - 1; j >= 0; j--) {
+            if (arr[j] < arr[i]) {
+                ans[i] = arr[j];
+                break;
+            }
+        }
+    }
+    return ans;
+}
+```
+
+**Complexity (Time & Space):**
+- Time: O(N^2) — nested loop, worst case decreasing array
+- Space: O(1) — output array excluded
+
+### Approach 2: Monotonic Stack (Optimal)
+
+**Idea:**
+- Maintain a monotonic increasing stack of heights.
+- Stack invariant:
+  * Stack stores candidates for previous smaller
+  * Pop elements that are ≥ current height
+
+**Steps:**
+- Create empty stack
+- Traverse array from left to right
+- While stack is not empty and stack.peek() >= arr[i], pop
+- If stack is empty → answer -1
+- Else → answer stack.peek()
+- Push arr[i] to stack
+
+**Java Code:**
+```java
+public int[] heightProblem(int[] arr) {
+    int n = arr.length;
+    int[] ans = new int[n];
+    Stack<Integer> st = new Stack<>();
+
+    for (int i = 0; i < n; i++) {
+        while (!st.isEmpty() && st.peek() >= arr[i]) {
+            st.pop();
+        }
+
+        ans[i] = st.isEmpty() ? -1 : st.peek();
+        st.push(arr[i]);
+    }
+    return ans;
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- We only care about nearest smaller on the left
+- Taller or equal people are useless for future elements
+- Stack keeps only valid smaller candidates
+- Each element is pushed and popped once
+
+**Complexity (Time & Space):**
+- Time: O(N) — each element pushed & popped once
+- Space: O(N) — stack in worst case (increasing array)
+
+---
+
+## 7. Justification / Proof of Optimality
+
+- The monotonic stack approach is optimal because:
+  * Brute force fails for large n
+  * Stack reduces redundant comparisons
+  * Guarantees nearest smaller element efficiently
+---
+
+## 8. Variants / Follow-Ups
+
+- Previous Greater Element
+- Next Smaller Element
+- Next Greater Element
+- Stock Span Problem
+- Largest Rectangle in Histogram
+---
+
+## 9. Tips & Observations
+
+- Condition is strictly smaller (<)
+- Use >= while popping to handle equals
+- Output requires value, not index
+---
+
+## 10. Pitfalls
+
+- Using > instead of >= in pop condition
+- Scanning right side instead of left
+- Confusing PSE with NSE
+---
+
+<!-- #endregion -->
+<!-- #region 227-Asteroid Collision -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q227: Asteroid Collision</h1>
+
+## 1. Problem Statement
+
+- You are given an integer array asteroids representing asteroids in a row.
+- The absolute value of asteroids[i] represents the size of the asteroid.
+- The sign represents the direction:
+  * Positive → moving right
+  * Negative → moving left
+- Asteroids collide based on the following rules:
+  * If two asteroids of different sizes meet, the smaller one explodes
+  * If two asteroids of equal sizes meet, both explode
+  * Asteroids moving in the same direction never meet
+- If no asteroid remains, print -1.
+---
+
+## 2. Problem Understanding
+
+- Collision is possible only when:
+  * A right-moving asteroid (+) is followed by a left-moving asteroid (-)
+- We must simulate collisions in order
+- Multiple collisions may occur for one asteroid
+- This is a classic stack simulation problem.
+---
+
+## 3. Constraints
+
+- 2 ≤ n ≤ 10^4
+- -1000 ≤ asteroids[i] ≤ 1000
+- asteroids[i] ≠ 0
+- Efficient solution required → O(N)
+---
+
+## 4. Edge Cases
+
+- All asteroids moving in same direction
+- Chain collisions (one asteroid destroys multiple)
+- Equal-sized collision
+- Final result empty → print -1
+---
+
+## 5. Examples
+
+```text
+Input
+
+3
+5 10 -5
+
+
+Output
+
+5 10
+```
+
+---
+
+## 6. Approaches
+
+### Approach 1: Brute Force Simulation (Not Optimal)
+
+**Idea:**
+- Repeatedly scan the array and resolve one collision at a time until no more collisions are possible.
+- This is slow but conceptually simple.
+
+**Steps:**
+- Convert array to list
+- Scan from left to right
+- If a[i] > 0 and a[i+1] < 0, resolve collision
+- Modify list
+- Restart scan
+- Stop when no collision occurs
+
+**Java Code:**
+```java
+public static List<Integer> asteroidCollisionBrute(int[] asteroids) {
+    List<Integer> list = new ArrayList<>();
+    for (int a : asteroids) list.add(a);
+
+    boolean changed = true;
+
+    while (changed) {
+        changed = false;
+        for (int i = 0; i < list.size() - 1; i++) {
+            int a = list.get(i);
+            int b = list.get(i + 1);
+
+            if (a > 0 && b < 0) {
+                if (Math.abs(a) > Math.abs(b)) {
+                    list.remove(i + 1);
+                } else if (Math.abs(a) < Math.abs(b)) {
+                    list.remove(i);
+                } else {
+                    list.remove(i + 1);
+                    list.remove(i);
+                }
+                changed = true;
+                break;
+            }
+        }
+    }
+
+    return list.size() == 0 ? Arrays.asList(-1) : list;
+}
+```
+
+**Complexity (Time & Space):**
+- Time: O(N^2) — repeated scans
+- Space: O(N) — list storage
+
+### Approach 2: Stack Simulation (Optimal)
+
+**Idea:**
+- Use a stack to simulate collisions efficiently.
+- Only collide when:
+  * stack.peek() > 0 && current < 0
+
+**Steps:**
+- Initialize an empty stack
+- Traverse asteroids from left to right
+- For each asteroid a:
+  * Assume it is alive
+  * While:
+    * stack is not empty
+    * stack top is > 0
+    * current asteroid a < 0
+    * → collision is possible
+- Compare sizes:
+  * If |stack.peek()| < |a|
+  * → stack top explodes (pop)
+  * If |stack.peek()| == |a|
+  * → both explode (pop + discard a)
+  * If |stack.peek()| > |a|
+  * → current asteroid explodes
+- If current asteroid survives all collisions → push it into stack
+- Stack contents after traversal represent final state
+
+**Java Code:**
+```java
+public int[] asteroidCollision(int[] asteroids) {
+    Stack<Integer> st = new Stack<>();
+
+    for (int a : asteroids) {
+        boolean alive = true;
+
+        while (alive && !st.isEmpty() && st.peek() > 0 && a < 0) {
+            if (Math.abs(st.peek()) < Math.abs(a)) {
+                st.pop();
+            } else if (Math.abs(st.peek()) == Math.abs(a)) {
+                st.pop();
+                alive = false;
+            } else {
+                alive = false;
+            }
+        }
+
+        if (alive) st.push(a);
+    }
+
+    if (st.isEmpty()) return new int[]{-1};
+
+    int[] res = new int[st.size()];
+    for (int i = st.size() - 1; i >= 0; i--) {
+        res[i] = st.pop();
+    }
+    return res;
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Stack stores asteroids that haven’t collided yet
+- Only the nearest previous asteroid can collide with the current one
+- Right-moving asteroids wait on the stack
+- Left-moving asteroids may cause chain reactions
+- Each asteroid is:
+  * pushed once
+  * popped at most once
+- This guarantees linear processing.
+
+**Complexity (Time & Space):**
+- ⏱️ Time Complexity
+  * Time: O(N) —
+  * Each asteroid is pushed and popped at most once, so total operations are linear.
+- 💾 Space Complexity
+  * Space: O(N) —
+  * Stack can store all asteroids in the worst case (all moving in same direction).
+
+### Approach 3: Push-Then-Resolve Stack
+
+**Idea:**
+- Push current asteroid first
+- Then repeatedly check top two elements
+- Resolve collision immediately if needed
+
+**Java Code:**
+```java
+public static List<Integer> asteroidCollision(int[] asteroids) {
+    Stack<Integer> s = new Stack<>();
+
+    for (int z : asteroids) {
+        s.push(z);
+
+        while (s.size() > 1) {
+            int as2 = s.pop();
+            int as1 = s.pop();
+
+            if (!(as1 > 0 && as2 < 0)) {
+                s.push(as1);
+                s.push(as2);
+                break;
+            } else {
+                int m = Math.abs(as1);
+                int n = Math.abs(as2);
+
+                if (m == n) {
+                    break; // both destroyed
+                } else if (m < n) {
+                    s.push(as2);
+                } else {
+                    s.push(as1);
+                }
+            }
+        }
+    }
+
+    List<Integer> res = new ArrayList<>();
+    while (!s.isEmpty()) res.add(s.pop());
+    Collections.reverse(res);
+
+    return res.size() == 0 ? Arrays.asList(-1) : res;
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Stack always stores valid asteroids
+- Collision is checked only for adjacent top elements
+- Ensures nearest collision first
+- Same O(N) guarantee
+
+**Complexity (Time & Space):**
+- Time: O(N) — each asteroid pushed/popped once
+- Space: O(N) — stack storage
+
+---
+
+## 7. Justification / Proof of Optimality
+
+- Brute force helps understand collisions
+- Stack optimizes collision handling
+- Your solution is a clean alternate stack formulation
+---
+
+## 8. Variants / Follow-Ups
+
+- Circular asteroid collision
+- Asteroids with velocity
+- 2D collision simulation
+---
+
+## 9. Tips & Observations
+
+- Collision condition is direction-based
+- Always compare absolute values
+- Chain collisions are the tricky part
+---
+
+## 10. Pitfalls
+
+- Missing equal-size case
+- Allowing same-direction collision
+- Forgetting -1 when empty
 ---
 
 <!-- #endregion -->
