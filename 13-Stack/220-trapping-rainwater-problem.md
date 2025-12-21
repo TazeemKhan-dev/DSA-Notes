@@ -1,6 +1,6 @@
 <!-- #region 216-Trapping Rainwater Problem -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q216: Trapping Rainwater Problem</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q220: Trapping Rainwater Problem</h1>
 
 ## 1. Problem Statement
 

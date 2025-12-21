@@ -1,6 +1,6 @@
 <!-- #region 207-Balanced Brackets -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q207: Balanced Brackets</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q206: Balanced Brackets</h1>
 
 ## 1. Problem Statement
 

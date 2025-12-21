@@ -1,6 +1,6 @@
 <!-- #region 217- Merge Intervals -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q217: Merge Intervals</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q221: Merge Intervals</h1>
 
 ## 1. Problem Statement
 

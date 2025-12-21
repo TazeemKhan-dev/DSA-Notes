@@ -1,6 +1,6 @@
 <!-- #region 221-132 Pattern -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q221: 132 Pattern</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">225: 132 Pattern</h1>
 
 ## 1. Problem Statement
 

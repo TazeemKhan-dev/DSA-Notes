@@ -1,6 +1,6 @@
 <!-- #region 218-Minimum Stack -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q218: Minimum Stack</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q222: Minimum Stack</h1>
 
 ## 1. Problem Statement
 

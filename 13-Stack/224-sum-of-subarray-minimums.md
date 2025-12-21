@@ -1,6 +1,6 @@
 <!-- #region 220-Sum of Subarray Minimums -->
 
-<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q220: Sum of Subarray Minimums</h1>
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q224: Sum of Subarray Minimums</h1>
 
 ## 1. Problem Statement
 
