@@ -126,7 +126,15 @@ class ArrayQueue {
 
     int pop() {
         if (isEmpty()) return -1;
-        return arr[front++];
+
+        int val = arr[front++];
+
+        // 🔥 reset when queue becomes empty
+        if (front > rear) {
+            front = 0;
+            rear = -1;
+        }
+        return val;
     }
 
     int peek() {
@@ -134,10 +142,15 @@ class ArrayQueue {
         return arr[front];
     }
 
+    int size() {
+        return rear - front + 1;
+    }
+
     boolean isEmpty() {
-        return front > rear;
+        return size() == 0;
     }
 }
+
 ```
 
 **💭 Intuition Behind the Approach:**
