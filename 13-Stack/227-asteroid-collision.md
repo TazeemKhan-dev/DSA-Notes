@@ -187,69 +187,57 @@ public int[] asteroidCollision(int[] asteroids) {
   * Space: O(N) —
   * Stack can store all asteroids in the worst case (all moving in same direction).
 
-### Approach 3: Push-Then-Resolve Stack
+
+### Approach 2(Variant): Using List as Stack (No Reverse Needed)
 
 **Idea:**
-- Push current asteroid first
-- Then repeatedly check top two elements
-- Resolve collision immediately if needed
+- Use ArrayList as a stack
+
+- Push/remove only from the end
+
+- Avoid reversing at the end
+
+**Key Insight::**
+- remove(size-1) is O(1)
+
+- Preserves order naturally
 
 **Java Code:**
 ```java
-public static List<Integer> asteroidCollision(int[] asteroids) {
-    Stack<Integer> s = new Stack<>();
+List<Integer> st = new ArrayList<>();
 
-    for (int z : asteroids) {
-        s.push(z);
+for (int a : asteroids) {
+    boolean alive = true;
 
-        while (s.size() > 1) {
-            int as2 = s.pop();
-            int as1 = s.pop();
-
-            if (!(as1 > 0 && as2 < 0)) {
-                s.push(as1);
-                s.push(as2);
-                break;
-            } else {
-                int m = Math.abs(as1);
-                int n = Math.abs(as2);
-
-                if (m == n) {
-                    break; // both destroyed
-                } else if (m < n) {
-                    s.push(as2);
-                } else {
-                    s.push(as1);
-                }
-            }
+    while (alive && !st.isEmpty() && st.get(st.size()-1) > 0 && a < 0) {
+        int top = st.get(st.size()-1);
+        if (Math.abs(top) < Math.abs(a)) {
+            st.remove(st.size()-1);
+        } else if (Math.abs(top) == Math.abs(a)) {
+            st.remove(st.size()-1);
+            alive = false;
+        } else {
+            alive = false;
         }
     }
 
-    List<Integer> res = new ArrayList<>();
-    while (!s.isEmpty()) res.add(s.pop());
-    Collections.reverse(res);
-
-    return res.size() == 0 ? Arrays.asList(-1) : res;
+    if (alive) st.add(a);
 }
+
+return st.size() == 0 ? Arrays.asList(-1) : st;
+
 ```
-
-**💭 Intuition Behind the Approach:**
-- Stack always stores valid asteroids
-- Collision is checked only for adjacent top elements
-- Ensures nearest collision first
-- Same O(N) guarantee
-
 **Complexity (Time & Space):**
-- Time: O(N) — each asteroid pushed/popped once
-- Space: O(N) — stack storage
+- ⏱️ Time Complexity
+  * Time: O(N) —
+- 💾 Space Complexity
+  * Space: O(N) —
 
----
 
 ## 7. Justification / Proof of Optimality
 
 - Brute force helps understand collisions
 - Stack optimizes collision handling
-- Your solution is a clean alternate stack formulation
 ---
 
 ## 8. Variants / Follow-Ups
