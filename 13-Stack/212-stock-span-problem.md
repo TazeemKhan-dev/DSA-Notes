@@ -2,31 +2,44 @@
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q212: Stock Span Problem</h1>
 
+
 ## 1. Problem Statement
 
-- You are given stock prices for n consecutive days.
-- For each day i, you must calculate how many consecutive days (ending at i, including i) the stock price was less than or equal to the price on day i.
-- The span stops as soon as you encounter a strictly greater price to the left.
-- In simple words:
-  * Span = distance to the nearest greater element on the left, or the entire prefix if none exists.
+- The Stock Span Problem is a financial problem where we are given a series of daily stock prices for n days.
+- For each day, we need to calculate the stock span.
+- The span S[i] of the stock on day i is defined as the maximum number of consecutive days just before day i (including day i) for which the stock price was less than or equal to the price on day i.
 ---
 
 ## 2. Problem Understanding
 
-- 1 <= n <= 100000
-- 1 <= arr[i] <= 100000
-- Large input → brute force will TLE
+- You are given an array arr of size n where:
+  * arr[i] represents the stock price on day i.
+- For each day i, you need to look backwards (from i to 0) and count:
+  * How many continuous previous days (including today) had stock prices <= arr[i].
+- The moment you encounter a day with price greater than today’s price, you must stop counting.
+- Key points:
+  * The span always includes at least the current day, so minimum span is 1.
+  * The span depends on consecutive days, not scattered ones.
+  * Order of days must not break.
 ---
 
-## 3. Edge Cases
+## 3. Constraints
+
+- 1 ≤ n ≤ 100000
+- 1 ≤ arr[i] ≤ 100000
+---
+
+## 4. Edge Cases
 
 - n = 1 → span is always 1
-- Strictly increasing array → spans increase as 1,2,3,...
-- Strictly decreasing array → all spans are 1
-- Equal elements → span continues (<= allowed)
+- Strictly decreasing prices → all spans are 1
+- Strictly increasing prices → span increases every day
+- Repeated prices → allowed (<= condition matters)
+- Large n → brute force approach will cause TLE
 ---
 
-## 4. Examples
+
+## 5. Examples
 
 ```text
 Input
@@ -38,7 +51,7 @@ Output
 
 ---
 
-## 5. Approaches
+## 6. Approaches
 
 ### Approach 1: Brute Force (Check Left for Every Day)
 
@@ -126,14 +139,14 @@ public int[] stockSpan(int[] arr) {
 
 ---
 
-## 6. Justification / Proof of Optimality
+## 7. Justification / Proof of Optimality
 
 - Brute force is intuitive but inefficient
 - Stack approach efficiently tracks the nearest greater element
 - This is a classic monotonic stack problem
 ---
 
-## 7. Variants / Follow-Ups
+## 8. Variants / Follow-Ups
 
 - Nearest Greater Element to Left
 - Daily Temperatures
@@ -141,7 +154,7 @@ public int[] stockSpan(int[] arr) {
 - Online Stock Span (streaming version)
 ---
 
-## 8. Tips & Observations
+## 9. Tips & Observations
 
 - Span is NOT sliding window
 - Condition is <=, not <
@@ -149,7 +162,7 @@ public int[] stockSpan(int[] arr) {
 - Empty stack means full span till start
 ---
 
-## 9. Pitfalls
+## 10. Pitfalls
 
 - Using < instead of <=
 - Forgetting to include the current day
