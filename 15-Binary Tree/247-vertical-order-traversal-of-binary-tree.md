@@ -238,6 +238,72 @@ static class Tuple {
         this.col = col;
     }
 }
+
+
+Vertical Order Traversal (Refactored with computeIfAbsent)
+static List<List<Integer>> verticalTraversal(TreeNode root) {
+    // col -> row -> min-heap of values
+    TreeMap<Integer, TreeMap<Integer, PriorityQueue<Integer>>> map = new TreeMap<>();
+    Queue<Tuple> q = new ArrayDeque<>();
+
+    q.offer(new Tuple(root, 0, 0));
+
+    while (!q.isEmpty()) {
+        Tuple t = q.poll();
+
+        map
+            .computeIfAbsent(t.col, k -> new TreeMap<>())
+            .computeIfAbsent(t.row, k -> new PriorityQueue<>())
+            .offer(t.node.val);
+
+        if (t.node.left != null) {
+            q.offer(new Tuple(t.node.left, t.row + 1, t.col - 1));
+        }
+        if (t.node.right != null) {
+            q.offer(new Tuple(t.node.right, t.row + 1, t.col + 1));
+        }
+    }
+
+    List<List<Integer>> res = new ArrayList<>();
+
+    for (TreeMap<Integer, PriorityQueue<Integer>> rows : map.values()) {
+        List<Integer> colList = new ArrayList<>();
+        for (PriorityQueue<Integer> pq : rows.values()) {
+            while (!pq.isEmpty()) {
+                colList.add(pq.poll());
+            }
+        }
+        res.add(colList);
+    }
+
+    return res;
+}
+
+static class Tuple {
+    TreeNode node;
+    int row, col;
+
+    Tuple(TreeNode node, int row, int col) {
+        this.node = node;
+        this.row = row;
+        this.col = col;
+    }
+}
+Why this version is better
+
+✅ No repeated get() calls
+
+✅ No manual putIfAbsent clutter
+
+✅ Atomic creation + retrieval
+
+✅ Cleaner nested-map logic
+
+✅ Preferred in interviews & production code
+
+One-line interview explanation
+
+“I used computeIfAbsent to lazily initialize nested maps and heaps, avoiding redundant lookups and keeping the code concise.”
 ```
 
 **💭 Intuition Behind the Approach:**
