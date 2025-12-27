@@ -130,8 +130,8 @@
 
 - **Helper Rules (IMPORTANT)**
 - Operator Precedence
-  * +  -  → 1
-  * *  /  → 2
+  * '+'  '-'  → 1
+  * '*'  '/'  → 2
 - Digit vs Alphabet
   * Character.isDigit(ch)      // '1'...'9'
   * Character.isLetter(ch)     // 'a'...'z'
@@ -2777,31 +2777,44 @@ public static long[] nextGreater(long[] arr, int n) {
 
 <h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q212: Stock Span Problem</h1>
 
+
 ## 1. Problem Statement
 
-- You are given stock prices for n consecutive days.
-- For each day i, you must calculate how many consecutive days (ending at i, including i) the stock price was less than or equal to the price on day i.
-- The span stops as soon as you encounter a strictly greater price to the left.
-- In simple words:
-  * Span = distance to the nearest greater element on the left, or the entire prefix if none exists.
+- The Stock Span Problem is a financial problem where we are given a series of daily stock prices for n days.
+- For each day, we need to calculate the stock span.
+- The span S[i] of the stock on day i is defined as the maximum number of consecutive days just before day i (including day i) for which the stock price was less than or equal to the price on day i.
 ---
 
 ## 2. Problem Understanding
 
-- 1 <= n <= 100000
-- 1 <= arr[i] <= 100000
-- Large input → brute force will TLE
+- You are given an array arr of size n where:
+  * arr[i] represents the stock price on day i.
+- For each day i, you need to look backwards (from i to 0) and count:
+  * How many continuous previous days (including today) had stock prices <= arr[i].
+- The moment you encounter a day with price greater than today’s price, you must stop counting.
+- Key points:
+  * The span always includes at least the current day, so minimum span is 1.
+  * The span depends on consecutive days, not scattered ones.
+  * Order of days must not break.
 ---
 
-## 3. Edge Cases
+## 3. Constraints
+
+- 1 ≤ n ≤ 100000
+- 1 ≤ arr[i] ≤ 100000
+---
+
+## 4. Edge Cases
 
 - n = 1 → span is always 1
-- Strictly increasing array → spans increase as 1,2,3,...
-- Strictly decreasing array → all spans are 1
-- Equal elements → span continues (<= allowed)
+- Strictly decreasing prices → all spans are 1
+- Strictly increasing prices → span increases every day
+- Repeated prices → allowed (<= condition matters)
+- Large n → brute force approach will cause TLE
 ---
 
-## 4. Examples
+
+## 5. Examples
 
 ```text
 Input
@@ -2813,7 +2826,7 @@ Output
 
 ---
 
-## 5. Approaches
+## 6. Approaches
 
 ### Approach 1: Brute Force (Check Left for Every Day)
 
@@ -2901,14 +2914,14 @@ public int[] stockSpan(int[] arr) {
 
 ---
 
-## 6. Justification / Proof of Optimality
+## 7. Justification / Proof of Optimality
 
 - Brute force is intuitive but inefficient
 - Stack approach efficiently tracks the nearest greater element
 - This is a classic monotonic stack problem
 ---
 
-## 7. Variants / Follow-Ups
+## 8. Variants / Follow-Ups
 
 - Nearest Greater Element to Left
 - Daily Temperatures
@@ -2916,7 +2929,7 @@ public int[] stockSpan(int[] arr) {
 - Online Stock Span (streaming version)
 ---
 
-## 8. Tips & Observations
+## 9. Tips & Observations
 
 - Span is NOT sliding window
 - Condition is <=, not <
@@ -2924,7 +2937,7 @@ public int[] stockSpan(int[] arr) {
 - Empty stack means full span till start
 ---
 
-## 9. Pitfalls
+## 10. Pitfalls
 
 - Using < instead of <=
 - Forgetting to include the current day
@@ -6558,69 +6571,57 @@ public int[] asteroidCollision(int[] asteroids) {
   * Space: O(N) —
   * Stack can store all asteroids in the worst case (all moving in same direction).
 
-### Approach 3: Push-Then-Resolve Stack
+
+### Approach 2(Variant): Using List as Stack (No Reverse Needed)
 
 **Idea:**
-- Push current asteroid first
-- Then repeatedly check top two elements
-- Resolve collision immediately if needed
+- Use ArrayList as a stack
+
+- Push/remove only from the end
+
+- Avoid reversing at the end
+
+**Key Insight::**
+- remove(size-1) is O(1)
+
+- Preserves order naturally
 
 **Java Code:**
 ```java
-public static List<Integer> asteroidCollision(int[] asteroids) {
-    Stack<Integer> s = new Stack<>();
+List<Integer> st = new ArrayList<>();
 
-    for (int z : asteroids) {
-        s.push(z);
+for (int a : asteroids) {
+    boolean alive = true;
 
-        while (s.size() > 1) {
-            int as2 = s.pop();
-            int as1 = s.pop();
-
-            if (!(as1 > 0 && as2 < 0)) {
-                s.push(as1);
-                s.push(as2);
-                break;
-            } else {
-                int m = Math.abs(as1);
-                int n = Math.abs(as2);
-
-                if (m == n) {
-                    break; // both destroyed
-                } else if (m < n) {
-                    s.push(as2);
-                } else {
-                    s.push(as1);
-                }
-            }
+    while (alive && !st.isEmpty() && st.get(st.size()-1) > 0 && a < 0) {
+        int top = st.get(st.size()-1);
+        if (Math.abs(top) < Math.abs(a)) {
+            st.remove(st.size()-1);
+        } else if (Math.abs(top) == Math.abs(a)) {
+            st.remove(st.size()-1);
+            alive = false;
+        } else {
+            alive = false;
         }
     }
 
-    List<Integer> res = new ArrayList<>();
-    while (!s.isEmpty()) res.add(s.pop());
-    Collections.reverse(res);
-
-    return res.size() == 0 ? Arrays.asList(-1) : res;
+    if (alive) st.add(a);
 }
+
+return st.size() == 0 ? Arrays.asList(-1) : st;
+
 ```
-
-**💭 Intuition Behind the Approach:**
-- Stack always stores valid asteroids
-- Collision is checked only for adjacent top elements
-- Ensures nearest collision first
-- Same O(N) guarantee
-
 **Complexity (Time & Space):**
-- Time: O(N) — each asteroid pushed/popped once
-- Space: O(N) — stack storage
+- ⏱️ Time Complexity
+  * Time: O(N) —
+- 💾 Space Complexity
+  * Space: O(N) —
 
----
 
 ## 7. Justification / Proof of Optimality
 
 - Brute force helps understand collisions
 - Stack optimizes collision handling
-- Your solution is a clean alternate stack formulation
 ---
 
 ## 8. Variants / Follow-Ups
@@ -6642,6 +6643,173 @@ public static List<Integer> asteroidCollision(int[] asteroids) {
 - Missing equal-size case
 - Allowing same-direction collision
 - Forgetting -1 when empty
+---
+
+<!-- #endregion -->
+<!-- #region 240-Next Greater Element – II -->
+
+<h1 style="text-align:center; font-size:2.5em; font-weight:bold;">Q240: Next Greater Element – II</h1>
+
+## 1. Problem Statement
+
+- Given a circular integer array, find the Next Greater Element (NGE) for each element.
+  * NGE of x = first element greater than x when moving clockwise
+  * If no such element exists → -1
+---
+
+## 2. Problem Understanding
+
+- Array is circular, not linear
+- After last index, traversal continues from index 0
+- Each element may need to look ahead beyond array end
+- Brute force will time out
+---
+
+## 3. Constraints
+
+- Large input possible
+- Efficient solution required → O(N)
+---
+
+## 4. Edge Cases
+
+- All elements same
+- Strictly increasing
+- Strictly decreasing
+- Single element array
+---
+
+## 5. Examples
+
+```text
+arr = [5, 7, 1, 7, 6, 0]
+Output = [7, -1, 7, -1, 7, 5]
+```
+
+---
+
+## 6. Approaches
+
+### Approach 1: Brute Force (Circular Scan)
+
+**Idea:**
+- For every element:
+- Move clockwise
+- Stop when:
+  * Greater element found
+  * Full circle completed
+
+**Java Code:**
+```java
+int[] nextGreater(int[] arr) {
+    int n = arr.length;
+    int[] res = new int[n];
+
+    for (int i = 0; i < n; i++) {
+        res[i] = -1;
+        for (int j = 1; j < n; j++) {
+            int idx = (i + j) % n;
+            if (arr[idx] > arr[i]) {
+                res[i] = arr[idx];
+                break;
+            }
+        }
+    }
+    return res;
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Direct definition simulation
+- For each element, check next n-1 elements circularly
+
+**Complexity (Time & Space):**
+- Time: O(N^2) — nested loops
+- Space: O(1) — excluding output
+
+### Approach 2: Optimal (Monotonic Stack + Double Traversal)
+
+**Idea:**
+- Core Idea (MEMORIZE)
+  * Traverse array from 0 → 2n-1
+  * use i % n to access elements
+- This simulates circular traversal without nested loops.
+
+**Steps:**
+- Initialize result array with -1
+- Use stack to store indices
+- Traverse from 0 to 2n-1
+- Let idx = i % n
+- While stack top element < arr[idx]:
+  * Pop
+  * Set its NGE
+- Push index only in first pass (i < n)
+
+**Java Code:**
+```java
+int[] nextGreaterElements(int[] arr) {
+    int n = arr.length;
+    int[] res = new int[n];
+    Arrays.fill(res, -1);
+
+    Stack<Integer> st = new Stack<>();
+
+    for (int i = 0; i < 2 * n; i++) {
+        int idx = i % n;
+
+        while (!st.isEmpty() && arr[st.peek()] < arr[idx]) {
+            res[st.pop()] = arr[idx];
+        }
+
+        if (i < n) {
+            st.push(idx);
+        }
+    }
+    return res;
+}
+```
+
+**💭 Intuition Behind the Approach:**
+- Stack keeps decreasing elements
+- Second traversal only helps resolve pending elements
+- No re-pushing in second pass → prevents infinite loop
+- Each index pushed & popped once
+
+**Complexity (Time & Space):**
+- Time: O(N) — each element pushed & popped once
+- Space: O(N) — stack
+
+---
+
+## 7. Justification / Proof of Optimality
+
+- Your idea works logically but degrades to O(N²)
+- Stack + circular traversal solves it cleanly
+- This is the standard expected solution
+---
+
+## 8. Variants / Follow-Ups
+
+- Next Smaller Element (Circular)
+- Previous Greater Element (Circular)
+- Circular Stock Span
+- Maximum Circular Subarray (Kadane variant)
+---
+
+## 9. Tips & Observations
+
+- Circular array → think “2× traversal”
+- Never do “handle remaining stack separately”
+- % n is the key trick
+- Push indices, not values
+---
+
+## 10. Pitfalls
+
+- Pushing indices again in second loop
+- Forgetting % n
+- Using < instead of <= (depends on strictness)
+- Trying to brute-fix leftover stack
 ---
 
 <!-- #endregion -->

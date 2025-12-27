@@ -14,6 +14,7 @@ Get-Content ".\11-Binary Search\*.md" | Out-File ".\Merged-Files\11-BinarySearch
 Get-Content ".\12-Binary Search On Answers\*.md" | Out-File ".\Merged-Files\12-BinarySearchOnAnswers.md" 
 Get-Content ".\13-Stack\*.md" | Out-File ".\Merged-Files\13-Stack.md" 
 Get-Content ".\14-Queue\*.md" | Out-File ".\Merged-Files\14-Queue.md" 
+Get-Content ".\15-Binary Tree\*.md" | Out-File ".\Merged-Files\15-Binary Tree.md" 
 
 # ================================
 #   MERGE MULTIPLE .MD FILES

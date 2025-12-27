@@ -14,8 +14,8 @@
 
 - **Helper Rules (IMPORTANT)**
 - Operator Precedence
-  * +  -  → 1
-  * *  /  → 2
+  * '+'  '-'  → 1
+  * '*'  '/'  → 2
 - Digit vs Alphabet
   * Character.isDigit(ch)      // '1'...'9'
   * Character.isLetter(ch)     // 'a'...'z'
