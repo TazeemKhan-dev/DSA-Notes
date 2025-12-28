@@ -201,6 +201,73 @@ static int orangesRotting(int[][] grid) {
 
     return fresh == 0 ? minutes : -1;
 }
+
+in class solution using the pair 
+	class Pair{
+		int i,j;
+		Pair(int i,int j){
+			this.i=i;
+			this.j=j;
+		}
+	}      
+class Solution{  
+	 public static int orangesRotting(int[][] grid) {
+//your code
+	Queue<Pair> q=new ArrayDeque<>();
+	int n=grid.length;
+	int m=grid[0].length;
+	int t=-1;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			if(grid[i][j]==2){
+				q.add(new Pair(i,j));
+			}
+		}
+	}
+	while(!q.isEmpty()){
+		int l=q.size();
+		for(int i=0;i<l;i++){
+			Pair curr=q.poll();
+			int r=curr.i;
+			int c=curr.j;
+			// for up
+				
+				if(r-1>=0 && grid[r-1][c]==1){
+					grid[r-1][c]=2;
+					q.add(new Pair(r-1,c));
+				}
+			// for down
+				
+				if(r+1<n && grid[r+1][c]==1){
+					grid[r+1][c]=2;
+					q.add(new Pair(r+1,c));
+				}
+			// for right
+				
+				if(c+1<m && grid[r][c+1]==1){
+					grid[r][c+1]=2;
+					q.add(new Pair(r,c+1));
+				}
+			// for up
+				
+				if(c-1>=0 && grid[r][c-1]==1){
+					grid[r][c-1]=2;
+					q.add(new Pair(r,c-1));
+				}
+		}
+		t++;
+	}
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			if(grid[i][j]==1){
+				return -1;
+			}
+		}
+	}
+	
+	return t;
+}
+}
 ```
 
 **💭 Intuition Behind the Approach:**
