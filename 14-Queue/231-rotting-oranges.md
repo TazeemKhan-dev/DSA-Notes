@@ -202,7 +202,10 @@ static int orangesRotting(int[][] grid) {
     return fresh == 0 ? minutes : -1;
 }
 
-in class solution using the pair 
+// in class solution using the pair
+
+
+
 	class Pair{
 		int i,j;
 		Pair(int i,int j){
