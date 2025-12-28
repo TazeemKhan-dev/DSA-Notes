@@ -18,7 +18,7 @@
 
 - Infix notation places operators between operands
 - Operator precedence matters:
-  * * and / > + and -
+  * " * " and " / "  >  " +"  and " - " 
 - Parentheses override precedence
 - Expression is guaranteed to be valid
 - All operands are single-digit, so parsing is simpler
